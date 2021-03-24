@@ -29,13 +29,13 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private EmailService emailService;
-	
+		
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	
 	@Autowired
 	private AuthenticationManager authManager;
-				
+
 	@Autowired
 	private TokenUtils tokenUtils;
 	

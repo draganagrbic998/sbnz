@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,10 @@ public class AccountService {
 	
 	@Autowired
 	private UserService userService;
-			
+	
+	@Autowired
+	private ResonerService resonserService;
+		
 	public Page<Account> findAll(Pageable pageable, String search) {
 		return this.accountRepository.findAll(pageable, search);
 	}
@@ -44,4 +49,8 @@ public class AccountService {
 		return this.accountRepository.findByUserId(this.userService.currentUser().getId());
 	}
 	
+	public List<Account> advancedReport(int reportNumber){
+		return this.resonserService.advancedReport(this.accountRepository.findAll(), reportNumber);
+	}
+
 }
