@@ -3,7 +3,22 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  authApi: 'http://localhost:8080/auth',
+  usersApi: 'http://localhost:8080/users',
+  accountsApi: 'http://localhost:8080/accounts',
+  billsApi: 'http://localhost:8080/bills',
+  notificationsApi: 'http://localhost:8080/notifications',
+
+  loginRoute: 'login-form',
+  userListRoute: 'user-list',
+  accountListRoute: 'account-list',
+  accountFormRoute: 'account-form',
+  myAccountRoute: 'my-account',
+  billListRoute: 'bill-list',
+  billFormRoute: 'bill-form',
+  notificationList: 'notification-list',
+  baseReport: 'base-report'
 };
 
 /*
