@@ -14,9 +14,9 @@ public class ReportUnit {
 		super();
 	}
 
-	public ReportUnit(long activeCnt, long closedCnt, long abortedCnt,
-			double baseAvg, double monthsAvg, 
-			double increaseAvg, double renewAvg) {
+	public ReportUnit(
+			long activeCnt, long closedCnt, long abortedCnt,
+			double baseAvg, double monthsAvg, double increaseAvg, double renewAvg) {
 		super();
 		this.activeCnt = activeCnt;
 		this.closedCnt = closedCnt;
