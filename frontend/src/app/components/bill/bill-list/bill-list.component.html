@@ -1,0 +1,16 @@
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<app-empty-container *ngIf="!fetchPending && !bills.length" [title]="'NO BILLS'"></app-empty-container>
+
+<div *ngIf="!fetchPending && bills.length">
+    <br><br>
+    <app-paginator
+    [pending]="fetchPending"
+    [pagination]="pagination"
+    (changedPage)="changePage($event)"
+    ></app-paginator>
+    <app-bill-details
+    *ngFor="let bill of bills"
+    [bill]="bill"
+    ></app-bill-details>
+</div>

@@ -1,0 +1,57 @@
+<div class="root mat-elevation-z24" [class.big]="big">
+    <mat-card>
+        <mat-card-content>
+            <h1 *ngIf="myAccount">Account #{{account.id}}</h1>
+            <h3 *ngIf="!myAccount">Account #{{account.id}}</h3>
+            <br><br>
+            <br *ngIf="myAccount">
+            <div>
+                <app-bold-text>Opened on: </app-bold-text>{{account.date | date: "dd MMM yyyy"}}
+            </div>
+            <div>
+                <app-bold-text>Current balance: </app-bold-text>{{account.balance | number: ".2"}} RSD
+            </div>
+            <div>
+                <app-bold-text>Number of saving bills: </app-bold-text>{{account.billsCount}}
+            </div>
+            <br><br>
+            <br *ngIf="myAccount">
+            <div>
+                <app-bold-text>Client: </app-bold-text>{{account.firstName}} {{account.lastName}}
+            </div>
+            <div>
+                <app-bold-text>JMBG: </app-bold-text>{{account.jmbg}}
+            </div>
+            <div>
+                <app-bold-text>Birth date: </app-bold-text>{{account.birthDate | date: "dd MMM yyyy"}}
+            </div>
+            <div>
+                <app-bold-text>Address: </app-bold-text>{{account.address}}, {{account.zipCode}} {{account.city}}
+            </div>
+            <div>
+                <app-bold-text>Contact: </app-bold-text>{{account.email}}
+            </div>
+            <app-spacer-container *ngIf="!myAccount">
+                <span></span>
+                <span>
+                    <button 
+                    matTooltip="Edit"
+                    mat-icon-button 
+                    color="primary"
+                    (click)="edit()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button 
+                    matTooltip="Delete"
+                    mat-icon-button 
+                    color="warn"
+                    (click)="delete()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
+            </app-spacer-container>
+            <br *ngIf="myAccount">
+            <br *ngIf="myAccount">
+        </mat-card-content>
+    </mat-card>
+</div>

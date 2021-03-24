@@ -1,0 +1,113 @@
+<mat-toolbar color="primary" class="mat-elevation-z24">
+    <span>
+        <button
+        matTooltip="Register New Sluzbenik"
+        *ngIf="onRoute('user-list')"
+        mat-button
+        (click)="createUser()">
+            New Sluzbenik
+        </button>
+        <button
+        matTooltip="Open New Account"
+        *ngIf="onRoute('account-list')"
+        mat-button
+        (click)="createAccount()">
+            New Account
+        </button>
+        <button
+        matTooltip="Open New Bill"
+        *ngIf="onRoute('my-account')"
+        mat-button
+        [routerLink]="'bill-form'">
+            New Saving Bill
+        </button>
+        
+        <button
+        matTooltip="Accounts list"
+        *ngIf="onRoute('account-form') || onRoute('base-report')"
+        mat-button
+        [routerLink]="'account-list'">
+            Accounts
+        </button>
+        <button
+        matTooltip="My account"
+        *ngIf="onRoute('bill')"
+        mat-button
+        [routerLink]="'my-account'">
+            Account
+        </button>
+
+        <button
+        matTooltip="RSD bills"
+        *ngIf="onRoute('my-account')"
+        mat-button
+        [routerLink]="'bill-list/rsd'">
+            RSD bills
+        </button>
+        <button
+        matTooltip="Foreign bills"
+        *ngIf="onRoute('my-account')"
+        mat-button
+        [routerLink]="'bill-list/foreign'">
+            Foreign bills
+        </button>
+        <button
+        matTooltip="Notifications"
+        *ngIf="onRoute('my-account')"
+        mat-button
+        [routerLink]="'notification-list'">
+            Notifications
+        </button>
+    </span>
+    <span class="main">
+        <span *ngIf="!onRoute('form')" class="user">{{user}}</span>
+        <form *ngIf="onRoute('list')" (ngSubmit)="announceSearchData()">
+            <input
+            *ngIf="!onRoute('bill-list')"
+            [formControl]="search"
+            [classList]="'form-control'"
+            matInput 
+            autocomplete="off"
+            placeholder="Search...">   
+            <select *ngIf="onRoute('bill-list')" [formControl]="search" [classList]="'form-control'" (change)="announceSearchData()">
+                <option value="" hidden>Select bill status</option>
+                <option value="">All</option>
+                <option value="0">Active</option>
+                <option value="1">Closed</option>
+                <option value="2">Aborted</option>
+              </select>           
+        </form>
+        <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
+            <mat-icon matTooltip="More">more_vert</mat-icon>
+        </button>
+        <mat-menu #more="matMenu">
+            <button mat-menu-item (click)="passwordChange()">
+                <mat-icon>account_circle</mat-icon>
+                <span>Password change</span>
+            </button>
+            <button mat-menu-item (click)="signOut()">
+                <mat-icon>logout</mat-icon>
+                <span>Sign out</span>
+            </button>
+            <button mat-menu-item [routerLink]="'base-report'" *ngIf="!onRoute('base-report') && role==='SLUZBENIK'">
+                <mat-icon>report</mat-icon>
+                <span>Base report</span>
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="reports" *ngIf="!onRoute('base-report') && role==='SLUZBENIK'">
+                <mat-icon>receipt</mat-icon>
+                <span>Active clients reports</span>
+            </button>
+            <mat-menu #reports="matMenu">
+                <button mat-menu-item (click)="report(1)">
+                    Report one
+                </button>
+                <button mat-menu-item (click)="report(2)">
+                    Report two
+                </button>
+                <button mat-menu-item (click)="report(3)">
+                    Report three
+                </button>
+            </mat-menu>
+        </mat-menu>
+    </span>
+</mat-toolbar>

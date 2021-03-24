@@ -1,0 +1,11 @@
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 800px;
+}
+
+.row > div{
+    width: 45%;
+    margin: 15px;
+}

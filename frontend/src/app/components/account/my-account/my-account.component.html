@@ -1,0 +1,9 @@
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<div *ngIf="!fetchPending && account">
+    <app-account-details 
+    *ngIf="!fetchPending"
+    [account]="account"
+    [big]="true"
+    ></app-account-details>
+</div>
