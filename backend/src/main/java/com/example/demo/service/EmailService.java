@@ -14,7 +14,7 @@ public class EmailService {
 	public static final String ACTIVATION_TITLE = "Bank account activation";
 	public static final String ACTIVATION_TEXT = "Dear %s %s, \n\n"
 			+ "In order to activate your bank account, please click the following link: \n"
-			+ Constants.BACKEND_URL + "/auth/activate/%s\n"
+			+ Constants.BACKEND + "/auth/activate/%s\n"
 			+ "We advise you to change your password the first time you sign in.\n"
 			+ "Initial password: " + Constants.INITIAL_PASSWORD + "\n\n"
 			+ "Best regards, \n"

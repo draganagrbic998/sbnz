@@ -77,8 +77,8 @@ public class ResonerService {
 	}
 
 	public List<Account> advancedReport(List<Account> accounts, int reportNumber){
-		String agendaGroup = reportNumber == 1 ? Constants.REPORT1 : 
-			reportNumber == 2 ? Constants.REPORT2 : Constants.REPORT3;
+		String agendaGroup = reportNumber == 1 ? Constants.FIRST_REPORT : 
+			reportNumber == 2 ? Constants.SECOND_REPORT : Constants.THIRD_REPORT;
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.REPORT_RULES);
 		kieSession.getAgenda().getAgendaGroup(agendaGroup).setFocus();
 		kieSession.insert(accounts);
