@@ -1,0 +1,29 @@
+<div class="root mat-elevation-z24">
+    <mat-card>
+        <mat-card-content>
+            <div class="details">
+                <span>
+                    #{{index}}
+                </span>
+                <span>
+                    {{notification.date | date: "dd MMM yyyy"}}
+                </span>
+            </div>
+            <div class="text">
+                {{notification.message}}
+            </div>
+            <app-spacer-container>
+                <span></span>
+                <span>
+                    <button 
+                    matTooltip="Delete"
+                    mat-icon-button 
+                    color="warn"
+                    (click)="delete()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
+            </app-spacer-container>
+        </mat-card-content>
+    </mat-card>
+</div>

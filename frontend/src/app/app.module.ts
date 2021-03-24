@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +14,13 @@ import { SpinnerButtonComponent } from './components/shared/loaders/spinner-butt
 import { PaginatorComponent } from './components/shared/controls/paginator/paginator.component';
 import { DeleteConfirmationComponent } from './components/shared/controls/delete-confirmation/delete-confirmation.component';
 import { CloseConfirmationComponent } from './components/shared/controls/close-confirmation/close-confirmation.component';
+import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
+import { NotificationDetailsComponent } from './components/notification/notification-details/notification-details.component';
+import { TransactionDetailsComponent } from './components/transaction/transaction-details/transaction-details.component';
+import { TransactionDialogComponent } from './components/transaction/transaction-dialog/transaction-dialog.component';
+import { RenewalDetailsComponent } from './components/renewal/renewal-details/renewal-details.component';
+import { RenewalDialogComponent } from './components/renewal/renewal-dialog/renewal-dialog.component';
+import { CommonModule } from './common.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +36,12 @@ import { CloseConfirmationComponent } from './components/shared/controls/close-c
     PaginatorComponent,
     DeleteConfirmationComponent,
     CloseConfirmationComponent,
+    NotificationListComponent,
+    NotificationDetailsComponent,
+    TransactionDetailsComponent,
+    TransactionDialogComponent,
+    RenewalDetailsComponent,
+    RenewalDialogComponent
   ],
   imports: [
     AppRoutingModule,
