@@ -1,0 +1,16 @@
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<app-empty-container *ngIf="!fetchPending && !accounts.length" [title]="'NO ACCOUNTS'"></app-empty-container>
+
+<div *ngIf="!fetchPending && accounts.length">
+    <br><br>
+    <app-paginator
+    [pending]="fetchPending"
+    [pagination]="pagination"
+    (changedPage)="changePage($event)"
+    ></app-paginator>
+    <app-account-details
+    *ngFor="let account of accounts"
+    [account]="account"
+    ></app-account-details>
+</div>

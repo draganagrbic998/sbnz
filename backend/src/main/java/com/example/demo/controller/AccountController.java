@@ -72,17 +72,17 @@ public class AccountController {
 		return new ResponseEntity<AccountDTO>(this.accountMapper.map(this.accountService.myAccount()), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/first-report")
+	@GetMapping(value = "/report-1")
 	public ResponseEntity<List<AccountDTO>> firstReport(){
 		return new ResponseEntity<>(this.accountMapper.map(this.accountService.advancedReport(1)), HttpStatus.OK);
 	}
 		
-	@GetMapping(value = "/second-report")
+	@GetMapping(value = "/report-2")
 	public ResponseEntity<List<AccountDTO>> secondReport(){
 		return new ResponseEntity<>(this.accountMapper.map(this.accountService.advancedReport(2)), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/third-report")
+	@GetMapping(value = "/report-3")
 	public ResponseEntity<List<AccountDTO>> thirdReport(){
 		return new ResponseEntity<>(this.accountMapper.map(this.accountService.advancedReport(3)), HttpStatus.OK);
 	}

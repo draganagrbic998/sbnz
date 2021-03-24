@@ -1,0 +1,19 @@
+.root{
+    display: inline-block;
+    text-align: left;
+    padding: 15px;
+    margin: 30px;
+}
+
+.mat-card{
+    width: 400px;
+    padding: 30px;
+}
+
+.big .mat-card{
+    width: 600px;
+}
+
+.big div{
+    font-size: 18px;
+}
