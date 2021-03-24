@@ -21,6 +21,10 @@ import { TransactionDialogComponent } from './components/transaction/transaction
 import { RenewalDetailsComponent } from './components/renewal/renewal-details/renewal-details.component';
 import { RenewalDialogComponent } from './components/renewal/renewal-dialog/renewal-dialog.component';
 import { CommonModule } from './common.module';
+import { LoginFormComponent } from './components/user/login-form/login-form.component';
+import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserDialogComponent } from './components/user/user-dialog/user-dialog.component';
+import { PasswordDialogComponent } from './components/user/password-dialog/password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,11 @@ import { CommonModule } from './common.module';
     TransactionDetailsComponent,
     TransactionDialogComponent,
     RenewalDetailsComponent,
-    RenewalDialogComponent
+    RenewalDialogComponent,
+    LoginFormComponent,
+    UserListComponent,
+    UserDialogComponent,
+    PasswordDialogComponent
   ],
   imports: [
     AppRoutingModule,

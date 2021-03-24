@@ -3,6 +3,7 @@
 <app-empty-container *ngIf="!fetchPending && !notifications.length" [title]="'NO NOTIFICATIONS'"></app-empty-container>
 
 <div *ngIf="!fetchPending && notifications.length">
+    <br><br>
     <app-paginator
     [pending]="fetchPending"
     [pagination]="pagination"
