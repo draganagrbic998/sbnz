@@ -1,4 +1,4 @@
-package com.example.demo.dto.rules;
+package com.example.demo.rules;
 
 import com.example.demo.model.BillType;
 import com.sun.istack.NotNull;

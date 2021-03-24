@@ -1,4 +1,4 @@
-package com.example.demo.dto.rules;
+package com.example.demo.rules;
 
 public class ReportUnit {
 

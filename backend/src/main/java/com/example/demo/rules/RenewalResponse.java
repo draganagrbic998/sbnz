@@ -1,11 +1,12 @@
-package com.example.demo.dto.rules;
+package com.example.demo.rules;
 
-public class CloseResponse {
-
+public class RenewalResponse {
+	
 	private boolean valid;
 	private String message;
+	private Double interestUpdate;
 	
-	public CloseResponse() {
+	public RenewalResponse() {
 		super();
 	}
 
@@ -24,5 +25,13 @@ public class CloseResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
+	public Double getInterestUpdate() {
+		return interestUpdate;
+	}
+
+	public void setInterestUpdate(Double interestUpdate) {
+		this.interestUpdate = interestUpdate;
+	}
+
 }
