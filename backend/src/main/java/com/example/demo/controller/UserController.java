@@ -43,9 +43,9 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll(Pageable pageable, @RequestParam String search, HttpServletResponse response){
 		Page<User> users = this.userService.findAll(pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, users.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, users.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, users.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, users.isLast() + "");
 		return new ResponseEntity<>(this.userMapper.map(users.toList()), HttpStatus.OK);
 	}
 

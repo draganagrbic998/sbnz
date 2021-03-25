@@ -37,9 +37,9 @@ public class NotificationController {
 	@GetMapping
 	public ResponseEntity<List<NotificationDTO>> findAll(Pageable pageable, HttpServletResponse response){
 		Page<Notification> notifications = this.notificationService.findAll(pageable);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, notifications.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, notifications.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, notifications.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, notifications.isLast() + "");
 		return new ResponseEntity<>(this.notificationMapper.map(notifications.toList()), HttpStatus.OK);
 	}
 

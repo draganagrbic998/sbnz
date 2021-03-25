@@ -48,9 +48,9 @@ public class BillController {
 	@GetMapping
 	public ResponseEntity<List<BillDTO>> findAll(@RequestParam boolean rsd, Pageable pageable, @RequestParam String search, HttpServletResponse response){
 		Page<Bill> bills = this.billService.findAll(rsd, pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, bills.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, bills.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, bills.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, bills.isLast() + "");
 		return new ResponseEntity<>(this.billMapper.map(bills.toList()), HttpStatus.OK);
 	}
 

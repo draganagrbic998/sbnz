@@ -42,9 +42,9 @@ public class AccountController {
 	@GetMapping
 	public ResponseEntity<List<AccountDTO>> findAll(Pageable pageable, @RequestParam String search, HttpServletResponse response){
 		Page<Account> accounts = this.accountService.findAll(pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, accounts.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, accounts.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, accounts.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, accounts.isLast() + "");
 		return new ResponseEntity<>(this.accountMapper.map(accounts.toList()), HttpStatus.OK);
 	}
 	
