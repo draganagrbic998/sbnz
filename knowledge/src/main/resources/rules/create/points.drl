@@ -1,0 +1,229 @@
+package rules
+import com.example.demo.model.Account
+import com.example.demo.model.Bill
+import com.example.demo.model.BillType
+import com.example.demo.model.Transaction
+import com.example.demo.model.TransactionType
+import com.example.demo.rules.BillResponse
+import java.util.List
+
+
+rule "5 points"
+	agenda-group "create-rules"
+	
+    when
+    	$account: Account($bills: bills)
+    	$response: BillResponse(valid, nks != null, points == null);
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), base > 200000) from $bills,
+			$cnt1: count($bill) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), base > 2000) from $bills,
+			$cnt2: count($bill) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $base: base) from $bills,
+			$avg1: average($base) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $base: base) from $bills,
+			$avg2: average($base) 
+		)
+		eval(
+			Utils.isAtLeast($account.years(), 5) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($avg1.doubleValue(), 100000) + 
+			Utils.isAtLeast($avg2.doubleValue(), 1000) >= 2
+		);
+    then
+    	modify($response){setPoints(5);}
+
+end
+
+rule "4 points"
+	agenda-group "create-rules"
+
+    when
+    	$account: Account($bills: bills)
+    	$response: BillResponse(valid, nks != null, points == null);
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), months() >= 12) from $bills,
+			$cnt1: count($bill) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), months() >= 9) from $bills,
+			$cnt2: count($bill) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $base: base) from $bills,
+			$sum1: sum($base) 
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $base: base) from $bills,
+			$sum2: sum($base) 
+		)
+		eval(
+			Utils.isAtLeast($account.years(), 4) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($sum1.doubleValue(), 300000) + 
+			Utils.isAtLeast($sum2.doubleValue(), 3000) >= 2
+		);
+    	
+    then
+    	modify($response){setPoints(4);}
+
+end
+
+rule "3 points"
+	agenda-group "create-rules"
+
+    when
+    	$account: Account($bills: bills)
+    	$response: BillResponse(valid, nks != null, points == null);
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $transactions: transactions) from $bills and
+         	List(size > 2) from collect(
+         		Transaction(type.equals(TransactionType.INCREASE), amount >= 10000) from $transactions
+         	),
+			$cnt1: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
+         	List(size > 1) from collect(
+         		Transaction(type.equals(TransactionType.INCREASE), amount >= 100) from $transactions
+         	),
+			$cnt2: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $base: base, $transactions: transactions) from $bills and
+			Number(doubleValue > 0.3 * $base) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		sum($amount)
+         	),
+			$cnt3: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $base: base, $transactions: transactions) from $bills and
+			Number(doubleValue > 0.2 * $base) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		sum($amount)
+         	),
+			$cnt4: count($bill)
+		)
+		eval(
+			Utils.isAtLeast($account.years(), 3) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($cnt3.intValue(), 2) + 
+			Utils.isAtLeast($cnt4.intValue(), 1) >= 2
+		);
+    	
+    then
+    	modify($response){setPoints(3);}
+
+end
+
+rule "2 points"
+	agenda-group "create-rules"
+
+    when
+    	$account: Account($bills: bills)
+    	$response: BillResponse(valid, nks != null, points == null);
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), base > 50000, $transactions: transactions) from $bills and
+			Number(doubleValue > 10000) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		average($amount)
+         	),
+			$cnt1: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), base > 500, $transactions: transactions) from $bills and
+			Number(doubleValue > 100) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		average($amount)
+         	),
+			$cnt2: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		$avg: average($amount)
+         	),
+			$avg1: average($avg)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		$avg: average($amount)
+         	),
+			$avg2: average($avg)
+		)
+		eval(
+			Utils.isAtLeast($account.years(), 2) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($avg1.doubleValue(), 50000) + 
+			Utils.isAtLeast($avg2.doubleValue(), 500) >= 2
+		);
+    	
+    then    
+    	modify($response){setPoints(2);}
+
+end
+
+rule "1 point"
+	agenda-group "create-rules"
+
+    when
+    	$account: Account($bills: bills)
+    	$response: BillResponse(valid, nks != null, points == null);
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), months() >= 6, $transactions: transactions) from $bills and
+			Number(doubleValue > 10000) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		sum($amount)
+         	),
+			$cnt1: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), months() >= 3, $transactions: transactions) from $bills and
+			Number(doubleValue > 100) from accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		sum($amount)
+         	),
+			$cnt2: count($bill)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 9, type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		$sum: sum($amount)
+         	),
+			$sum1: sum($sum)
+		)
+		accumulate(
+			Bill($bill: this, passedMonths() <= 12, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+         		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+         		$sum: sum($amount)
+         	),
+			$sum2: sum($sum)
+		)
+		eval(
+			Utils.isAtLeast($account.years(), 1) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($sum1.doubleValue(), 80000) + 
+			Utils.isAtLeast($sum2.doubleValue(), 800) >= 2
+		);
+    	
+    then
+    	modify($response){setPoints(1);}
+
+end
+
+rule "0 points"
+	agenda-group "create-rules"
+
+    when
+    	$response: BillResponse(valid, nks != null, points == null);
+    then
+    	modify($response){setPoints(0);}
+
+end
