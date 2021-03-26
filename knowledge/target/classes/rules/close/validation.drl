@@ -1,0 +1,126 @@
+package rules
+
+import com.example.demo.model.Account
+import com.example.demo.model.Bill
+import com.example.demo.model.BillType
+import com.example.demo.model.BillStatus
+import com.example.demo.rules.CloseResponse
+
+
+rule "Less than 20% of bill period passed"
+	agenda-group "close-rules"
+
+    when
+		Bill(passedTime() < 0.2)
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close a bill with less than 20% of period passed.");}
+
+end
+
+rule "More than 80% of bill period passed"
+	agenda-group "close-rules"
+
+    when
+		Bill(passedTime() > 0.8)
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close a bill with more than 80% of period passed.");}
+
+end
+
+rule "RSD bill - base lower than 20.000 RSD"
+	agenda-group "close-rules"
+
+    when
+        Bill(type.equals(BillType.RSD), base < 20000)
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close a RSD bill with base lower than 20.000 RSD.");}
+
+end
+
+rule "RSD bill - the only active bill"
+	agenda-group "close-rules"
+
+    when
+        Bill(type.equals(BillType.RSD))
+        Account($bills: bills)
+        Number(intValue == 1) from accumulate(
+        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	count($bill)
+        )
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close the only active RSD bill you own.");}
+
+end
+
+rule "RSD bill - prematurely closed atleast 6 RSD bills"
+	agenda-group "close-rules"
+
+	when
+        Bill(type.equals(BillType.RSD))
+        Account($bills: bills)
+		$response: CloseResponse(!valid, message == null)
+		Number(intValue >= 6) from accumulate(
+        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,
+        	count($bill)
+        )
+	then
+		modify($response){setMessage("You can't prematurely close anymore RSD bills as you have already closed 6 or more.");}
+		
+end
+rule "Foreign bill - base lower than 200 units"
+	agenda-group "close-rules"
+
+    when
+        Bill(!type.equals(BillType.RSD), base < 200)
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close a foreign bill with base lower than 200 units.");}
+
+end
+
+rule "Foreign bill - the only active bill"
+	agenda-group "close-rules"
+
+    when
+        Bill(!type.equals(BillType.RSD))
+        Account($bills: bills)
+        Number(intValue == 1) from accumulate(
+        	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	count($bill)
+        )
+		$response: CloseResponse(!valid, message == null)
+    then  
+		modify($response){setMessage("You can't prematurely close the only active foreign bill you own.");}
+
+end
+
+rule "Foreign bill - prematurely closed atleast 4 foreign bills"
+	agenda-group "close-rules"
+
+	when
+        Bill(!type.equals(BillType.RSD), $account: account)
+        Account($bills: bills)
+		$response: CloseResponse(!valid, message == null)
+		Number(intValue >= 4) from accumulate(
+        	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,
+        	count($bill)
+        )
+	then
+		modify($response){setMessage("You can't prematurely close anymore foreign bills as you have already closed 4 or more.");}
+
+end
+
+rule "Valid params"
+	agenda-group "close-rules"
+
+    when
+		$response: CloseResponse(!valid, message == null)
+    then    
+		modify($response){setValid(true)}
+
+end
+

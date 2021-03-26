@@ -60,6 +60,7 @@ public class ResonerService {
 		CloseResponse response = new CloseResponse();
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CLOSE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.CLOSE_RULES).setFocus();
+		kieSession.insert(bill.getAccount());
 		kieSession.insert(bill);
 		kieSession.insert(response);
 		this.run(kieSession);
