@@ -28,7 +28,7 @@ rule "90% base increase pt2"
     when
     	Bill($transactions: transactions, $base: base)
 		$response: IncreaseResponse(valid, baseUpdate == null)
-		Number(doubleValue / $base > 0.5) from accumulate(
+		Number(doubleValue / $base > 0.45) from accumulate(
 			Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 5, $amount: amount) from $transactions,
 			sum($amount)
 		)
@@ -58,7 +58,7 @@ rule "80% base increase pt2"
     when
     	Bill($transactions: transactions, $base: base)
 		$response: IncreaseResponse(valid, baseUpdate == null)
-		Number(doubleValue / $base > 0.45) from accumulate(
+		Number(doubleValue / $base > 0.4) from accumulate(
 			Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 6, $amount: amount) from $transactions,
 			sum($amount)
 		)
@@ -88,7 +88,7 @@ rule "70% base increase pt2"
     when
     	Bill($transactions: transactions, $base: base)
 		$response: IncreaseResponse(valid, baseUpdate == null)
-		Number(doubleValue / $base > 0.4) from accumulate(
+		Number(doubleValue / $base > 0.35) from accumulate(
 			Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 7, $amount: amount) from $transactions,
 			sum($amount)
 		)
@@ -118,7 +118,7 @@ rule "60% base increase pt2"
     when
     	Bill($transactions: transactions, $base: base)
 		$response: IncreaseResponse(valid, baseUpdate == null)
-		Number(doubleValue / $base > 0.35) from accumulate(
+		Number(doubleValue / $base > 0.3) from accumulate(
 			Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 8, $amount: amount) from $transactions,
 			sum($amount)
 		)

@@ -26,7 +26,7 @@ rule "More than 95% of bill period passed"
 		Bill(passedTime() > 0.95)
 		$response: IncreaseResponse(!valid, message == null)
     then  
-		modify($response){setMessage("You can't deposit on a bill with more than 95	% of period passed.");}
+		modify($response){setMessage("You can't deposit on a bill with more than 95% of period passed.");}
 
 end
 
@@ -34,8 +34,8 @@ rule "Amount lower than 10% of bill balance"
 	agenda-group "increase-rules"
 
     when
-    	$amount: Integer()
-        Bill($amount / balance < 0.1)
+        Bill($balance: balance)
+        Number(this / $balance < 0.1)
 		$response: IncreaseResponse(!valid, message == null)
     then  
 		modify($response){setMessage("You can't deposit less than 10% of the bill balance.");}
@@ -46,8 +46,8 @@ rule "Amount higher than 50% of bill balance"
 	agenda-group "increase-rules"
 
     when
-    	$amount: Integer()
-        Bill($amount / balance > 0.5)
+        Bill($balance: balance)
+        Number(this / $balance > 0.5)
 		$response: IncreaseResponse(!valid, message == null)
     then  
 		modify($response){setMessage("You can't deposit more than 50% of the bill balance.");}
@@ -102,7 +102,7 @@ rule "Foreign bill - duration shorter than 4 months"
 		
 end
 
-rule "Foreign bill - base lower than 75.000 RSD"
+rule "Foreign bill - base lower than 750 units"
 	agenda-group "increase-rules"
 
     when
@@ -137,7 +137,7 @@ rule "Maximum deposit amount is 40% of balance pt1"
         	!type.equals(BillType.RSD) && base < 2000,
         	$balance: balance
         )
-        Integer(this / $balance > 0.4)        
+        Number(this / $balance > 0.4)        
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't deposit more than 40% of current bill balance.");}
@@ -149,7 +149,7 @@ rule "Maximum deposit amount is 40% of balance pt2"
 
 	when
 	    Bill(type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.4)        
+        Number(this / $balance > 0.4)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -160,7 +160,7 @@ rule "Maximum deposit amount is 40% of balance pt2"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 3 || $sum.doubleValue() / $base > 0.5
+			$cnt.intValue() > 3 || $sum.doubleValue() / $base > 0.3
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 40% of current bill balance.");}
@@ -172,7 +172,7 @@ rule "Maximum deposit amount is 40% of balance pt3"
 
 	when
 	    Bill(!type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.4)        
+        Number(this / $balance > 0.4)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -183,7 +183,7 @@ rule "Maximum deposit amount is 40% of balance pt3"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 2 || $sum.doubleValue() / $base > 0.3
+			$cnt.intValue() > 2 || $sum.doubleValue() / $base > 0.25
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 40% of current bill balance.");}
@@ -199,7 +199,7 @@ rule "Maximum deposit amount is 35% of balance pt1"
         	!type.equals(BillType.RSD) && base < 1500,
         	$balance: balance
         )
-        Integer(this / $balance > 0.35)        
+        Number(this / $balance > 0.35)        
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't deposit more than 35% of current bill balance.");}
@@ -211,7 +211,7 @@ rule "Maximum deposit amount is 35% of balance pt2"
 
 	when
 	    Bill(type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.35)        
+        Number(this / $balance > 0.35)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -222,7 +222,7 @@ rule "Maximum deposit amount is 35% of balance pt2"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 4 || $sum.doubleValue() / $base > 0.6
+			$cnt.intValue() > 4 || $sum.doubleValue() / $base > 0.4
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 35% of current bill balance.");}
@@ -234,7 +234,7 @@ rule "Maximum deposit amount is 35% of balance pt3"
 
 	when
 	    Bill(!type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.35)        
+        Number(this / $balance > 0.35)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -245,7 +245,7 @@ rule "Maximum deposit amount is 35% of balance pt3"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 3 || $sum.doubleValue() / $base > 0.4
+			$cnt.intValue() > 3 || $sum.doubleValue() / $base > 0.3
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 35% of current bill balance.");}
@@ -261,7 +261,7 @@ rule "Maximum deposit amount is 30% of balance pt1"
         	!type.equals(BillType.RSD) && base < 1000,
         	$balance: balance
         )
-        Integer(this / $balance > 0.3)        
+        Number(this / $balance > 0.3)        
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't deposit more than 30% of current bill balance.");}
@@ -273,7 +273,7 @@ rule "Maximum deposit amount is 30% of balance pt2"
 
 	when
 	    Bill(type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.3)        
+        Number(this / $balance > 0.3)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -284,7 +284,7 @@ rule "Maximum deposit amount is 30% of balance pt2"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 5 || $sum.doubleValue() / $base > 0.7
+			$cnt.intValue() > 5 || $sum.doubleValue() / $base > 0.5
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 30% of current bill balance.");}
@@ -296,7 +296,7 @@ rule "Maximum deposit amount is 30% of balance pt3"
 
 	when
 	    Bill(!type.equals(BillType.RSD), $base: base, $balance: balance, $transactions: transactions, $bills: account.bills)
-        Integer(this / $balance > 0.3)        
+        Number(this / $balance > 0.3)        
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
@@ -307,7 +307,7 @@ rule "Maximum deposit amount is 30% of balance pt3"
          	$sum: sum($amount)
         )
        	eval(
-			$cnt.intValue() > 4 || $sum.doubleValue() / $base > 0.5
+			$cnt.intValue() > 4 || $sum.doubleValue() / $base > 0.4
 		);
 	then
 		modify($response){setMessage("You can't deposit more than 30% of current bill balance.");}
