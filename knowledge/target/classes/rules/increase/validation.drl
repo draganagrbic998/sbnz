@@ -133,8 +133,8 @@ rule "Maximum deposit amount is 40% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base < 200000 ||
-        	!type.equals(BillType.RSD) && base < 2000,
+        	type.equals(BillType.RSD) && base > 200000 ||
+        	!type.equals(BillType.RSD) && base > 2000,
         	$balance: balance
         )
         Number(this / $balance > 0.4)        
@@ -195,8 +195,8 @@ rule "Maximum deposit amount is 35% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base < 150000 ||
-        	!type.equals(BillType.RSD) && base < 1500,
+        	type.equals(BillType.RSD) && base > 150000 ||
+        	!type.equals(BillType.RSD) && base > 1500,
         	$balance: balance
         )
         Number(this / $balance > 0.35)        
@@ -257,8 +257,8 @@ rule "Maximum deposit amount is 30% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base < 100000 ||
-        	!type.equals(BillType.RSD) && base < 1000,
+        	type.equals(BillType.RSD) && base > 100000 ||
+        	!type.equals(BillType.RSD) && base > 1000,
         	$balance: balance
         )
         Number(this / $balance > 0.3)        

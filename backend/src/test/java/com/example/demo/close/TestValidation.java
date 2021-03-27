@@ -14,6 +14,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.rules.CloseResponse;
+import com.example.demo.ObjectFactory;
 import com.example.demo.model.Account;
 import com.example.demo.model.Bill;
 import com.example.demo.model.BillStatus;
@@ -100,12 +101,8 @@ public class TestValidation {
 	
 	@Test
 	public void testRule5() {
-		for (int i = 0; i < 6; i++) {
-			Bill b = new Bill();
-			b.setType(BillType.RSD);
-			b.setStatus(BillStatus.ABORTED);
-			this.account.getBills().add(b);
-		}
+		for (int i = 0; i < 6; i++)
+			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
 		
 		Bill b = new Bill();
 		b.setType(BillType.RSD);
@@ -130,13 +127,9 @@ public class TestValidation {
 	
 	@Test
 	public void testRule8() {
-		for (int i = 0; i < 4; i++) {
-			Bill b = new Bill();
-			b.setType(BillType.EUR);
-			b.setStatus(BillStatus.ABORTED);
-			this.account.getBills().add(b);
-		}
-		
+		for (int i = 0; i < 4; i++)
+			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR));
+
 		Bill b = new Bill();
 		b.setType(BillType.EUR);
 		b.setStatus(BillStatus.ACTIVE);
