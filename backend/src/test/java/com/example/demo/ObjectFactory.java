@@ -8,6 +8,7 @@ import com.example.demo.model.BillStatus;
 import com.example.demo.model.BillType;
 import com.example.demo.model.Renewal;
 import com.example.demo.model.Transaction;
+import com.example.demo.model.TransactionType;
 
 public class ObjectFactory {
 
@@ -80,6 +81,13 @@ public class ObjectFactory {
 		return transaction;
 	}
 
+	public static Transaction getTransaction(TransactionType type, double amount) {
+		Transaction transaction = new Transaction();
+		transaction.setType(TransactionType.INCREASE);
+		transaction.setAmount(amount);
+		return transaction;
+	}
+	
 	public static Renewal getRenewal(int amount) {
 		Renewal renewal = new Renewal();
 		renewal.setAmount(amount);
