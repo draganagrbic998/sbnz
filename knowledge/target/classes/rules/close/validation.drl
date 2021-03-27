@@ -1,6 +1,5 @@
 package rules
 
-import com.example.demo.model.Account
 import com.example.demo.model.Bill
 import com.example.demo.model.BillType
 import com.example.demo.model.BillStatus
@@ -44,8 +43,7 @@ rule "RSD bill - the only active bill"
 	agenda-group "close-rules"
 
     when
-        Bill(type.equals(BillType.RSD))
-        Account($bills: bills)
+        Bill(type.equals(BillType.RSD), $bills: account.bills)
         Number(intValue == 1) from accumulate(
         	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
         	count($bill)
@@ -60,8 +58,7 @@ rule "RSD bill - prematurely closed atleast 6 RSD bills"
 	agenda-group "close-rules"
 
 	when
-        Bill(type.equals(BillType.RSD))
-        Account($bills: bills)
+        Bill(type.equals(BillType.RSD), $bills: account.bills)
 		$response: CloseResponse(!valid, message == null)
 		Number(intValue >= 6) from accumulate(
         	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,
@@ -86,8 +83,7 @@ rule "Foreign bill - the only active bill"
 	agenda-group "close-rules"
 
     when
-        Bill(!type.equals(BillType.RSD))
-        Account($bills: bills)
+        Bill(!type.equals(BillType.RSD), $bills: account.bills)
         Number(intValue == 1) from accumulate(
         	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
         	count($bill)
@@ -102,8 +98,7 @@ rule "Foreign bill - prematurely closed atleast 4 foreign bills"
 	agenda-group "close-rules"
 
 	when
-        Bill(!type.equals(BillType.RSD), $account: account)
-        Account($bills: bills)
+        Bill(!type.equals(BillType.RSD), $bills: account.bills)
 		$response: CloseResponse(!valid, message == null)
 		Number(intValue >= 4) from accumulate(
         	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,

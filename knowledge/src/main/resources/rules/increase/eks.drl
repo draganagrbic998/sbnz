@@ -1,0 +1,202 @@
+package rules
+
+import com.example.demo.model.Transaction
+import com.example.demo.model.TransactionType
+import com.example.demo.model.Bill
+import com.example.demo.rules.IncreaseResponse
+import com.example.demo.utils.Utils
+
+
+rule "3% decrease pt1"
+	agenda-group "increase-rules"
+
+    when
+		$amount: Number()
+		Bill(
+			$amount / base > 0.35 || 
+			type.equals(BillType.RSD) && base > 330000 ||
+			!type.equals(BillType.RSD) && base > 3300,
+			$interest: interest
+		)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+    then
+		modify($response){setInterestUpdate(0.03 * $interest);}
+end
+
+rule "3% decrease pt2"
+	agenda-group "increase-rules"
+
+    when
+    	Bill($bills: account.bills, $interest: interest, $main_balance: account.balance, $type: type)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+		accumulate(
+			Bill(type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 12, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg1: average($avg)
+		)
+		accumulate(
+			Bill(!type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 11, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg2: average($avg)
+		)
+		eval(
+			$avg1.doubleValue() / $main_balance > 0.5 || 
+			Utils.convertToRSD($type, $avg2.doubleValue()) / $main_balance > 0.45
+		)
+    then
+		modify($response){setInterestUpdate(0.03 * $interest);}
+end
+
+rule "2.5% decrease pt1"
+	agenda-group "increase-rules"
+
+    when
+  		$amount: Number()
+		Bill(
+			$amount / base > 0.3 || 
+			type.equals(BillType.RSD) && base > 270000 ||
+			!type.equals(BillType.RSD) && base > 2700,
+			$interest: interest
+		)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+    then
+		modify($response){setInterestUpdate(0.025 * $interest);}
+end
+
+rule "2.5% decrease pt2"
+	agenda-group "increase-rules"
+
+    when
+    	Bill($bills: account.bills, $interest: interest, $main_balance: account.balance, $type: type)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+		accumulate(
+			Bill(type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 11, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg1: average($avg)
+		)
+		accumulate(
+			Bill(!type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 10, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg2: average($avg)
+		)
+		eval(
+			$avg1.doubleValue() / $main_balance > 0.45 || 
+			Utils.convertToRSD($type, $avg2.doubleValue()) / $main_balance > 0.4
+		)
+    then
+		modify($response){setInterestUpdate(0.025 * $interest);}
+end
+
+rule "2% decrease pt1"
+	agenda-group "increase-rules"
+
+    when
+		$amount: Number()
+		Bill(
+			$amount / base > 0.25 || 
+			type.equals(BillType.RSD) && base > 220000 ||
+			!type.equals(BillType.RSD) && base > 2200,
+			$interest: interest
+		)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+    then
+		modify($response){setInterestUpdate(0.02 * $interest);}
+end
+
+rule "2% decrease pt2"
+	agenda-group "increase-rules"
+
+    when
+    	Bill($bills: account.bills, $interest: interest, $main_balance: account.balance, $type: type)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+		accumulate(
+			Bill(type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 10, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg1: average($avg)
+		)
+		accumulate(
+			Bill(!type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 9, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg2: average($avg)
+		)
+		eval(
+			$avg1.doubleValue() / $main_balance > 0.4 || 
+			Utils.convertToRSD($type, $avg2.doubleValue()) / $main_balance > 0.35
+		)
+    then
+		modify($response){setInterestUpdate(0.02 * $interest);}
+end
+
+rule "1.5% decrease pt1"
+	agenda-group "increase-rules"
+
+    when
+		$amount: Number()
+		Bill(
+			$amount / base > 0.2 || 
+			type.equals(BillType.RSD) && base > 180000 ||
+			!type.equals(BillType.RSD) && base > 1800,
+			$interest: interest
+		)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+    then
+		modify($response){setInterestUpdate(0.015 * $interest);}
+end
+
+rule "1.5% decrease pt2"
+	agenda-group "increase-rules"
+
+    when
+    	Bill($bills: account.bills, $interest: interest, $main_balance: account.balance, $type: type)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+		accumulate(
+			Bill(type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 9, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg1: average($avg)
+		)
+		accumulate(
+			Bill(!type.equals(BillType.RSD), $transactions: transactions) from $bills and
+			accumulate(
+				Transaction(type.equals(TransactionType.INCREASE), passedMonths() <= 8, $amount: amount) from $transactions,
+				$avg: average($amount)
+			),
+			$avg2: average($avg)
+		)
+		eval(
+			$avg1.doubleValue() / $main_balance > 0.35 || 
+			Utils.convertToRSD($type, $avg2.doubleValue()) / $main_balance > 0.3
+		)
+    then
+		modify($response){setInterestUpdate(0.015 * $interest);}
+end
+
+rule "1% decrease"
+	agenda-group "increase-rules"
+
+    when
+    	Bill($interest: interest)
+		$response: IncreaseResponse(valid, interestUpdate == null)
+    then
+		modify($response){setInterestUpdate(0.01 * $interest);}
+end

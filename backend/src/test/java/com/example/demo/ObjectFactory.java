@@ -72,6 +72,13 @@ public class ObjectFactory {
 		transaction.setAmount(amount);
 		return transaction;
 	}
+	
+	public static Transaction getTransaction(double amount, int minusMonthsOffset) {
+		Transaction transaction = new Transaction();
+		transaction.setAmount(amount);
+		transaction.setDate(LocalDate.now().minusMonths(minusMonthsOffset));
+		return transaction;
+	}
 
 	public static Renewal getRenewal(int amount) {
 		Renewal renewal = new Renewal();
