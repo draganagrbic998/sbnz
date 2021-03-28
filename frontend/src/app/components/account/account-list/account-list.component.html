@@ -1,6 +1,7 @@
 <app-preloader *ngIf="fetchPending"></app-preloader>
 
-<app-empty-container *ngIf="!fetchPending && !accounts.length" [title]="'NO ACCOUNTS'"></app-empty-container>
+<app-empty-container *ngIf="!fetchPending && !accounts.length"
+[title]="'NO ACCOUNTS'"></app-empty-container>
 
 <div *ngIf="!fetchPending && accounts.length">
     <br><br>

@@ -5,17 +5,17 @@ import { CommonModule } from './common.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { BoldTextComponent } from './components/shared/containers/bold-text/bold-text.component';
-import { CenterContainerComponent } from './components/shared/containers/center-container/center-container.component';
-import { SpacerContainerComponent } from './components/shared/containers/spacer-container/spacer-container.component';
-import { EmptyContainerComponent } from './components/shared/containers/empty-container/empty-container.component';
-import { FormContainerComponent } from './components/shared/containers/form-container/form-container.component';
-import { RuleResponseComponent } from './components/shared/containers/rule-response/rule-response.component';
-import { PreloaderComponent } from './components/shared/loaders/preloader/preloader.component';
-import { SpinnerButtonComponent } from './components/shared/loaders/spinner-button/spinner-button.component';
-import { PaginatorComponent } from './components/shared/controls/paginator/paginator.component';
-import { DeleteConfirmationComponent } from './components/shared/controls/delete-confirmation/delete-confirmation.component';
-import { CloseConfirmationComponent } from './components/shared/controls/close-confirmation/close-confirmation.component';
+import { BoldTextComponent } from './components/containers/bold-text/bold-text.component';
+import { CenterContainerComponent } from './components/containers/center-container/center-container.component';
+import { SpacerContainerComponent } from './components/containers/spacer-container/spacer-container.component';
+import { EmptyContainerComponent } from './components/containers/empty-container/empty-container.component';
+import { FormContainerComponent } from './components/containers/form-container/form-container.component';
+import { RuleResponseComponent } from './components/utils/rule-response/rule-response.component';
+import { PreloaderComponent } from './components/loaders/preloader/preloader.component';
+import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
+import { PaginatorComponent } from './components/utils/paginator/paginator.component';
+import { DeleteConfirmationComponent } from './components/utils/delete-confirmation/delete-confirmation.component';
+import { CloseConfirmationComponent } from './components/bill/close-confirmation/close-confirmation.component';
 import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
 import { NotificationDetailsComponent } from './components/notification/notification-details/notification-details.component';
 import { TransactionDetailsComponent } from './components/transaction/transaction-details/transaction-details.component';
@@ -29,12 +29,13 @@ import { PasswordDialogComponent } from './components/user/password-dialog/passw
 import { BillDetailsComponent } from './components/bill/bill-details/bill-details.component';
 import { BillListComponent } from './components/bill/bill-list/bill-list.component';
 import { BillFormComponent } from './components/bill/bill-form/bill-form.component';
-import { BaseReportComponent } from './components/bill/base-report/base-report.component';
+import { BaseReportComponent } from './components/utils/base-report/base-report.component';
 import { AccountDetailsComponent } from './components/account/account-details/account-details.component';
 import { AccountListComponent } from './components/account/account-list/account-list.component';
 import { AccountFormComponent } from './components/account/account-form/account-form.component';
 import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.component';
+import { ToolbarComponent } from './components/utils/toolbar/toolbar.component';
+import { OnlyNumbersDirective } from './directives/only-numbers.directive';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.c
     AccountListComponent,
     AccountFormComponent,
     MyAccountComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    OnlyNumbersDirective
   ],
   imports: [
     AppRoutingModule,

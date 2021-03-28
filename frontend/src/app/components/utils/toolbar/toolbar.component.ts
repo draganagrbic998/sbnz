@@ -33,16 +33,8 @@ export class ToolbarComponent implements OnInit {
     return this.storageService.getUser().role;
   }
 
-  get user(): string{
-    return `${this.storageService.getUser().firstName} ${this.storageService.getUser().lastName}`;
-  }
-
   onRoute(param: string): boolean{
     return this.router.url.substr(1).includes(param);
-  }
-
-  passwordChange(): void{
-    this.dialog.open(PasswordDialogComponent, DIALOG_OPTIONS);
   }
 
   signOut(): void{
@@ -50,9 +42,8 @@ export class ToolbarComponent implements OnInit {
     this.router.navigate([environment.loginRoute]);
   }
 
-  createAccount(): void{
-    this.storageService.remove(this.storageService.ACCOUNT_KEY);
-    this.router.navigate([`${environment.accountFormRoute}/create`]);
+  passwordChange(): void{
+    this.dialog.open(PasswordDialogComponent, DIALOG_OPTIONS);
   }
 
   createUser(): void{
@@ -63,6 +54,11 @@ export class ToolbarComponent implements OnInit {
         this.userService.announceRefreshData();
       }
     });
+  }
+
+  createAccount(): void{
+    this.storageService.remove(this.storageService.ACCOUNT_KEY);
+    this.router.navigate([`${environment.accountFormRoute}/create`]);
   }
 
   announceSearchData(): void{

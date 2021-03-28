@@ -7,24 +7,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 
-const modules = [
-  NgbModule,
-  BrowserModule,
-  BrowserAnimationsModule,
-  FormsModule,
-  ReactiveFormsModule,
-  HttpClientModule
-];
 
 @NgModule({
-    imports: modules,
-    exports: modules,
+    exports: [
+      NgbModule,
+      BrowserModule,
+      BrowserAnimationsModule,
+      FormsModule,
+      ReactiveFormsModule,
+      HttpClientModule
+    ],
     providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthInterceptor,
-          multi: true
-        }
-      ],
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true
+      }
+    ],
 })
 export class CommonModule{ }

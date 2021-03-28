@@ -3,8 +3,7 @@
         <mat-card-content>
             <h1 *ngIf="myAccount">Account #{{account.id}}</h1>
             <h3 *ngIf="!myAccount">Account #{{account.id}}</h3>
-            <br><br>
-            <br *ngIf="myAccount">
+            <br><br><br *ngIf="myAccount">
             <div>
                 <app-bold-text>Opened on: </app-bold-text>{{account.date | date: "dd MMM yyyy"}}
             </div>
@@ -14,8 +13,7 @@
             <div>
                 <app-bold-text>Number of saving bills: </app-bold-text>{{account.billsCount}}
             </div>
-            <br><br>
-            <br *ngIf="myAccount">
+            <br><br><br *ngIf="myAccount">
             <div>
                 <app-bold-text>Client: </app-bold-text>{{account.firstName}} {{account.lastName}}
             </div>
@@ -50,8 +48,7 @@
                     </button>
                 </span>
             </app-spacer-container>
-            <br *ngIf="myAccount">
-            <br *ngIf="myAccount">
+            <br *ngIf="myAccount"><br *ngIf="myAccount">
         </mat-card-content>
     </mat-card>
 </div>

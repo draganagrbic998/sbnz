@@ -6,7 +6,7 @@ import { Account } from 'src/app/models/account';
 import { AccountService } from 'src/app/services/account/account.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { environment } from 'src/environments/environment';
-import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
+import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-account-details',

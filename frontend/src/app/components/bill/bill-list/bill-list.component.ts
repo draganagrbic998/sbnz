@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Bill } from 'src/app/models/bill';
 import { Pagination } from 'src/app/models/pagination';
 import { BillService } from 'src/app/services/bill/bill.service';
@@ -41,8 +41,8 @@ export class BillListComponent implements OnInit {
         if (data){
           this.bills = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.bills = [];
@@ -57,6 +57,7 @@ export class BillListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.billService.refreshData$.subscribe(() => {
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber -= 1 : 0;
       this.changePage(0);
     });
     // tslint:disable-next-line: deprecation

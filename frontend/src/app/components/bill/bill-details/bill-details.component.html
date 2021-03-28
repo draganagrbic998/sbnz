@@ -27,7 +27,7 @@
                 <app-spacer-container *ngIf="bill.status === 'ACTIVE'">
                     <span>
                         <button 
-                        matTooltip="Perform transaction"
+                        matTooltip="Transaction"
                         mat-icon-button 
                         color="primary"
                         (click)="transction()">
@@ -63,7 +63,7 @@
             </mat-card-content>
         </mat-card>    
     </mat-drawer-container>
-    <mat-drawer #drawer [position]="'end'" [mode]="'side'" [opened]="'false'" class="mat-elevation-z24">
+    <mat-drawer #drawer position="end" mode="side" opened="false" class="mat-elevation-z24">
         <mat-tab-group>
             <mat-tab [label]="'Transactions'">
                 <app-transaction-details

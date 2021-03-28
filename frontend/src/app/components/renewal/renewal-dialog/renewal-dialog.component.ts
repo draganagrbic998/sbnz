@@ -21,9 +21,9 @@ export class RenewalDialogComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+  amount: FormControl = new FormControl('', [Validators.required]);
   savePending = false;
   response: RuleResponse;
-  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]);
 
   confirm(): void{
     if (this.amount.invalid){

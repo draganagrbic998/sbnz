@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
@@ -21,9 +21,9 @@ export class TransactionDialogComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+  amount: FormControl = new FormControl('', [Validators.required]);
   savePending = false;
   response: RuleResponse;
-  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]);
 
   confirm(): void{
     if (this.amount.invalid){

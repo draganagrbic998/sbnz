@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Account } from 'src/app/models/account';
 import { Pagination } from 'src/app/models/pagination';
 import { AccountService } from 'src/app/services/account/account.service';
@@ -39,8 +39,8 @@ export class AccountListComponent implements OnInit {
         if (data){
           this.accounts = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.accounts = [];
@@ -68,6 +68,7 @@ export class AccountListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.accountService.refreshData$.subscribe(() => {
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber -= 1 : 0;
       this.changePage(0);
     });
     // tslint:disable-next-line: deprecation

@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Notification } from 'src/app/models/notification';
 import { Pagination } from 'src/app/models/pagination';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -38,8 +38,8 @@ export class NotificationListComponent implements OnInit {
         if (data){
           this.notifications = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.notifications = [];
@@ -54,6 +54,7 @@ export class NotificationListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.notificationService.refreshData$.subscribe(() => {
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber -= 1 : 0;
       this.changePage(0);
     });
   }

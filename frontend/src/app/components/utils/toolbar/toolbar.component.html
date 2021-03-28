@@ -1,21 +1,21 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
     <span>
         <button
-        matTooltip="Register New Sluzbenik"
+        matTooltip="New Sluzbenik"
         *ngIf="onRoute('user-list')"
         mat-button
         (click)="createUser()">
             New Sluzbenik
         </button>
         <button
-        matTooltip="Open New Account"
+        matTooltip="New Account"
         *ngIf="onRoute('account-list')"
         mat-button
         (click)="createAccount()">
             New Account
         </button>
         <button
-        matTooltip="Open New Bill"
+        matTooltip="New Saving Bill"
         *ngIf="onRoute('my-account')"
         mat-button
         [routerLink]="'bill-form'">
@@ -23,7 +23,7 @@
         </button>
         
         <button
-        matTooltip="Accounts list"
+        matTooltip="Accounts"
         *ngIf="onRoute('account-form') || onRoute('base-report')"
         mat-button
         [routerLink]="'account-list'">
@@ -31,7 +31,7 @@
         </button>
         <button
         matTooltip="My account"
-        *ngIf="onRoute('bill')"
+        *ngIf="onRoute('bill') || onRoute('notification-list')"
         mat-button
         [routerLink]="'my-account'">
             Account
@@ -51,6 +51,7 @@
         [routerLink]="'bill-list/foreign'">
             Foreign bills
         </button>
+
         <button
         matTooltip="Notifications"
         *ngIf="onRoute('my-account')"
@@ -60,7 +61,6 @@
         </button>
     </span>
     <span class="main">
-        <span *ngIf="!onRoute('form')" class="user">{{user}}</span>
         <form *ngIf="onRoute('list')" (ngSubmit)="announceSearchData()">
             <input
             *ngIf="!onRoute('bill-list')"

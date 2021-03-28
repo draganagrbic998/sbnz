@@ -25,7 +25,8 @@ export class AccountService {
   report$: Observable<number> = this.report.asObservable();
 
   findAll(page: number, search: string): Observable<HttpResponse<Account[]>>{
-    const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
+    const params = new HttpParams().set('page', page + '')
+    .set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<Account[]>(environment.accountsApi, {observe: 'response', params}).pipe(
       catchError(() => of(null))
     );

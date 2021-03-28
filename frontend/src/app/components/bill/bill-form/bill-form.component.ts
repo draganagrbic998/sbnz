@@ -22,8 +22,8 @@ export class BillFormComponent implements OnInit {
 
   billForm: FormGroup = new FormGroup({
     type: new FormControl('', [Validators.required]),
-    months: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
-    base: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
+    months: new FormControl('', [Validators.required]),
+    base: new FormControl('', [Validators.required]),
   });
 
   request: BillRequest;

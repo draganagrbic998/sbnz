@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Pagination } from 'src/app/models/pagination';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
-import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
+import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/delete-confirmation.component';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
@@ -22,6 +22,7 @@ export class UserListComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
+  columns: string[] = ['role', 'email', 'firstName', 'lastName', 'actions'];
   users: MatTableDataSource<User> = new MatTableDataSource([]);
   fetchPending = true;
   pagination: Pagination = {
@@ -30,7 +31,6 @@ export class UserListComponent implements OnInit {
     pageNumber: 0
   };
   search = '';
-  columns: string[] = ['role', 'email', 'firstName', 'lastName', 'actions'];
 
   edit(user: User): void{
     const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: user}};
@@ -66,8 +66,8 @@ export class UserListComponent implements OnInit {
         if (data){
           this.users = new MatTableDataSource(data.body);
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.users = new MatTableDataSource([]);
@@ -82,6 +82,7 @@ export class UserListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.userService.refreshData$.subscribe(() => {
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber -= 1 : 0;
       this.changePage(0);
     });
     // tslint:disable-next-line: deprecation

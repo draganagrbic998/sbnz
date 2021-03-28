@@ -9,7 +9,7 @@ export class RuleResponseComponent implements OnInit {
 
   constructor() { }
 
-  @Input() small;
+  @Input() small: boolean;
 
   ngOnInit(): void {
   }

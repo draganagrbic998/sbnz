@@ -6,7 +6,7 @@ import { Bill } from 'src/app/models/bill';
 import { BillService } from 'src/app/services/bill/bill.service';
 import { DrawerService } from 'src/app/services/drawer/drawer.service';
 import { RenewalDialogComponent } from '../../renewal/renewal-dialog/renewal-dialog.component';
-import { CloseConfirmationComponent } from '../../shared/controls/close-confirmation/close-confirmation.component';
+import { CloseConfirmationComponent } from '../close-confirmation/close-confirmation.component';
 import { TransactionDialogComponent } from '../../transaction/transaction-dialog/transaction-dialog.component';
 
 @Component({

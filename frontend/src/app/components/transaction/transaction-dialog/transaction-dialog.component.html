@@ -5,20 +5,21 @@
     </div>
 
     <div class="content">
-        <form (ngSubmit)="confirm()">
+        <div>
             <input
+            appOnlyNumbers
             maxlength="10"
             [formControl]="amount"
             [classList]="'form-control'"
             matInput 
             autocomplete="off"
             placeholder="Enter increase amount">    
-        </form>
-        <br>
-        <app-rule-response *ngIf="response?.valid==false" [small]="true">
-            <app-bold-text>Error: </app-bold-text>{{response.message}}
-        </app-rule-response>
-        <br>
+            <br>
+            <app-rule-response *ngIf="response?.valid==false" [small]="true">
+                <app-bold-text>Error: </app-bold-text>{{response.message}}
+            </app-rule-response>
+            <br>    
+        </div>
         <app-spacer-container>
             <span>
                 <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>

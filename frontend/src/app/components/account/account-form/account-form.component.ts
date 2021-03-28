@@ -28,8 +28,7 @@ export class AccountFormComponent implements OnInit {
   accountForm: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     lastName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    jmbg: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S')),
-    Validators.pattern(/^[0-9]\d*$/), Validators.minLength(13), Validators.maxLength(13)]),
+    jmbg: new FormControl('', [Validators.required, Validators.minLength(13)]),
     birthDate: new FormControl('', [Validators.required, this.birthDateValidator()]),
     address: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     city: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),

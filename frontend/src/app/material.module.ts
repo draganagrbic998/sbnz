@@ -19,29 +19,27 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-const modules = [
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatButtonModule,
-  MatTableModule,
-  MatToolbarModule,
-  MatTabsModule,
-  MatMenuModule,
-  MatIconModule,
-  MatTooltipModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatDialogModule,
-  MatCardModule,
-  MatSidenavModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSnackBarModule
-];
 
 @NgModule({
-    imports: modules,
-    exports: modules
+    exports: [
+      MatFormFieldModule,
+      MatInputModule,
+      MatSelectModule,
+      MatButtonModule,
+      MatTableModule,
+      MatToolbarModule,
+      MatTabsModule,
+      MatMenuModule,
+      MatIconModule,
+      MatTooltipModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatDialogModule,
+      MatCardModule,
+      MatSidenavModule,
+      MatPaginatorModule,
+      MatProgressSpinnerModule,
+      MatSnackBarModule
+    ]
 })
 export class MaterialModule{ }

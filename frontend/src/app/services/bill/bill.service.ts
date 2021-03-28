@@ -33,14 +33,14 @@ export class BillService {
     );
   }
 
-  delete(id: number): Observable<RuleResponse>{
-    return this.http.delete<null>(`${environment.billsApi}/${id}`).pipe(
+  create(response: BillRequest): Observable<BillResponse>{
+    return this.http.post<Bill>(environment.billsApi, response).pipe(
       catchError(() => of(null))
     );
   }
 
-  create(response: BillRequest): Observable<BillResponse>{
-    return this.http.post<Bill>(environment.billsApi, response).pipe(
+  delete(id: number): Observable<RuleResponse>{
+    return this.http.delete<null>(`${environment.billsApi}/${id}`).pipe(
       catchError(() => of(null))
     );
   }

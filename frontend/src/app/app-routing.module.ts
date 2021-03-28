@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { AccountFormComponent } from './components/account/account-form/account-form.component';
 import { AccountListComponent } from './components/account/account-list/account-list.component';
 import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { BaseReportComponent } from './components/bill/base-report/base-report.component';
+import { BaseReportComponent } from './components/utils/base-report/base-report.component';
 import { BillFormComponent } from './components/bill/bill-form/bill-form.component';
 import { BillListComponent } from './components/bill/bill-list/bill-list.component';
 import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
@@ -17,6 +17,12 @@ const routes: Routes = [
   {
     path: environment.loginRoute,
     component: LoginFormComponent
+  },
+  {
+    path: environment.userListRoute,
+    component: UserListComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [ADMIN]}
   },
   {
     path: environment.accountListRoute,
@@ -49,22 +55,16 @@ const routes: Routes = [
     data: {roles: [KLIJENT]}
   },
   {
-    path: environment.baseReport,
-    component: BaseReportComponent,
-    canActivate: [AuthGuard],
-    data: {roles: [SLUZBENIK]}
-  },
-  {
-    path: environment.userListRoute,
-    component: UserListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: [ADMIN]}
-  },
-  {
     path: environment.notificationList,
     component: NotificationListComponent,
     canActivate: [AuthGuard],
     data: {roles: [KLIJENT]}
+  },
+  {
+    path: environment.baseReport,
+    component: BaseReportComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [SLUZBENIK]}
   },
   {
     path: '**',

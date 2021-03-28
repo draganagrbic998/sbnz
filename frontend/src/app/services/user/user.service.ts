@@ -24,7 +24,8 @@ export class UserService {
   searchData$: Observable<string> = this.searchData.asObservable();
 
   findAll(page: number, search: string): Observable<HttpResponse<User[]>>{
-    const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
+    const params = new HttpParams().set('page', page + '')
+    .set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<User[]>(environment.usersApi, {observe: 'response', params}).pipe(
       catchError(() => of(null))
     );

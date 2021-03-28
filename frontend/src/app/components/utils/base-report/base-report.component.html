@@ -1,6 +1,7 @@
 <app-preloader *ngIf="fetchPending"></app-preloader>
 
-<app-empty-container *ngIf="!fetchPending && !report" [title]="'ERROR LOADING REPORT'"></app-empty-container>
+<app-empty-container *ngIf="!fetchPending && !report" 
+[title]="'ERROR LOADING REPORT'"></app-empty-container>
 
 <div class="root" *ngIf="!fetchPending">
     <table class="table table-bordered mat-elevation-z24">

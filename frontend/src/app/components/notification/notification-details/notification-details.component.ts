@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
 import { Notification } from 'src/app/models/notification';
 import { NotificationService } from 'src/app/services/notification/notification.service';
-import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
+import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-notification-details',
