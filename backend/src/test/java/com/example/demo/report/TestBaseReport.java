@@ -93,11 +93,11 @@ public class TestBaseReport {
 		assertNotNull(this.response.getRsd());
 		assertEquals(2, this.response.getRsd().getActiveCnt());
 		assertEquals(3, this.response.getRsd().getClosedCnt());
-		assertEquals(1 / 3, this.response.getRsd().getAbortedShare());
-		assertEquals(this.trueBaseSum / 5, this.response.getRsd().getBaseAvg());
-		assertEquals(this.trueMonthsSum / 5, this.response.getRsd().getMonthsAvg());
-		assertEquals(10500, this.response.getRsd().getIncreaseAvg());
-		assertEquals(6.5, this.response.getRsd().getRenewAvg());
+		assertEquals(Double.valueOf(1 / 3), Double.valueOf(this.response.getRsd().getAbortedShare()));
+		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getRsd().getBaseAvg()));
+		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getRsd().getMonthsAvg()));
+		assertEquals(Double.valueOf(10500), Double.valueOf(this.response.getRsd().getIncreaseAvg()));
+		assertEquals(Double.valueOf(6.5), Double.valueOf(this.response.getRsd().getRenewAvg()));
 	}
 
 	@Test
@@ -129,11 +129,11 @@ public class TestBaseReport {
 		assertNotNull(this.response.getEur());
 		assertEquals(2, this.response.getEur().getActiveCnt());
 		assertEquals(3, this.response.getEur().getClosedCnt());
-		assertEquals(2 / 3, this.response.getEur().getAbortedShare());
-		assertEquals(this.trueBaseSum / 5, this.response.getEur().getBaseAvg());
-		assertEquals(this.trueMonthsSum / 5, this.response.getEur().getMonthsAvg());
-		assertEquals(105, this.response.getEur().getIncreaseAvg());
-		assertEquals(7.5, this.response.getEur().getRenewAvg());
+		assertEquals(Double.valueOf(2 / 3), Double.valueOf(this.response.getEur().getAbortedShare()));
+		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getEur().getBaseAvg()));
+		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getEur().getMonthsAvg()));
+		assertEquals(Double.valueOf(105), Double.valueOf(this.response.getEur().getIncreaseAvg()));
+		assertEquals(Double.valueOf(7.5), Double.valueOf(this.response.getEur().getRenewAvg()));
 	}
 
 	@Test
@@ -165,11 +165,11 @@ public class TestBaseReport {
 		assertNotNull(this.response.getUsd());
 		assertEquals(2, this.response.getUsd().getActiveCnt());
 		assertEquals(3, this.response.getUsd().getClosedCnt());
-		assertEquals(1, this.response.getUsd().getAbortedShare());
-		assertEquals(this.trueBaseSum / 5, this.response.getUsd().getBaseAvg());
-		assertEquals(this.trueMonthsSum / 5, this.response.getUsd().getMonthsAvg());
-		assertEquals(115, this.response.getUsd().getIncreaseAvg());
-		assertEquals(8.5, this.response.getUsd().getRenewAvg());
+		assertEquals(Double.valueOf(1), Double.valueOf(this.response.getUsd().getAbortedShare()));
+		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getUsd().getBaseAvg()));
+		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getUsd().getMonthsAvg()));
+		assertEquals(Double.valueOf(115), Double.valueOf(this.response.getUsd().getIncreaseAvg()));
+		assertEquals(Double.valueOf(8.5), Double.valueOf(this.response.getUsd().getRenewAvg()));
 	}
 
 	@Test
@@ -201,11 +201,11 @@ public class TestBaseReport {
 		assertNotNull(this.response.getChf());
 		assertEquals(2, this.response.getChf().getActiveCnt());
 		assertEquals(3, this.response.getChf().getClosedCnt());
-		assertEquals(0, this.response.getChf().getAbortedShare());
-		assertEquals(this.trueBaseSum / 5, this.response.getChf().getBaseAvg());
-		assertEquals(this.trueMonthsSum / 5, this.response.getChf().getMonthsAvg());
-		assertEquals(125, this.response.getChf().getIncreaseAvg());
-		assertEquals(9.5, this.response.getChf().getRenewAvg());
+		assertEquals(Double.valueOf(0), Double.valueOf(this.response.getChf().getAbortedShare()));
+		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getChf().getBaseAvg()));
+		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getChf().getMonthsAvg()));
+		assertEquals(Double.valueOf(125), Double.valueOf(this.response.getChf().getIncreaseAvg()));
+		assertEquals(Double.valueOf(9.5), Double.valueOf(this.response.getChf().getRenewAvg()));
 	}
 
 	@Test
@@ -238,10 +238,10 @@ public class TestBaseReport {
 		assertNotNull(this.response.getGbp());
 		assertEquals(1, this.response.getGbp().getActiveCnt());
 		assertEquals(4, this.response.getGbp().getClosedCnt());
-		assertEquals(1 / 4, this.response.getGbp().getAbortedShare());
-		assertEquals(this.trueBaseSum / 5, this.response.getGbp().getBaseAvg());
-		assertEquals(this.trueMonthsSum / 5, this.response.getGbp().getMonthsAvg());
-		assertEquals(135, this.response.getGbp().getIncreaseAvg());
-		assertEquals(10.5, this.response.getGbp().getRenewAvg());
+		assertEquals(Double.valueOf(1 / 4), Double.valueOf(this.response.getGbp().getAbortedShare()));
+		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getGbp().getBaseAvg()));
+		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getGbp().getMonthsAvg()));
+		assertEquals(Double.valueOf(135), Double.valueOf(this.response.getGbp().getIncreaseAvg()));
+		assertEquals(Double.valueOf(10.5), Double.valueOf(this.response.getGbp().getRenewAvg()));
 	}
 }
