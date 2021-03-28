@@ -3,6 +3,8 @@ package com.example.demo.increase;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,12 +15,12 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-import com.example.demo.rules.IncreaseResponse;
 import com.example.demo.ObjectFactory;
+import com.example.demo.rules.IncreaseResponse;
 import com.example.demo.model.Account;
 import com.example.demo.model.Bill;
-import com.example.demo.model.BillStatus;
 import com.example.demo.model.BillType;
+import com.example.demo.model.Transaction;
 import com.example.demo.utils.Constants;
 
 public class TestValidation {
@@ -30,36 +32,28 @@ public class TestValidation {
 	private Bill bill;
 	private IncreaseResponse response;
 	private double amount;
-
+	
 	@BeforeClass
 	public static void beforeClass() {
 		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(
-				kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
+		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
 		kieSession = kieContainer.newKieSession(Constants.INCREASE_RULES);
 	}
-
+	
 	@AfterClass
 	public static void afterClass() {
 		kieSession.dispose();
 		kieSession.destroy();
 	}
-
+	
 	@Before
 	public void before() {
-		for (FactHandle fh : kieSession.getFactHandles()) {
+		for (FactHandle fh: kieSession.getFactHandles()) {
 			kieSession.delete(fh);
 		}
-
-		this.amount = 100000;
+		
 		this.account = new Account();
 		this.bill = new Bill();
-		this.bill.setType(BillType.RSD);
-		this.bill.setBase(500000);
-		this.bill.setBalance(500000);
-		this.bill.setStartDate(LocalDate.now().minusMonths(21));
-		this.bill.setEndDate(LocalDate.now().plusMonths(21));
-
 		this.response = new IncreaseResponse();
 		this.account.getBills().add(this.bill);
 		this.bill.setAccount(this.account);
@@ -71,285 +65,350 @@ public class TestValidation {
 		kieSession.insert(this.response);
 		kieSession.getAgenda().getAgendaGroup(Constants.INCREASE_RULES).setFocus();
 		kieSession.fireAllRules();
-
+		
 		assertFalse(this.response.isValid());
 		assertEquals(this.response.getMessage(), message);
 		assertNull(this.response.getBaseUpdate());
 		assertNull(this.response.getInterestUpdate());
 	}
-
+	
+	/*
 	@Test
 	public void testRule1() {
-		this.bill.setStartDate(LocalDate.of(2021, 3, 1));
-		this.bill.setEndDate(LocalDate.of(2023, 1, 1));
-		this.runAndAssert("You can't deposit on a bill with less than 5% of period passed.");
-	}
-
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now());
+		this.bill.setEndDate(LocalDate.now().plusMonths(1));
+		this.runAndAssert("You can't increase bill with passed time less than 5%.");
+	}*/
+	
 	@Test
 	public void testRule2() {
-		this.bill.setStartDate(LocalDate.of(2018, 1, 1));
-		this.bill.setEndDate(LocalDate.of(2021, 5, 1));
-		this.runAndAssert("You can't deposit on a bill with more than 95% of period passed.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(1));
+		this.bill.setEndDate(LocalDate.now());
+		this.runAndAssert("You can't increase bill with passed time more than 95%.");
 	}
-
+	
 	@Test
 	public void testRule3() {
-		this.amount = 1000;
-		this.bill.setBalance(100000);
-		this.runAndAssert("You can't deposit less than 10% of the bill balance.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(1));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1));
+		this.bill.setBalance(10);
+		this.runAndAssert("You can't increase by less than 10% of bill balance.");
 	}
-
+	
 	@Test
 	public void testRule4() {
-		this.amount = 70000;
-		this.bill.setBalance(100000);
-		this.runAndAssert("You can't deposit more than 50% of the bill balance.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(1));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1));
+		this.bill.setBalance(10);
+		this.amount = 6;
+		this.runAndAssert("You can't increase by more than 50% of bill balance.");
 	}
 
 	@Test
 	public void testRule5() {
-		this.bill.setStartDate(LocalDate.of(2021, 3, 1));
-		this.bill.setEndDate(LocalDate.of(2021, 7, 1));
-		this.runAndAssert("You can't deposit on a RSD bill with duration shorter than 6 months.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).minusDays(1));
+		this.runAndAssert("You can't increase RSD bill with duration less than 6 months.");
 	}
-
+	
 	@Test
 	public void testRule6() {
-		this.bill.setBase(70000);
-		this.runAndAssert("You can't deposit on a RSD bill with base lower than 75.000 RSD.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(74999);
+		this.runAndAssert("You can't increase RSD bill with base less than 75.000 RSD.");
 	}
-
+	
 	@Test
 	public void testRule7() {
-		for (int i = 0; i < 5; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(1));
-
-		this.runAndAssert("You can't deposit on a RSD bill on which you made a deposit more than 4 times.");
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.runAndAssert("You can't increase RSD bill that has already been increased at least 5 times.");
 	}
-
+	
 	@Test
 	public void testRule8() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setStartDate(LocalDate.of(2021, 3, 1));
-		this.bill.setEndDate(LocalDate.of(2021, 6, 1));
-		this.runAndAssert("You can't deposit on a foreign bill with duration shorter than 4 months.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).minusDays(1));
+		this.runAndAssert("You can't increase foreign bill with duration less than 4 months.");
 	}
-
+	
 	@Test
 	public void testRule9() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBase(700);
-		this.runAndAssert("You can't deposit on a foreign bill with base lower than 750 units.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(749);
+		this.runAndAssert("You can't increase foreign bill with base less than 750 currency units.");
 	}
-
+	
 	@Test
 	public void testRule10() {
 		this.bill.setType(BillType.EUR);
-
-		for (int i = 0; i < 3; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(1));
-
-		this.runAndAssert("You can't deposit on a foreign bill on which you made a deposit more than 2 times.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.bill.getTransactions().add(new Transaction());
+		this.runAndAssert("You can't increase foreign bill that has already been increased at least 3 times.");
 	}
-
+	
 	@Test
-	public void testRule11Pt1() {
-		this.amount = 90000;
-		this.bill.setBalance(200000);
+	public void testRule11pt1() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
 		this.bill.setBase(200001);
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
+		this.bill.setBalance(100);
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
 	}
-
+	
 	@Test
-	public void testRule11Pt2() {
+	public void testRule11pt2() {
 		this.bill.setType(BillType.EUR);
-		this.amount = 900;
-		this.bill.setBalance(2000);
-		this.bill.setBase(20001);
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(2001);
+		this.bill.setBalance(100);
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
 	}
 
 	@Test
-	public void testRule12Pt1() {
-		this.amount = 90000;
-		this.bill.setBalance(200000);
-		this.bill.setBase(199999);
-
-		for (int i = 0; i < 4; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.RSD));
-
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
+	public void testRule11pt3() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
 	}
-
+	
 	@Test
-	public void testRule12Pt2() {
-		this.amount = 90000;
-		this.bill.setBalance(200000);
-		this.bill.setBase(199999);
-
-		for (int i = 0; i < 4; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(30000));
-
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
-	}
-
-	@Test
-	public void testRule13Pt1() {
-		this.amount = 900;
+	public void testRule11pt4() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(2000);
-		this.bill.setBase(1999);
-
-		for (int i = 0; i < 3; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR));
-
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
 	}
-
+	
 	@Test
-	public void testRule13Pt2() {
-		this.amount = 900;
+	public void testRule11pt5() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(38000));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
+	}
+	
+	@Test
+	public void testRule11pt6() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(2000);
-		this.bill.setBase(1999);
-
-		for (int i = 0; i < 2; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(280));
-
-		this.runAndAssert("You can't deposit more than 40% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(230));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.4 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 40% of balance.");
 	}
-
+	
 	@Test
-	public void testRule14Pt1() {
-		this.amount = 60000;
-		this.bill.setBalance(150000);
+	public void testRule12pt1() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
 		this.bill.setBase(150001);
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
+		this.bill.setBalance(100);
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
 	}
-
+	
 	@Test
-	public void testRule14Pt2() {
+	public void testRule12pt2() {
 		this.bill.setType(BillType.EUR);
-		this.amount = 600;
-		this.bill.setBalance(1500);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
 		this.bill.setBase(1501);
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
+		this.bill.setBalance(100);
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
 	}
-
+	
 	@Test
-	public void testRule15Pt1() {
-		this.amount = 60000;
-		this.bill.setBalance(150000);
-		this.bill.setBase(149999);
-
-		for (int i = 0; i < 5; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.RSD));
-
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
+	public void testRule12pt3() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
 	}
-
+	
 	@Test
-	public void testRule15Pt2() {
-		this.amount = 60000;
-		this.bill.setBalance(150000);
-		this.bill.setBase(149999);
-
-		for (int i = 0; i < 3; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(27000));
-
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
-	}
-
-	@Test
-	public void testRule16Pt1() {
-		this.amount = 600;
+	public void testRule12pt4() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(1500);
-		this.bill.setBase(1499);
-
-		for (int i = 0; i < 4; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR));
-
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
 	}
-
+	
 	@Test
-	public void testRule16Pt2() {
-		this.amount = 600;
+	public void testRule12pt5() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(46000));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
+	}
+	
+	@Test
+	public void testRule12pt6() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(1500);
-		this.bill.setBase(1499);
-
-		for (int i = 0; i < 2; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(260));
-
-		this.runAndAssert("You can't deposit more than 35% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(310));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.35 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 35% of balance.");
 	}
 
 	@Test
-	public void testRule17Pt1() {
-		this.amount = 35000;
-		this.bill.setBalance(100000);
+	public void testRule13pt1() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
 		this.bill.setBase(100001);
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
+		this.bill.setBalance(100);
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
 	}
-
+	
 	@Test
-	public void testRule17Pt2() {
+	public void testRule13pt2() {
 		this.bill.setType(BillType.EUR);
-		this.amount = 350;
-		this.bill.setBalance(1000);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
 		this.bill.setBase(1001);
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
+		this.bill.setBalance(100);
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
 	}
-
+	
 	@Test
-	public void testRule18Pt1() {
-		this.amount = 35000;
-		this.bill.setBalance(100000);
-		this.bill.setBase(99999);
-
-		for (int i = 0; i < 6; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.RSD));
-
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
+	public void testRule13pt3() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
 	}
-
+	
 	@Test
-	public void testRule18Pt2() {
-		this.amount = 35000;
-		this.bill.setBalance(100000);
-		this.bill.setBase(99999);
-
-		for (int i = 0; i < 2; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(26000));
-
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
-	}
-
-	@Test
-	public void testRule19Pt1() {
-		this.amount = 350;
+	public void testRule13pt4() {
 		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(1000);
-		this.bill.setBase(999);
-
-		for (int i = 0; i < 5; i++)
-			this.account.getBills().add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR));
-
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
 	}
-
+	
 	@Test
-	public void testRule19Pt2() {
-		this.amount = 350;
-		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(1000);
-		this.bill.setBase(999);
-
-		for (int i = 0; i < 2; i++)
-			this.bill.getTransactions().add(ObjectFactory.getTransaction(220));
-
-		this.runAndAssert("You can't deposit more than 30% of current bill balance.");
+	public void testRule13pt5() {
+		this.bill.setType(BillType.RSD);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
+		this.bill.setBase(75001);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(53000));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
 	}
+	
+	@Test
+	public void testRule13pt6() {
+		this.bill.setType(BillType.EUR);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
+		this.bill.setBase(751);
+		this.bill.setBalance(100);
+		Set<Transaction> transactions = new HashSet<>();
+		transactions.add(ObjectFactory.getTransaction(380));
+		this.bill.setTransactions(transactions);
+		this.amount = 0.3 * 100 + 1;
+		this.runAndAssert("You can't increase by more than 30% of balance.");
+	}
+
 }

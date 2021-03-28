@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.utils.Constants;
+import com.example.demo.utils.Email;
 
 @Service
 public class EmailService {

@@ -18,7 +18,7 @@ rule "First report"
         $accounts: List()
 
         accumulate(
-        	Account($account: this, years() >= 5, $bills: bills) from $accounts 
+        	Account($account: this, passedYears() >= 5, $bills: bills) from $accounts 
         	and Number(intValue > 10) from accumulate(
         		Bill($bill: this, passedMonths() <= 18) from $bills,
         		count($bill)

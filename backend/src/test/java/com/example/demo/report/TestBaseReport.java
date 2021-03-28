@@ -245,3 +245,4 @@ public class TestBaseReport {
 		assertEquals(Double.valueOf(10.5), Double.valueOf(this.response.getGbp().getRenewAvg()));
 	}
 }
+

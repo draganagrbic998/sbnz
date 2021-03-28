@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.core.ClassObjectFilter;
-import org.drools.core.common.EventFactHandle;
 import org.drools.core.time.SessionPseudoClock;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;

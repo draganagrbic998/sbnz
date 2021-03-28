@@ -28,7 +28,7 @@ public class TestEKS {
 	private Account account;
 	private Bill bill;
 	private IncreaseResponse response;
-	private int amount;
+	private double amount;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -49,19 +49,13 @@ public class TestEKS {
 			kieSession.delete(fh);
 		}
 		
-		this.amount = 100000;
 		this.account = new Account();
-		
 		this.bill = new Bill();
-		this.bill.setType(BillType.RSD);
-		this.bill.setBase(500000);
-		this.bill.setBalance(500000);
-		this.bill.setStartDate(LocalDate.now().minusMonths(21));
-		this.bill.setEndDate(LocalDate.now().plusMonths(21));
-		
 		this.response = new IncreaseResponse();
 		this.account.getBills().add(this.bill);
 		this.bill.setAccount(this.account);
+		this.bill.setStartDate(LocalDate.now().minusMonths(3));
+		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
 	}
 
 	public void runAndAssert(double interestUpdate) {
@@ -76,241 +70,229 @@ public class TestEKS {
 		assertNotNull(this.response.getBaseUpdate());
 		assertEquals(this.response.getInterestUpdate(), Double.valueOf(interestUpdate));
 	}
-	
-	@Test
-	public void testRule1Pt1() {
-		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(100001);
-		this.bill.setBase(99999);
-		this.bill.setInterest(1);
-		this.amount = 40000;
-		this.runAndAssert(0.03 * 1);
-	}
 
 	@Test
-	public void testRule1Pt2() {
+	public void testRule1pt1() {
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(330001);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
+		this.bill.setInterest(1);
+		this.amount = 0.35 * 75001 + 1;
+		this.runAndAssert(0.03 * 1);
+	}
+	
+	@Test
+	public void testRule1pt2() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setBase(330001);
-		this.bill.setInterest(1);
-		this.amount = 35000;
-		this.runAndAssert(0.03 * 1);
-	}
-	
-	@Test
-	public void testRule1Pt3() {
-		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(3301);
-		this.bill.setBase(3301);
-		this.bill.setInterest(1);
-		this.amount = 350;
-		this.runAndAssert(0.03 * 1);
-	}
-	
-	@Test
-	public void testRule2Pt1() {
-		this.account.setBalance(60000);
-
 		this.bill.setBalance(330001);
-		this.bill.setBase(329999);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(35000, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(35000, 8));
-		this.amount = 35000;
+		this.amount = 0.2 * 330001;
 		this.runAndAssert(0.03 * 1);
 	}
-	
-	@Test
-	public void testRule2Pt2() {
-		this.account.setBalance(80000);
 
+	@Test
+	public void testRule1pt3() {
 		this.bill.setType(BillType.EUR);
+		this.bill.setBase(3301);
 		this.bill.setBalance(3301);
-		this.bill.setBase(3299);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(350, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(350, 8));
-		this.amount = 350;
+		this.amount = 0.2 * 3301;
 		this.runAndAssert(0.03 * 1);
 	}
 	
 	@Test
-	public void testRule3Pt1() {
+	public void testRule2pt1() {
+		this.account.setBalance(100);
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(100001);
-		this.bill.setBase(99999);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
 		this.bill.setInterest(1);
-		this.amount = 33000;
-		this.runAndAssert(0.025 * 1);
+		this.amount = 0.2 * 75001;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.5 * 100 + 1));
+		this.runAndAssert(0.03 * 1);
 	}
 
 	@Test
-	public void testRule3Pt2() {
+	public void testRule2pt2() {
+		this.account.setBalance(100);
+		this.bill.setType(BillType.EUR);
+		this.bill.setBase(751);
+		this.bill.setBalance(751);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 751;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.45 * 100 + 1));
+		this.runAndAssert(0.03 * 1);
+	}
+
+	@Test
+	public void testRule3pt1() {
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(270001);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
+		this.bill.setInterest(1);
+		this.amount = 0.3 * 75001 + 1;
+		this.runAndAssert(0.025 * 1);
+	}
+	
+	@Test
+	public void testRule3pt2() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setBase(270001);
-		this.bill.setInterest(1);
-		this.amount = 30000;
-		this.runAndAssert(0.025 * 1);
-	}
-	
-	@Test
-	public void testRule3Pt3() {
-		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(2701);
-		this.bill.setBase(2701);
-		this.bill.setInterest(1);
-		this.amount = 300;
-		this.runAndAssert(0.025 * 1);
-	}
-	
-	@Test
-	public void testRule4Pt1() {
-		this.account.setBalance(60000);
-
 		this.bill.setBalance(270001);
-		this.bill.setBase(269999);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(30000, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(30000, 8));
-		this.amount = 30000;
+		this.amount = 0.2 * 270001;
 		this.runAndAssert(0.025 * 1);
 	}
-	
-	@Test
-	public void testRule4Pt2() {
-		this.account.setBalance(80000);
 
+	@Test
+	public void testRule3pt3() {
 		this.bill.setType(BillType.EUR);
+		this.bill.setBase(2701);
 		this.bill.setBalance(2701);
-		this.bill.setBase(2699);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(300, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(300, 8));
-		this.amount = 300;
+		this.amount = 0.2 * 2701;
 		this.runAndAssert(0.025 * 1);
 	}
-	
+
 	@Test
-	public void testRule5Pt1() {
+	public void testRule4pt1() {
+		this.account.setBalance(100);
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(100001);
-		this.bill.setBase(99999);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
 		this.bill.setInterest(1);
-		this.amount = 27000;
-		this.runAndAssert(0.02 * 1);
+		this.amount = 0.2 * 75001;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.45 * 100 + 1));
+		this.runAndAssert(0.025 * 1);
 	}
 
 	@Test
-	public void testRule5Pt2() {
+	public void testRule4pt2() {
+		this.account.setBalance(100);
+		this.bill.setType(BillType.EUR);
+		this.bill.setBase(751);
+		this.bill.setBalance(751);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 751;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.4 * 100 + 1));
+		this.runAndAssert(0.025 * 1);
+	}
+
+	@Test
+	public void testRule5pt1() {
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(220001);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
+		this.bill.setInterest(1);
+		this.amount = 0.25 * 75001 + 1;
+		this.runAndAssert(0.02 * 1);
+	}
+	
+	@Test
+	public void testRule5pt2() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setBase(220001);
-		this.bill.setInterest(1);
-		this.amount = 24000;
-		this.runAndAssert(0.02 * 1);
-	}
-	
-	@Test
-	public void testRule5Pt3() {
-		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(2201);
-		this.bill.setBase(2201);
-		this.bill.setInterest(1);
-		this.amount = 240;
-		this.runAndAssert(0.02 * 1);
-	}
-	
-	@Test
-	public void testRule6Pt1() {
-		this.account.setBalance(55000);
-
 		this.bill.setBalance(220001);
-		this.bill.setBase(219999);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(24000, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(24000, 8));
-		this.amount = 24000;
+		this.amount = 0.2 * 220001;
 		this.runAndAssert(0.02 * 1);
 	}
-	
-	@Test
-	public void testRule6Pt2() {
-		this.account.setBalance(75000);
 
+	@Test
+	public void testRule5pt3() {
 		this.bill.setType(BillType.EUR);
+		this.bill.setBase(2201);
 		this.bill.setBalance(2201);
-		this.bill.setBase(2199);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(240, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(240, 8));
-		this.amount = 240;
+		this.amount = 0.2 * 2201;
 		this.runAndAssert(0.02 * 1);
 	}
 	
 	@Test
-	public void testRule7Pt1() {
+	public void testRule6pt1() {
+		this.account.setBalance(100);
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(100001);
-		this.bill.setBase(99999);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
 		this.bill.setInterest(1);
-		this.amount = 22000;
-		this.runAndAssert(0.015 * 1);
+		this.amount = 0.2 * 75001;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.4 * 100 + 1));
+		this.runAndAssert(0.02 * 1);
 	}
 
 	@Test
-	public void testRule7Pt2() {
+	public void testRule6pt2() {
+		this.account.setBalance(100);
+		this.bill.setType(BillType.EUR);
+		this.bill.setBase(751);
+		this.bill.setBalance(751);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 751;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.35 * 100 + 1));
+		this.runAndAssert(0.02 * 1);
+	}
+	
+	@Test
+	public void testRule7pt1() {
 		this.bill.setType(BillType.RSD);
-		this.bill.setBalance(180001);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 75001 + 1;
+		this.runAndAssert(0.015 * 1);
+	}
+	
+	@Test
+	public void testRule7pt2() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setBase(180001);
-		this.bill.setInterest(1);
-		this.amount = 20000;
-		this.runAndAssert(0.015 * 1);
-	}
-	
-	@Test
-	public void testRule7Pt3() {
-		this.bill.setType(BillType.EUR);
-		this.bill.setBalance(1801);
-		this.bill.setBase(1801);
-		this.bill.setInterest(1);
-		this.amount = 200;
-		this.runAndAssert(0.015 * 1);
-	}
-	
-	@Test
-	public void testRule8Pt1() {
-		this.account.setBalance(55000);
-
 		this.bill.setBalance(180001);
-		this.bill.setBase(179999);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(20000, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(20000, 8));
-		this.amount = 20000;
+		this.amount = 0.2 * 180001;
 		this.runAndAssert(0.015 * 1);
 	}
-	
-	@Test
-	public void testRule8Pt2() {
-		this.account.setBalance(70000);
 
+	@Test
+	public void testRule7pt3() {
 		this.bill.setType(BillType.EUR);
+		this.bill.setBase(1801);
 		this.bill.setBalance(1801);
-		this.bill.setBase(1799);
 		this.bill.setInterest(1);
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(200, 8));
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(200, 8));
-		this.amount = 200;
+		this.amount = 0.2 * 1801;
+		this.runAndAssert(0.015 * 1);
+	}
+
+	@Test
+	public void testRule8pt1() {
+		this.account.setBalance(100);
+		this.bill.setType(BillType.RSD);
+		this.bill.setBase(75001);
+		this.bill.setBalance(75001);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 75001;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.35 * 100 + 1));
+		this.runAndAssert(0.015 * 1);
+	}
+
+	@Test
+	public void testRule8pt2() {
+		this.account.setBalance(100);
+		this.bill.setType(BillType.EUR);
+		this.bill.setBase(751);
+		this.bill.setBalance(751);
+		this.bill.setInterest(1);
+		this.amount = 0.2 * 751;
+		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.3 * 100 + 1));
 		this.runAndAssert(0.015 * 1);
 	}
 	
 	@Test
 	public void testRule9() {
-		this.bill.setBalance(180001);
-		this.bill.setBase(179999);
+		this.bill.setType(BillType.RSD);
+		this.bill.setBase(75001);
 		this.bill.setInterest(1);
-		this.amount = 20000;
 		this.runAndAssert(0.01 * 1);
 	}
+
 }

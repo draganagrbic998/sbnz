@@ -72,14 +72,14 @@ public class Account {
 		this.date = LocalDate.now();
 	}
 
-	public long years() {
-		return Math.abs(ChronoUnit.YEARS.between(this.date, LocalDate.now()));
-	}
-	
 	public boolean underage() {
 		return Math.abs(ChronoUnit.YEARS.between(this.birthDate, LocalDate.now())) < 18;
 	}
 
+	public long passedYears() {
+		return Math.abs(ChronoUnit.YEARS.between(this.date, LocalDate.now()));
+	}
+	
 	public Long getId() {
 		return id;
 	}

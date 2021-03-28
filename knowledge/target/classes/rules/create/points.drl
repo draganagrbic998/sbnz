@@ -31,7 +31,7 @@ rule "5 points"
 			$avg2: average($base) 
 		)
 		eval(
-			Utils.isAtLeast($account.years(), 5) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($account.passedYears(), 5) + Utils.isAtLeast($cnt1.intValue(), 2) + 
 			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($avg1.doubleValue(), 100000) + 
 			Utils.isAtLeast($avg2.doubleValue(), 1000) >= 2
 		);
@@ -63,7 +63,7 @@ rule "4 points"
 			$sum2: sum($base) 
 		)
 		eval(
-			Utils.isAtLeast($account.years(), 4) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($account.passedYears(), 4) + Utils.isAtLeast($cnt1.intValue(), 2) + 
 			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($sum1.doubleValue(), 300000) + 
 			Utils.isAtLeast($sum2.doubleValue(), 3000) >= 2
 		);
@@ -110,7 +110,7 @@ rule "3 points"
 			$cnt4: count($bill)
 		)
 		eval(
-			Utils.isAtLeast($account.years(), 3) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($account.passedYears(), 3) + Utils.isAtLeast($cnt1.intValue(), 2) + 
 			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($cnt3.intValue(), 2) + 
 			Utils.isAtLeast($cnt4.intValue(), 1) >= 2
 		);
@@ -159,7 +159,7 @@ rule "2 points"
 			$avg2: average($avg)
 		)
 		eval(
-			Utils.isAtLeast($account.years(), 2) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($account.passedYears(), 2) + Utils.isAtLeast($cnt1.intValue(), 2) + 
 			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($avg1.doubleValue(), 50000) + 
 			Utils.isAtLeast($avg2.doubleValue(), 500) >= 2
 		);
@@ -208,7 +208,7 @@ rule "1 point"
 			$sum2: sum($sum)
 		)
 		eval(
-			Utils.isAtLeast($account.years(), 1) + Utils.isAtLeast($cnt1.intValue(), 2) + 
+			Utils.isAtLeast($account.passedYears(), 1) + Utils.isAtLeast($cnt1.intValue(), 2) + 
 			Utils.isAtLeast($cnt2.intValue(), 1) + Utils.isAtLeast($sum1.doubleValue(), 80000) + 
 			Utils.isAtLeast($sum2.doubleValue(), 800) >= 2
 		);

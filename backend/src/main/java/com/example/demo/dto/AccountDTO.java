@@ -15,6 +15,10 @@ public class AccountDTO {
 	private double balance;
 	private int billsCount;
 
+	@Email
+	@NotBlank
+	private String email;
+
 	@NotBlank
 	private String firstName;
 	
@@ -35,11 +39,7 @@ public class AccountDTO {
 	
 	@NotBlank
 	private String zipCode;
-	
-	@Email
-	@NotBlank
-	private String email;
-			
+				
 	public AccountDTO() {
 		super();
 	}
@@ -50,6 +50,7 @@ public class AccountDTO {
 		this.date = account.getDate();
 		this.balance = account.getBalance();
 		this.billsCount = account.getBills().size();
+		this.email = account.getUser().getEmail();
 		this.firstName = account.getUser().getFirstName();
 		this.lastName = account.getUser().getLastName();
 		this.jmbg = account.getJmbg();
@@ -57,7 +58,6 @@ public class AccountDTO {
 		this.address = account.getAddress();
 		this.city = account.getCity();
 		this.zipCode = account.getZipCode();
-		this.email = account.getUser().getEmail();
 	}
 
 	public Long getId() {
@@ -76,10 +76,6 @@ public class AccountDTO {
 		this.date = date;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
 	public double getBalance() {
 		return balance;
 	}
@@ -94,6 +90,14 @@ public class AccountDTO {
 
 	public void setBillsCount(int billsCount) {
 		this.billsCount = billsCount;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getFirstName() {
@@ -124,6 +128,10 @@ public class AccountDTO {
 		return birthDate;
 	}
 
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
 	public String getAddress() {
 		return address;
 	}
@@ -146,14 +154,6 @@ public class AccountDTO {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	
 }

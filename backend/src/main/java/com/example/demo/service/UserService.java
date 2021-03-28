@@ -19,6 +19,7 @@ import com.example.demo.dto.ProfileDTO;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.TokenUtils;
+import com.example.demo.utils.Email;
 
 @Service
 @Transactional(readOnly = true)
@@ -66,6 +67,11 @@ public class UserService implements UserDetailsService {
 	public void delete(long id) {
 		this.userRepository.deleteById(id);
 	}
+	
+	public ProfileDTO login(LoginDTO loginDTO) {
+		User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
+		return new ProfileDTO(user, this.tokenUtils.generateToken(loginDTO.getEmail()));
+	}
 
 	@Transactional(readOnly = false)
 	public void activate(String code) {
@@ -73,7 +79,7 @@ public class UserService implements UserDetailsService {
 		user.setEnabled(true);
 		this.userRepository.save(user);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void changePassword(PasswordChangeDTO passwordChangeDTO) {
 		User user = (User) this.authManager.
@@ -83,11 +89,6 @@ public class UserService implements UserDetailsService {
 		this.save(user);
 	}
 	
-	public ProfileDTO login(LoginDTO loginDTO) {
-		User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
-		return new ProfileDTO(user, this.tokenUtils.generateToken(loginDTO.getEmail()));
-	}
-
 	public User currentUser() {
 		try {
 			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

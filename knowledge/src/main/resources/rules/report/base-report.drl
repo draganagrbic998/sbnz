@@ -1,5 +1,4 @@
 package rules
-import com.example.demo.model.Account
 import com.example.demo.model.Bill
 import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
@@ -11,202 +10,227 @@ import com.example.demo.rules.ReportUnit
 import java.util.List
 
 
-rule "General report - RSD bills"
+rule "RSD statistic"
 	agenda-group "base-report"
+
     when
-    
         $bills: List()
-   		$response: ReportResponse(rsd == null)
-       	accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
-        	$active: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), !status.equals(BillStatus.ACTIVE)) from $bills,
-        	$closed: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,
-        	$aborted: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), $base: base, $months: months(), $renewals: renewals, $transactions: transactions) from $bills
-        	and accumulate(
-        		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
-        		$increaseAvgTemp: average($amount)
-        	)
-        	and accumulate(
-        		Renewal($amount: amount) from $renewals,
-        		$renewAvgTemp: average($amount)
-        	),
-        	$increaseAvg: average($increaseAvgTemp),
-        	$renewAvg: average($renewAvgTemp),
-        	$baseAvg: average($base),
-        	$monthsAvg: average($months)
-        )
+    	$response: ReportResponse(rsd == null)
+    	    	
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+			$activeCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.RSD), !status.equals(BillStatus.ACTIVE)) from $bills,
+	    	$closedCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ABORTED)) from $bills,
+	    	$abortedCnt: count($bill)
+	    )
+
+	    accumulate(
+	    	Bill(type.equals(BillType.RSD), $base: base, $months: months(), $transactions: transactions, $renewals: renewals) from $bills
+	    	and accumulate(
+	    		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+	    		$avg1: average($amount)
+	    	) 
+	    	and accumulate(
+	    		Renewal($amount: amount) from $renewals,
+	    		$avg2: average($amount)
+	    	),
+	    	$baseAvg: average($base),
+	    	$monthsAvg: average($months),
+	    	$increaseAvg: average($avg1),
+	    	$renewAvg: average($avg2)
+	    )
+
     then
-    	
-        modify($response){setRsd(new ReportUnit($active, $closed, $aborted,
-        						 				$baseAvg, $monthsAvg, $increaseAvg, $renewAvg));}
-        
+        modify($response){setRsd(new ReportUnit(
+        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
+        	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
+        ));}
+
 end
 
-rule "General report - EUR bills"
+rule "EUR statistic"
 	agenda-group "base-report"
+
     when
-    
         $bills: List()
-   		$response: ReportResponse(rsd != null, eur == null)
-       	accumulate(
-        	Bill($bill: this, type.equals(BillType.EUR), status.equals(BillStatus.ACTIVE)) from $bills,
-        	$active: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.EUR), !status.equals(BillStatus.ACTIVE)) from $bills,
-        	$closed: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.EUR), status.equals(BillStatus.ABORTED)) from $bills,
-        	$aborted: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.EUR), $base: base, $months: months(), $renewals: renewals, $transactions: transactions) from $bills
-        	and accumulate(
-        		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
-        		$increaseAvgTemp: average($amount)
-        	)
-        	and accumulate(
-        		Renewal($amount: amount) from $renewals,
-        		$renewAvgTemp: average($amount)
-        	),
-        	$increaseAvg: average($increaseAvgTemp),
-        	$renewAvg: average($renewAvgTemp),
-        	$baseAvg: average($base),
-        	$monthsAvg: average($months)
-        )
-    then
+    	$response: ReportResponse(rsd != null, eur == null)
+
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.EUR), status.equals(BillStatus.ACTIVE)) from $bills,
+			$activeCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.EUR), !status.equals(BillStatus.ACTIVE)) from $bills,
+	    	$closedCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.EUR), status.equals(BillStatus.ABORTED)) from $bills,
+	    	$abortedCnt: count($bill)
+	    )
     	
-        modify($response){setEur(new ReportUnit($active, $closed, $aborted,
-        						 				$baseAvg, $monthsAvg, $increaseAvg, $renewAvg));}
-        
+		accumulate(
+	    	Bill(type.equals(BillType.EUR), $base: base, $months: months(), $transactions: transactions, $renewals: renewals) from $bills
+	    	and accumulate(
+	    		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+	    		$avg1: average($amount)
+	    	) 
+	    	and accumulate(
+	    		Renewal($amount: amount) from $renewals,
+	    		$avg2: average($amount)
+	    	),
+	    	$baseAvg: average($base),
+	    	$monthsAvg: average($months),
+	    	$increaseAvg: average($avg1),
+	    	$renewAvg: average($avg2)
+	    )
+	    
+	then
+        modify($response){setEur(new ReportUnit(
+        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
+        	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
+        ));}
+
 end
 
-rule "General report - USD bills"
+rule "USD statistic"
 	agenda-group "base-report"
+
     when
-    
         $bills: List()
-   		$response: ReportResponse(eur != null, usd == null)
-       	accumulate(
-        	Bill($bill: this, type.equals(BillType.USD), status.equals(BillStatus.ACTIVE)) from $bills,
-        	$active: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.USD), !status.equals(BillStatus.ACTIVE)) from $bills,
-        	$closed: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.USD), status.equals(BillStatus.ABORTED)) from $bills,
-        	$aborted: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.USD), $base: base, $months: months(), $renewals: renewals, $transactions: transactions) from $bills
-        	and accumulate(
-        		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
-        		$increaseAvgTemp: average($amount)
-        	)
-        	and accumulate(
-        		Renewal($amount: amount) from $renewals,
-        		$renewAvgTemp: average($amount)
-        	),
-        	$increaseAvg: average($increaseAvgTemp),
-        	$renewAvg: average($renewAvgTemp),
-        	$baseAvg: average($base),
-        	$monthsAvg: average($months)
-        )
-    then
+    	$response: ReportResponse(rsd != null, eur != null, usd == null)
     	
-        modify($response){setUsd(new ReportUnit($active, $closed, $aborted,
-        						 				$baseAvg, $monthsAvg, $increaseAvg, $renewAvg));}
-        
+		accumulate(
+	    	Bill($bill: this, type.equals(BillType.USD), status.equals(BillStatus.ACTIVE)) from $bills,
+			$activeCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.USD), !status.equals(BillStatus.ACTIVE)) from $bills,
+	    	$closedCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.USD), status.equals(BillStatus.ABORTED)) from $bills,
+	    	$abortedCnt: count($bill)
+	    )
+
+		accumulate(
+	    	Bill(type.equals(BillType.USD), $base: base, $months: months(), $transactions: transactions, $renewals: renewals) from $bills
+	    	and accumulate(
+	    		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+	    		$avg1: average($amount)
+	    	) 
+	    	and accumulate(
+	    		Renewal($amount: amount) from $renewals,
+	    		$avg2: average($amount)
+	    	),
+	    	$baseAvg: average($base),
+	    	$monthsAvg: average($months),
+	    	$increaseAvg: average($avg1),
+	    	$renewAvg: average($avg2)
+	    )
+
+	then
+        modify($response){setUsd(new ReportUnit(
+        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
+        	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
+        ));}
+
 end
 
-rule "General report - CHF bills"
+rule "CHF statistic"
 	agenda-group "base-report"
+
     when
-    
         $bills: List()
-   		$response: ReportResponse(usd != null, chf == null)
-       	accumulate(
-        	Bill($bill: this, type.equals(BillType.CHF), status.equals(BillStatus.ACTIVE)) from $bills,
-        	$active: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.CHF), !status.equals(BillStatus.ACTIVE)) from $bills,
-        	$closed: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.CHF), status.equals(BillStatus.ABORTED)) from $bills,
-        	$aborted: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.CHF), $base: base, $months: months(), $renewals: renewals, $transactions: transactions) from $bills
-        	and accumulate(
-        		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
-        		$increaseAvgTemp: average($amount)
-        	)
-        	and accumulate(
-        		Renewal($amount: amount) from $renewals,
-        		$renewAvgTemp: average($amount)
-        	),
-        	$increaseAvg: average($increaseAvgTemp),
-        	$renewAvg: average($renewAvgTemp),
-        	$baseAvg: average($base),
-        	$monthsAvg: average($months)
-        )
-    then
+    	$response: ReportResponse(rsd != null, eur != null, usd != null, chf == null)
     	
-        modify($response){setChf(new ReportUnit($active, $closed, $aborted,
-        						 				$baseAvg, $monthsAvg, $increaseAvg, $renewAvg));}
-        
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.CHF), status.equals(BillStatus.ACTIVE)) from $bills,
+			$activeCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.CHF), !status.equals(BillStatus.ACTIVE)) from $bills,
+	    	$closedCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.CHF), status.equals(BillStatus.ABORTED)) from $bills,
+	    	$abortedCnt: count($bill)
+	    )
+
+		accumulate(
+	    	Bill(type.equals(BillType.CHF), $base: base, $months: months(), $transactions: transactions, $renewals: renewals) from $bills
+	    	and accumulate(
+	    		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+	    		$avg1: average($amount)
+	    	) 
+	    	and accumulate(
+	    		Renewal($amount: amount) from $renewals,
+	    		$avg2: average($amount)
+	    	),
+	    	$baseAvg: average($base),
+	    	$monthsAvg: average($months),
+	    	$increaseAvg: average($avg1),
+	    	$renewAvg: average($avg2)
+	    )
+	    
+    then
+        modify($response){setChf(new ReportUnit(
+        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
+        	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
+        ));}
+
 end
 
-rule "General report - GBP bills"
+rule "GBP statistic"
 	agenda-group "base-report"
+
     when
-    
         $bills: List()
-   		$response: ReportResponse(chf != null, gbp == null)
-       	accumulate(
-        	Bill($bill: this, type.equals(BillType.GBP), status.equals(BillStatus.ACTIVE)) from $bills,
-        	$active: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.GBP), !status.equals(BillStatus.ACTIVE)) from $bills,
-        	$closed: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.GBP), status.equals(BillStatus.ABORTED)) from $bills,
-        	$aborted: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, type.equals(BillType.GBP), $base: base, $months: months(), $renewals: renewals, $transactions: transactions) from $bills
-        	and accumulate(
-        		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
-        		$increaseAvgTemp: average($amount)
-        	)
-        	and accumulate(
-        		Renewal($amount: amount) from $renewals,
-        		$renewAvgTemp: average($amount)
-        	),
-        	$increaseAvg: average($increaseAvgTemp),
-        	$renewAvg: average($renewAvgTemp),
-        	$baseAvg: average($base),
-        	$monthsAvg: average($months)
-        )
-    then
+    	$response: ReportResponse(rsd != null, eur != null, usd != null, chf != null, gbp == null)
     	
-        modify($response){setGbp(new ReportUnit($active, $closed, $aborted,
-        						 				$baseAvg, $monthsAvg, $increaseAvg, $renewAvg));}
-        
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.GBP), status.equals(BillStatus.ACTIVE)) from $bills,
+			$activeCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.GBP), !status.equals(BillStatus.ACTIVE)) from $bills,
+	    	$closedCnt: count($bill)
+	    )
+	    accumulate(
+	    	Bill($bill: this, type.equals(BillType.GBP), status.equals(BillStatus.ABORTED)) from $bills,
+	    	$abortedCnt: count($bill)
+	    )
+
+		accumulate(
+	    	Bill(type.equals(BillType.GBP), $base: base, $months: months(), $transactions: transactions, $renewals: renewals) from $bills
+	    	and accumulate(
+	    		Transaction(type.equals(TransactionType.INCREASE), $amount: amount) from $transactions,
+	    		$avg1: average($amount)
+	    	) 
+	    	and accumulate(
+	    		Renewal($amount: amount) from $renewals,
+	    		$avg2: average($amount)
+	    	),
+	    	$baseAvg: average($base),
+	    	$monthsAvg: average($months),
+	    	$increaseAvg: average($avg1),
+	    	$renewAvg: average($avg2)
+	    )		
+    	
+    then
+        modify($response){setGbp(new ReportUnit(
+        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
+        	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
+        ));}
+
 end
