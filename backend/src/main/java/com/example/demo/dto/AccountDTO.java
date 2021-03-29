@@ -25,12 +25,12 @@ public class AccountDTO {
 	@NotBlank
 	private String lastName;
 	
-	@NotBlank
-	private String jmbg;
-	
 	@NotNull
 	private LocalDate birthDate;
-	
+
+	@NotBlank
+	private String jmbg;
+		
 	@NotBlank
 	private String address;
 	
@@ -53,8 +53,8 @@ public class AccountDTO {
 		this.email = account.getUser().getEmail();
 		this.firstName = account.getUser().getFirstName();
 		this.lastName = account.getUser().getLastName();
-		this.jmbg = account.getJmbg();
 		this.birthDate = account.getBirthDate();
+		this.jmbg = account.getJmbg();
 		this.address = account.getAddress();
 		this.city = account.getCity();
 		this.zipCode = account.getZipCode();

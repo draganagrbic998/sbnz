@@ -7,6 +7,7 @@ import com.example.demo.rules.CloseResponse
 
 rule "Passed time less than 20%"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(passedTime() < 0.2)
@@ -18,6 +19,7 @@ end
 
 rule "Passed time more than 80%"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(passedTime() > 0.8)
@@ -29,6 +31,7 @@ end
 
 rule "RSD bill - base less than 20.000 RSD"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(type.equals(BillType.RSD), base < 20000)
@@ -40,6 +43,7 @@ end
 
 rule "The only active RSD bill"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(type.equals(BillType.RSD), $bills: account.bills)
@@ -55,6 +59,7 @@ end
 
 rule "6 more closed RSD bills"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(type.equals(BillType.RSD), $bills: account.bills)
@@ -70,6 +75,7 @@ end
 
 rule "Foreign bill - base less than 200 units"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(!type.equals(BillType.RSD), base < 200)
@@ -81,6 +87,7 @@ end
 
 rule "The only active foreign bill"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(!type.equals(BillType.RSD), $bills: account.bills)
@@ -96,6 +103,7 @@ end
 
 rule "4 more closed foreign bills"
 	agenda-group "close-rules"
+	salience 10
 
     when
         Bill(!type.equals(BillType.RSD), $bills: account.bills)
@@ -111,6 +119,7 @@ end
 
 rule "Valid params"
 	agenda-group "close-rules"
+	salience 1
 
 	when
         $response: CloseResponse(!valid, message == null)

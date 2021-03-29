@@ -1,248 +1,117 @@
 package com.example.demo.report;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.ObjectFactory;
+import com.example.demo.rules.ReportResponse;
 import com.example.demo.model.Bill;
 import com.example.demo.model.BillStatus;
 import com.example.demo.model.BillType;
 import com.example.demo.model.Renewal;
 import com.example.demo.model.Transaction;
-import com.example.demo.model.TransactionType;
-import com.example.demo.rules.ReportResponse;
 import com.example.demo.utils.Constants;
 
 public class TestBaseReport {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
-
-	private List<Bill> bills = new ArrayList<>();
+	private KieSession kieSession;
+	private List<Bill> bills;
 	private ReportResponse response;
-
-	private double trueBaseSum;
-	private int trueMonthsSum;
-
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(
-				kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.REPORT_RULES);
-	}
-
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-
+		
 	@Before
 	public void before() {
-		for (FactHandle fh : kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}
-		this.bills.clear();
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.REPORT_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
 
+		this.bills = new ArrayList<>();
 		this.response = new ReportResponse();
+	}
 
-		this.trueBaseSum = 0;
-		this.trueMonthsSum = 0;
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
 	}
 
 	@Test
-	public void testReportRule1() {
-		for (int i = 0; i < 5; i++) {
-			HashSet<Transaction> transactions = new HashSet<>();
-			HashSet<Renewal> renewals = new HashSet<>();
+	public void test() {
+		Set<Transaction> transactions = Set.of(ObjectFactory.getTransaction(100), ObjectFactory.getTransaction(200));
+		Set<Renewal> renewals = Set.of(ObjectFactory.getRenewal(10), ObjectFactory.getRenewal(15));
+		
+		this.bills.addAll(List.of(
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.RSD, 100, 10, transactions, renewals), 
+			ObjectFactory.getBill(BillStatus.CLOSED, BillType.RSD, 200, 15, transactions, renewals), 
+			
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR, 150, 12, transactions, renewals), 
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR, 300, 18, transactions, renewals), 
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR, 100, 10, transactions, renewals), 
+			
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.USD, 500, 15, transactions, renewals), 
+			
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.CHF, 200, 10, transactions, renewals), 
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.CHF, 400, 6, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.CLOSED, BillType.CHF, 300, 3, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.CHF, 100, 9, transactions, renewals),
+			
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.GBP, 100, 3, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.ACTIVE, BillType.GBP, 120, 5, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.CLOSED, BillType.GBP, 150, 6, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.GBP, 180, 2, transactions, renewals),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.GBP, 200, 10, transactions, renewals)
+		));
+				
+		this.kieSession.insert(this.bills);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 10000));
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 11000));
-			renewals.add(ObjectFactory.getRenewal(6));
-			renewals.add(ObjectFactory.getRenewal(7));
-			this.bills.add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.RSD, 100000 + i * 1000, 18 - i,
-					transactions, renewals));
+		assertEquals(this.response.getRsd().getActiveCnt(), 1);
+		assertEquals(this.response.getRsd().getClosedCnt(), 1);
+		assertEquals(Double.valueOf(this.response.getRsd().getBaseAvg()), Double.valueOf((100 + 200) / 2.0));
+		assertEquals(Double.valueOf(this.response.getRsd().getMonthsAvg()), Double.valueOf((10 + 15) / 2.0));
+		assertEquals(Double.valueOf(this.response.getRsd().getIncreaseAvg()), Double.valueOf((100 * 2 + 200 * 2) / 4.0));
+		assertEquals(Double.valueOf(this.response.getRsd().getRenewAvg()), Double.valueOf((10 * 2 + 15 * 2) / 4.0));
+		
+		assertEquals(this.response.getEur().getActiveCnt(), 2);
+		assertEquals(this.response.getEur().getClosedCnt(), 1);
+		assertEquals(Double.valueOf(this.response.getEur().getBaseAvg()), Double.valueOf((150 + 300 + 100) / 3.0));
+		assertEquals(Double.valueOf(this.response.getEur().getMonthsAvg()), Double.valueOf((12 + 18 + 10) / 3.0));
+		assertEquals(Double.valueOf(this.response.getEur().getIncreaseAvg()), Double.valueOf((100 * 3 + 200 * 3) / 6.0));
+		assertEquals(Double.valueOf(this.response.getEur().getRenewAvg()), Double.valueOf((10 * 3 + 15 * 3) / 6.0));
 
-			this.trueBaseSum += this.bills.get(this.bills.size() - 1).getBase();
-			this.trueMonthsSum += this.bills.get(this.bills.size() - 1).months();
-		}
+		assertEquals(this.response.getUsd().getActiveCnt(), 1);
+		assertEquals(this.response.getUsd().getClosedCnt(), 0);
+		assertEquals(Double.valueOf(this.response.getUsd().getBaseAvg()), Double.valueOf(500));
+		assertEquals(Double.valueOf(this.response.getUsd().getMonthsAvg()), Double.valueOf(15));
+		assertEquals(Double.valueOf(this.response.getUsd().getIncreaseAvg()), Double.valueOf((100 + 200) / 2.0));
+		assertEquals(Double.valueOf(this.response.getUsd().getRenewAvg()), Double.valueOf((10 + 15) / 2.0));
 
-		this.bills.get(2).setStatus(BillStatus.CLOSED);
-		this.bills.get(3).setStatus(BillStatus.CLOSED);
-		this.bills.get(4).setStatus(BillStatus.ABORTED);
+		assertEquals(this.response.getChf().getActiveCnt(), 2);
+		assertEquals(this.response.getChf().getClosedCnt(), 2);
+		assertEquals(Double.valueOf(this.response.getChf().getBaseAvg()), Double.valueOf((400 + 200 + 300 + 100) / 4.0));
+		assertEquals(Double.valueOf(this.response.getChf().getMonthsAvg()), Double.valueOf((10 + 6 + 3 + 9) / 4.0));
+		assertEquals(Double.valueOf(this.response.getChf().getIncreaseAvg()), Double.valueOf((100 * 4 + 200 * 4) / 8.0));
+		assertEquals(Double.valueOf(this.response.getChf().getRenewAvg()), Double.valueOf((10 * 4 + 15 * 4) / 8.0));
 
-		kieSession.insert(this.bills);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
-		kieSession.fireAllRules();
+		assertEquals(this.response.getGbp().getActiveCnt(), 2);
+		assertEquals(this.response.getGbp().getClosedCnt(), 3);
+		assertEquals(Double.valueOf(this.response.getGbp().getBaseAvg()), Double.valueOf((100 + 120 + 150 + 180 + 200) / 5.0));
+		assertEquals(Double.valueOf(this.response.getGbp().getMonthsAvg()), Double.valueOf((3 + 5 + 6 + 2 + 10) / 5.0));
+		assertEquals(Double.valueOf(this.response.getGbp().getIncreaseAvg()), Double.valueOf((100 * 5 + 200 * 5) / 10.0));
+		assertEquals(Double.valueOf(this.response.getGbp().getRenewAvg()), Double.valueOf((10 * 5 + 15 * 5) / 10.0));
 
-		assertNotNull(this.response.getRsd());
-		assertEquals(2, this.response.getRsd().getActiveCnt());
-		assertEquals(3, this.response.getRsd().getClosedCnt());
-		assertEquals(Double.valueOf(1 / 3), Double.valueOf(this.response.getRsd().getAbortedShare()));
-		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getRsd().getBaseAvg()));
-		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getRsd().getMonthsAvg()));
-		assertEquals(Double.valueOf(10500), Double.valueOf(this.response.getRsd().getIncreaseAvg()));
-		assertEquals(Double.valueOf(6.5), Double.valueOf(this.response.getRsd().getRenewAvg()));
 	}
 
-	@Test
-	public void testReportRule2() {
-		for (int i = 0; i < 5; i++) {
-			HashSet<Transaction> transactions = new HashSet<>();
-			HashSet<Renewal> renewals = new HashSet<>();
-
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 100));
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 110));
-			renewals.add(ObjectFactory.getRenewal(7));
-			renewals.add(ObjectFactory.getRenewal(8));
-			this.bills.add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.EUR, 1000 + i * 10, 17 - i, transactions,
-					renewals));
-
-			this.trueBaseSum += this.bills.get(this.bills.size() - 1).getBase();
-			this.trueMonthsSum += this.bills.get(this.bills.size() - 1).months();
-		}
-
-		this.bills.get(2).setStatus(BillStatus.CLOSED);
-		this.bills.get(3).setStatus(BillStatus.ABORTED);
-		this.bills.get(4).setStatus(BillStatus.ABORTED);
-
-		kieSession.insert(this.bills);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
-		kieSession.fireAllRules();
-
-		assertNotNull(this.response.getEur());
-		assertEquals(2, this.response.getEur().getActiveCnt());
-		assertEquals(3, this.response.getEur().getClosedCnt());
-		assertEquals(Double.valueOf(2 / 3), Double.valueOf(this.response.getEur().getAbortedShare()));
-		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getEur().getBaseAvg()));
-		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getEur().getMonthsAvg()));
-		assertEquals(Double.valueOf(105), Double.valueOf(this.response.getEur().getIncreaseAvg()));
-		assertEquals(Double.valueOf(7.5), Double.valueOf(this.response.getEur().getRenewAvg()));
-	}
-
-	@Test
-	public void testReportRule3() {
-		for (int i = 0; i < 5; i++) {
-			HashSet<Transaction> transactions = new HashSet<>();
-			HashSet<Renewal> renewals = new HashSet<>();
-
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 110));
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 120));
-			renewals.add(ObjectFactory.getRenewal(8));
-			renewals.add(ObjectFactory.getRenewal(9));
-			this.bills.add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.USD, 1010 + i * 10, 19 - i, transactions,
-					renewals));
-
-			this.trueBaseSum += this.bills.get(this.bills.size() - 1).getBase();
-			this.trueMonthsSum += this.bills.get(this.bills.size() - 1).months();
-		}
-
-		this.bills.get(2).setStatus(BillStatus.ABORTED);
-		this.bills.get(3).setStatus(BillStatus.ABORTED);
-		this.bills.get(4).setStatus(BillStatus.ABORTED);
-
-		kieSession.insert(this.bills);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
-		kieSession.fireAllRules();
-
-		assertNotNull(this.response.getUsd());
-		assertEquals(2, this.response.getUsd().getActiveCnt());
-		assertEquals(3, this.response.getUsd().getClosedCnt());
-		assertEquals(Double.valueOf(1), Double.valueOf(this.response.getUsd().getAbortedShare()));
-		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getUsd().getBaseAvg()));
-		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getUsd().getMonthsAvg()));
-		assertEquals(Double.valueOf(115), Double.valueOf(this.response.getUsd().getIncreaseAvg()));
-		assertEquals(Double.valueOf(8.5), Double.valueOf(this.response.getUsd().getRenewAvg()));
-	}
-
-	@Test
-	public void testReportRule4() {
-		for (int i = 0; i < 5; i++) {
-			HashSet<Transaction> transactions = new HashSet<>();
-			HashSet<Renewal> renewals = new HashSet<>();
-
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 130));
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 120));
-			renewals.add(ObjectFactory.getRenewal(10));
-			renewals.add(ObjectFactory.getRenewal(9));
-			this.bills.add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.CHF, 1010 + i * 20, 17 - i, transactions,
-					renewals));
-
-			this.trueBaseSum += this.bills.get(this.bills.size() - 1).getBase();
-			this.trueMonthsSum += this.bills.get(this.bills.size() - 1).months();
-		}
-
-		this.bills.get(2).setStatus(BillStatus.CLOSED);
-		this.bills.get(3).setStatus(BillStatus.CLOSED);
-		this.bills.get(4).setStatus(BillStatus.CLOSED);
-
-		kieSession.insert(this.bills);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
-		kieSession.fireAllRules();
-
-		assertNotNull(this.response.getChf());
-		assertEquals(2, this.response.getChf().getActiveCnt());
-		assertEquals(3, this.response.getChf().getClosedCnt());
-		assertEquals(Double.valueOf(0), Double.valueOf(this.response.getChf().getAbortedShare()));
-		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getChf().getBaseAvg()));
-		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getChf().getMonthsAvg()));
-		assertEquals(Double.valueOf(125), Double.valueOf(this.response.getChf().getIncreaseAvg()));
-		assertEquals(Double.valueOf(9.5), Double.valueOf(this.response.getChf().getRenewAvg()));
-	}
-
-	@Test
-	public void testReportRule5() {
-		for (int i = 0; i < 5; i++) {
-			HashSet<Transaction> transactions = new HashSet<>();
-			HashSet<Renewal> renewals = new HashSet<>();
-
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 140));
-			transactions.add(ObjectFactory.getTransaction(TransactionType.INCREASE, 130));
-			renewals.add(ObjectFactory.getRenewal(11));
-			renewals.add(ObjectFactory.getRenewal(10));
-			this.bills.add(ObjectFactory.getBill(BillStatus.ACTIVE, BillType.GBP, 1020 + i * 20, 19 - i, transactions,
-					renewals));
-
-			this.trueBaseSum += this.bills.get(this.bills.size() - 1).getBase();
-			this.trueMonthsSum += this.bills.get(this.bills.size() - 1).months();
-		}
-
-		this.bills.get(1).setStatus(BillStatus.ABORTED);
-		this.bills.get(2).setStatus(BillStatus.CLOSED);
-		this.bills.get(3).setStatus(BillStatus.CLOSED);
-		this.bills.get(4).setStatus(BillStatus.CLOSED);
-
-		kieSession.insert(this.bills);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
-		kieSession.fireAllRules();
-
-		assertNotNull(this.response.getGbp());
-		assertEquals(1, this.response.getGbp().getActiveCnt());
-		assertEquals(4, this.response.getGbp().getClosedCnt());
-		assertEquals(Double.valueOf(1 / 4), Double.valueOf(this.response.getGbp().getAbortedShare()));
-		assertEquals(Double.valueOf(this.trueBaseSum / 5), Double.valueOf(this.response.getGbp().getBaseAvg()));
-		assertEquals(Double.valueOf(this.trueMonthsSum / 5), Double.valueOf(this.response.getGbp().getMonthsAvg()));
-		assertEquals(Double.valueOf(135), Double.valueOf(this.response.getGbp().getIncreaseAvg()));
-		assertEquals(Double.valueOf(10.5), Double.valueOf(this.response.getGbp().getRenewAvg()));
-	}
 }
-

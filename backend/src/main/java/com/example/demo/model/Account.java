@@ -64,9 +64,6 @@ public class Account {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REMOVE)
 	private Set<Bill> bills = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "account", cascade = CascadeType.REMOVE)
-	private Set<Notification> notifications = new HashSet<>();
-
 	public Account() {
 		super();
 		this.date = LocalDate.now();
@@ -160,12 +157,4 @@ public class Account {
 		this.bills = bills;
 	}
 
-	public Set<Notification> getNotifications() {
-		return notifications;
-	}
-
-	public void setNotifications(Set<Notification> notifications) {
-		this.notifications = notifications;
-	}
-	
 }

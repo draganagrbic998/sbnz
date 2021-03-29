@@ -2,12 +2,12 @@ package rules
 import com.example.demo.model.Bill
 import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
-import com.example.demo.model.TransactionType
 import com.example.demo.rules.IncreaseResponse
 
 
 rule "3% decrease pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
 		$amount: Double()
@@ -24,29 +24,37 @@ end
 
 rule "3% decrease pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
-        Bill($main: account.balance, $bills: account.bills, $interest: interest)
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
         $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 0.5 * $main) from accumulate(
 			Bill(passedMonths() <= 12, type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+        modify($response){setInterestUpdate(0.03 * $interest);}
+end
+
+rule "3% decrease pt3"
+	agenda-group "increase-rules"
+	salience 10
+
+    when
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
+        $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
+		Number(doubleValue > 0.45 * $main) from accumulate(
 			Bill(passedMonths() <= 11, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 0.5 * $main || 
-			$avg2.doubleValue() > 0.45 * $main
+			average($avg)
 		)
     then
         modify($response){setInterestUpdate(0.03 * $interest);}
@@ -54,6 +62,7 @@ end
 
 rule "2.5% decrease pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
 		$amount: Double()
@@ -70,29 +79,37 @@ end
 
 rule "2.5% decrease pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
-        Bill($main: account.balance, $bills: account.bills, $interest: interest)
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
         $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 0.45 * $main) from accumulate(
 			Bill(passedMonths() <= 11, type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+        modify($response){setInterestUpdate(0.025 * $interest);}
+end
+
+rule "2.5% decrease pt3"
+	agenda-group "increase-rules"
+	salience 10
+
+    when
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
+        $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
+		Number(doubleValue > 0.4 * $main) from accumulate(
 			Bill(passedMonths() <= 10, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 0.45 * $main || 
-			$avg2.doubleValue() > 0.4 * $main
+			average($avg)
 		)
     then
         modify($response){setInterestUpdate(0.025 * $interest);}
@@ -100,6 +117,7 @@ end
 
 rule "2% decrease pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
 		$amount: Double()
@@ -116,29 +134,37 @@ end
 
 rule "2% decrease pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
-        Bill($main: account.balance, $bills: account.bills, $interest: interest)
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
         $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 0.4 * $main) from accumulate(
 			Bill(passedMonths() <= 10, type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+        modify($response){setInterestUpdate(0.02 * $interest);}
+end
+
+rule "2% decrease pt3"
+	agenda-group "increase-rules"
+	salience 10
+
+    when
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
+        $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
+		Number(doubleValue > 0.35 * $main) from accumulate(
 			Bill(passedMonths() <= 9, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 0.4 * $main || 
-			$avg2.doubleValue() > 0.35 * $main
+			average($avg)
 		)
     then
         modify($response){setInterestUpdate(0.02 * $interest);}
@@ -146,6 +172,7 @@ end
 
 rule "1.5% decrease pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
 		$amount: Double()
@@ -162,29 +189,37 @@ end
 
 rule "1.5% decrease pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
-        Bill($main: account.balance, $bills: account.bills, $interest: interest)
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
         $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 0.35 * $main) from accumulate(
 			Bill(passedMonths() <= 9, type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+        modify($response){setInterestUpdate(0.015 * $interest);}
+end
+
+rule "1.5% decrease pt3"
+	agenda-group "increase-rules"
+	salience 10
+
+    when
+        Bill($main: account.balance, $interest: interest, $bills: account.bills)
+        $response: IncreaseResponse(valid, baseUpdate != null, interestUpdate == null)
+		Number(doubleValue > 0.3 * $main) from accumulate(
 			Bill(passedMonths() <= 8, !type.equals(BillType.RSD), $transactions: transactions) from $bills and
 			accumulate(
-         		Transaction(type.equals(TransactionType.INCREASE), $temp: amount) from $transactions,
+         		Transaction($temp: amount) from $transactions,
          		$avg: average($temp)
          	),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 0.35 * $main || 
-			$avg2.doubleValue() > 0.3 * $main
+			average($avg)
 		)
     then
         modify($response){setInterestUpdate(0.015 * $interest);}
@@ -192,6 +227,7 @@ end
 
 rule "1% decrease"
 	agenda-group "increase-rules"
+	salience 1
 
     when
 		Bill($interest: interest)

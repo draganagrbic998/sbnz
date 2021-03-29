@@ -3,15 +3,14 @@ package com.example.demo.renewal;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.rules.RenewalResponse;
 import com.example.demo.model.Account;
@@ -22,46 +21,40 @@ import com.example.demo.utils.Constants;
 
 public class TestValidation {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
+	private KieSession kieSession;
 
 	private Account account;
 	private Bill bill;
 	private RenewalResponse response;
 	private int amount;
 	
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.RENEW_RULES);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-	
 	@Before
 	public void before() {
-		for (FactHandle fh: kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}
-		
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.RENEW_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.RENEW_RULES).setFocus();
+
 		this.account = new Account();
 		this.bill = new Bill();
 		this.response = new RenewalResponse();
-		this.account.getBills().add(this.bill);
+		
+		this.account.setBills(Set.of(this.bill));
 		this.bill.setAccount(this.account);
 	}
 
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
+	}
+
 	public void runAndAssert(String message) {
-		kieSession.insert(this.bill);
-		kieSession.insert(this.amount);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.RENEW_RULES).setFocus();
-		kieSession.fireAllRules();
+		this.kieSession.insert(this.bill);
+		this.kieSession.insert(this.amount);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 		
 		assertFalse(this.response.isValid());
 		assertEquals(this.response.getMessage(), message);
@@ -168,7 +161,7 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(250001);
-		this.bill.getRenewals().add(new Renewal());
+		this.bill.setRenewals(Set.of(new Renewal()));
 		this.amount = 19;
 		this.runAndAssert("You can't renew bill for more than 18 months.");
 	}
@@ -199,8 +192,7 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(200001);
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
+		this.bill.setRenewals(Set.of(new Renewal(), new Renewal()));
 		this.amount = 13;
 		this.runAndAssert("You can't renew bill for more than 12 months.");
 	}
@@ -231,9 +223,7 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(150001);
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
+		this.bill.setRenewals(Set.of(new Renewal(), new Renewal(), new Renewal()));
 		this.amount = 10;
 		this.runAndAssert("You can't renew bill for more than 9 months.");
 	}
@@ -264,10 +254,7 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(100001);
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
-		this.bill.getRenewals().add(new Renewal());
+		this.bill.setRenewals(Set.of(new Renewal(), new Renewal(), new Renewal(), new Renewal()));
 		this.amount = 7;
 		this.runAndAssert("You can't renew bill for more than 6 months.");
 	}

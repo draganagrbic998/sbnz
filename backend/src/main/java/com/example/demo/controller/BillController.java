@@ -54,16 +54,16 @@ public class BillController {
 		return new ResponseEntity<>(this.billMapper.map(bills.toList()), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/terms")
-	public ResponseEntity<BillResponse> terms(@Valid @RequestBody BillRequest request){
-		return new ResponseEntity<>(this.billService.terms(request), HttpStatus.OK);
-	}
-
 	@PostMapping
 	public ResponseEntity<BillResponse> create(@Valid @RequestBody BillRequest request){
 		return new ResponseEntity<>(this.billService.create(request), HttpStatus.CREATED);
 	}
 	
+	@PostMapping(value = "/terms")
+	public ResponseEntity<BillResponse> terms(@Valid @RequestBody BillRequest request){
+		return new ResponseEntity<>(this.billService.terms(request), HttpStatus.OK);
+	}
+
 	@PutMapping(value = "/{id}/increase/{amount}")
 	public ResponseEntity<IncreaseResponse> increase(@PathVariable long id, @PathVariable int amount){
 		return new ResponseEntity<>(this.billService.increase(id, amount), HttpStatus.OK);

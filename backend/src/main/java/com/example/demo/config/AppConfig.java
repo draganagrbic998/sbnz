@@ -18,7 +18,8 @@ public class AppConfig {
 	@Bean
 	public KieContainer kieContainer() {
 		KieServices kieService = KieServices.Factory.get();
-		KieContainer kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
 		KieScanner kieScanner = kieService.newKieScanner(kieContainer);
 		kieScanner.start(1000);
 		return kieContainer;

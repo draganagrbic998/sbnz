@@ -3,12 +3,12 @@ import com.example.demo.model.Bill
 import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
-import com.example.demo.model.TransactionType
 import com.example.demo.rules.IncreaseResponse
 
 
 rule "Passed time less than 5%"
 	agenda-group "increase-rules"
+	salience 10
 	
 	when
 		Bill(passedTime() < 0.05)
@@ -20,6 +20,7 @@ end
 
 rule "Passed time more than 95%"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
 		Bill(passedTime() > 0.95)
@@ -31,6 +32,7 @@ end
 
 rule "Amount less than 10% of bill balance"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($balance: balance)
@@ -43,6 +45,7 @@ end
 
 rule "Amount more than 50% of bill balance"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($balance: balance)
@@ -55,6 +58,7 @@ end
 
 rule "RSD bill - duration less than 6 months"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(type.equals(BillType.RSD), months() < 6)
@@ -66,6 +70,7 @@ end
 
 rule "RSD bill - base less than 75.000 RSD"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(type.equals(BillType.RSD), base < 75000)
@@ -77,12 +82,13 @@ end
 
 rule "RSD bill - 5 more increases"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(type.equals(BillType.RSD), $transactions: transactions)
 		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 5) from accumulate(
-        	Transaction($transaction: this, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($transaction: this) from $transactions,
         	count($transaction)
         )
 	then
@@ -92,6 +98,7 @@ end
 
 rule "Foreign bill - duration less than 4 months"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(!type.equals(BillType.RSD), months() < 4)
@@ -103,6 +110,7 @@ end
 
 rule "Foreign bill - base less than 750 currency units"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(!type.equals(BillType.RSD), base < 750)
@@ -114,12 +122,13 @@ end
 
 rule "Foreign bill - 3 more increases"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(!type.equals(BillType.RSD), $transactions: transactions)
 		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 3) from accumulate(
-        	Transaction($transaction: this, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($transaction: this) from $transactions,
         	count($transaction)
         )
 	then
@@ -129,6 +138,7 @@ end
 
 rule "Maximum increase amount is 40% of balance pt1"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(
@@ -145,17 +155,18 @@ end
 
 rule "Maximum increase amount is 40% of balance pt2"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.4 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
         	$cnt1: count($bill)
         )
         accumulate(
-        	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
         	$cnt2: count($bill)
         )
         eval(
@@ -169,17 +180,18 @@ end
 
 rule "Maximum increase amount is 40% of balance pt3"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.4 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum1: sum($amount)
         )
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum2: sum($amount)
         )
         eval(
@@ -193,6 +205,7 @@ end
 
 rule "Maximum increase amount is 35% of balance pt1"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(
@@ -209,17 +222,18 @@ end
 
 rule "Maximum increase amount is 35% of balance pt2"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.35 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
         	$cnt1: count($bill)
         )
         accumulate(
-        	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
         	$cnt2: count($bill)
         )
         eval(
@@ -232,17 +246,18 @@ end
 
 rule "Maximum increase amount is 35% of balance pt3"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.35 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum1: sum($amount)
         )
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum2: sum($amount)
         )
         eval(
@@ -256,6 +271,7 @@ end
 
 rule "Maximum increase amount is 30% of balance pt1"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill(
@@ -272,17 +288,18 @@ end
 
 rule "Maximum increase amount is 30% of balance pt2"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.3 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
         	$cnt1: count($bill)
         )
 		accumulate(
-        	Bill($bill: this, !type.equals(BillType.RSD), status.equals(BillStatus.ACTIVE)) from $bills,
+        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
         	$cnt2: count($bill)
         )
         eval(
@@ -296,17 +313,18 @@ end
 
 rule "Maximum increase amount is 30% of balance pt3"
 	agenda-group "increase-rules"
+	salience 10
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.3 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum1: sum($amount)
         )
         accumulate(
-			Transaction($amount: amount, type.equals(TransactionType.INCREASE)) from $transactions,
+			Transaction($amount: amount) from $transactions,
 			$sum2: sum($amount)
         )
         eval(
@@ -320,6 +338,7 @@ end
 
 rule "Valid params"
 	agenda-group "increase-rules"
+	salience 1
 
     when
 		$response: IncreaseResponse(!valid, message == null)

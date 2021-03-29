@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import com.example.demo.model.User;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.utils.Constants;
 
 @Component
 public class AccountMapper {
@@ -49,7 +49,7 @@ public class AccountMapper {
 		authorities.add(this.authorityRepository.findByName(Role.KLIJENT.name()));
 		user.setAuthorities(authorities);
 		user.setEmail(accountDTO.getEmail());	
-		user.setPassword(this.passwordEncoder.encode(Constants.INITIAL_PASSWORD));
+		user.setPassword(this.passwordEncoder.encode(UUID.randomUUID().toString()));
 		user.setFirstName(accountDTO.getFirstName());
 		user.setLastName(accountDTO.getLastName());
 		account.setUser(user);

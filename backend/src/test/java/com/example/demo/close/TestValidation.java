@@ -3,15 +3,14 @@ package com.example.demo.close;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.ObjectFactory;
 import com.example.demo.rules.CloseResponse;
@@ -23,49 +22,43 @@ import com.example.demo.utils.Constants;
 
 public class TestValidation {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
+	private KieSession kieSession;
 
 	private Account account;
 	private Bill bill;
 	private CloseResponse response;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.CLOSE_RULES);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-	
+		
 	@Before
 	public void before() {
-		for (FactHandle fh: kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}
-		
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.CLOSE_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.CLOSE_RULES).setFocus();
+
 		this.account = new Account();
 		this.bill = new Bill();
 		this.response = new CloseResponse();
-		this.account.getBills().add(this.bill);
+		
+		this.account.setBills(Set.of(this.bill));
 		this.bill.setAccount(this.account);
 	}
 
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
+	}
+
 	public void runAndAssert(boolean valid, String message) {
-		kieSession.insert(this.bill);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.CLOSE_RULES).setFocus();
-		kieSession.fireAllRules();
+		this.kieSession.insert(this.bill);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 		
 		assertEquals(this.response.isValid(), valid);
 		assertEquals(this.response.getMessage(), message);
 	}
-/*
+
 	@Test
 	public void testRule1() {
 		this.bill.setType(BillType.RSD);
@@ -73,7 +66,7 @@ public class TestValidation {
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.runAndAssert(false, "You can't close bill with passed time less than 20%.");
 	}
-*/
+
 	@Test
 	public void testRule2() {
 		this.bill.setType(BillType.RSD);
@@ -106,14 +99,12 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBase(20001);
-		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD));
+		this.account.setBills(Set.of(
+			ObjectFactory.getBill(BillType.RSD), ObjectFactory.getBill(BillType.RSD),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD), ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD), ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD), 
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD), ObjectFactory.getBill(BillStatus.ABORTED, BillType.RSD)
+		));
 		this.runAndAssert(false, "You can't close more than 6 RSD bills.");
 	}
 	
@@ -141,12 +132,11 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBase(201);
-		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR));
+		this.account.setBills(Set.of(
+			ObjectFactory.getBill(BillType.EUR), ObjectFactory.getBill(BillType.EUR),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR), ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR),
+			ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR), ObjectFactory.getBill(BillStatus.ABORTED, BillType.EUR)
+		));
 		this.runAndAssert(false, "You can't close more than 4 foreign bills.");
 	}
 	
@@ -156,8 +146,9 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBase(20001);
-		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
-		this.account.getBills().add(ObjectFactory.getBill(BillType.RSD));
+		this.account.setBills(Set.of(
+			ObjectFactory.getBill(BillType.RSD), ObjectFactory.getBill(BillType.RSD)
+		));
 		this.runAndAssert(true, null);
 	}
 	
@@ -167,8 +158,9 @@ public class TestValidation {
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBase(201);
-		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
-		this.account.getBills().add(ObjectFactory.getBill(BillType.EUR));
+		this.account.setBills(Set.of(
+			ObjectFactory.getBill(BillType.EUR), ObjectFactory.getBill(BillType.EUR)
+		));
 		this.runAndAssert(true, null);
 	}
 

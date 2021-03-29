@@ -24,9 +24,9 @@ public class ResonerService {
 	private KieContainer kieContainer;
 	
 	public BillResponse createBill(Account account, BillRequest request) {
-		BillResponse response = new BillResponse();
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CREATE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
+		BillResponse response = new BillResponse();
 		kieSession.insert(account);
 		kieSession.insert(request);
 		kieSession.insert(response);
@@ -35,9 +35,9 @@ public class ResonerService {
 	}
 	
 	public IncreaseResponse increaseBill(Bill bill, double amount) {
-		IncreaseResponse response = new IncreaseResponse();		
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.INCREASE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.INCREASE_RULES).setFocus();
+		IncreaseResponse response = new IncreaseResponse();		
 		kieSession.insert(bill);
 		kieSession.insert(amount);
 		kieSession.insert(response);
@@ -46,9 +46,9 @@ public class ResonerService {
 	}
 	
 	public RenewalResponse renewBill(Bill bill, int amount) {
-		RenewalResponse response = new RenewalResponse();
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.RENEW_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.RENEW_RULES).setFocus();
+		RenewalResponse response = new RenewalResponse();
 		kieSession.insert(bill);
 		kieSession.insert(amount);
 		kieSession.insert(response);
@@ -57,9 +57,9 @@ public class ResonerService {
 	}
 	
 	public CloseResponse closeBill(Bill bill) {
-		CloseResponse response = new CloseResponse();
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CLOSE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.CLOSE_RULES).setFocus();
+		CloseResponse response = new CloseResponse();
 		kieSession.insert(bill);
 		kieSession.insert(response);
 		this.run(kieSession);
@@ -67,9 +67,9 @@ public class ResonerService {
 	}
 	
 	public ReportResponse baseReport(List<Bill> bills) {
-		ReportResponse response = new ReportResponse();
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.REPORT_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.BASE_REPORT).setFocus();
+		ReportResponse response = new ReportResponse();
 		kieSession.insert(bills);
 		kieSession.insert(response);
 		this.run(kieSession);

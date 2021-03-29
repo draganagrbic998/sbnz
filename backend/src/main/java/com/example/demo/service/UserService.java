@@ -57,7 +57,9 @@ public class UserService implements UserDetailsService {
 			this.emailService.sendEmail(new Email(
 				user.getEmail(),
 				EmailService.ACTIVATION_TITLE,
-				String.format(EmailService.ACTIVATION_TEXT, user.getFirstName(), user.getLastName(), user.getActivationLink())
+				String.format(EmailService.ACTIVATION_TEXT, 
+						user.getFirstName(), user.getLastName(), 
+						user.getActivationLink(), user.getPassword())
 			));			
 		}
 		return user;

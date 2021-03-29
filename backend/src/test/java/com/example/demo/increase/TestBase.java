@@ -3,15 +3,14 @@ package com.example.demo.increase;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.ObjectFactory;
 import com.example.demo.rules.IncreaseResponse;
@@ -22,48 +21,42 @@ import com.example.demo.utils.Constants;
 
 public class TestBase {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
+	private KieSession kieSession;
 
 	private Account account;
 	private Bill bill;
 	private IncreaseResponse response;
 	private double amount;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.INCREASE_RULES);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-	
+		
 	@Before
 	public void before() {
-		for (FactHandle fh: kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}
-		
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.INCREASE_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.INCREASE_RULES).setFocus();
+
 		this.account = new Account();
 		this.bill = new Bill();
 		this.response = new IncreaseResponse();
-		this.account.getBills().add(this.bill);
+		
+		this.account.setBills(Set.of(this.bill));
 		this.bill.setAccount(this.account);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
 	}
 
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
+	}
+
 	public void runAndAssert(double baseUpdate) {
-		kieSession.insert(this.bill);
-		kieSession.insert(this.amount);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.INCREASE_RULES).setFocus();
-		kieSession.fireAllRules();
+		this.kieSession.insert(this.bill);
+		this.kieSession.insert(this.amount);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 		
 		assertTrue(this.response.isValid());
 		assertNull(this.response.getMessage());
@@ -103,8 +96,8 @@ public class TestBase {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
+		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.5 * 75001 + 1)));
 		this.amount = 0.1 * 75001 + 1;
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.5 * 75001 + 1));
 		this.runAndAssert(0.9 * this.amount);
 	}
 	
@@ -140,8 +133,8 @@ public class TestBase {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
+		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.45 * 75001 + 1)));
 		this.amount = 0.1 * 75001 + 1;
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.45 * 75001 + 1));
 		this.runAndAssert(0.8 * this.amount);		
 	}
 	
@@ -177,8 +170,8 @@ public class TestBase {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
+		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.4 * 75001 + 1)));
 		this.amount = 0.1 * 75001 + 1;
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.4 * 75001 + 1));
 		this.runAndAssert(0.7 * this.amount);		
 	}
 	
@@ -214,8 +207,8 @@ public class TestBase {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
+		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.35 * 75001 + 1)));
 		this.amount = 0.1 * 75001 + 1;
-		this.bill.getTransactions().add(ObjectFactory.getTransaction(0.35 * 75001 + 1));
 		this.runAndAssert(0.6 * this.amount);		
 	}
 	

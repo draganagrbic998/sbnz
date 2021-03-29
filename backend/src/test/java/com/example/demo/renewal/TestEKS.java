@@ -3,15 +3,14 @@ package com.example.demo.renewal;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.ObjectFactory;
 import com.example.demo.rules.RenewalResponse;
@@ -22,46 +21,40 @@ import com.example.demo.utils.Constants;
 
 public class TestEKS {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
+	private KieSession kieSession;
 
 	private Account account;
 	private Bill bill;
 	private RenewalResponse response;
 	private int amount;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.RENEW_RULES);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-	
+		
 	@Before
 	public void before() {
-		for (FactHandle fh: kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}
-		
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.RENEW_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.RENEW_RULES).setFocus();
+
 		this.account = new Account();
 		this.bill = new Bill();
 		this.response = new RenewalResponse();
-		this.account.getBills().add(this.bill);
+		
+		this.account.setBills(Set.of(this.bill));
 		this.bill.setAccount(this.account);
 	}
 
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
+	}
+
 	public void runAndAssert(double interestUpdate) {
-		kieSession.insert(this.bill);
-		kieSession.insert(this.amount);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.RENEW_RULES).setFocus();
-		kieSession.fireAllRules();
+		this.kieSession.insert(this.bill);
+		this.kieSession.insert(this.amount);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 		
 		assertTrue(this.response.isValid());
 		assertNull(this.response.getMessage());
@@ -102,31 +95,31 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule2pt1() {
+	public void testRule2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(200001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(16));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(16)));
 		this.amount = 16;
 		this.runAndAssert(0.025 * 1);
 	}
 	
 	@Test
-	public void testRule2pt2() {
+	public void testRule3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
 		this.bill.setBase(2001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(15));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(15)));
 		this.amount = 15;
 		this.runAndAssert(0.025 * 1);
 	}
 	
 	@Test
-	public void testRule3pt1() {
+	public void testRule4pt1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -137,7 +130,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule3pt2() {
+	public void testRule4pt2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -148,7 +141,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule3pt3() {
+	public void testRule4pt3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -159,31 +152,31 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule4pt1() {
+	public void testRule5() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(200001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(13));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(13)));
 		this.amount = 13;
 		this.runAndAssert(0.02 * 1);
 	}
 	
 	@Test
-	public void testRule4pt2() {
+	public void testRule6() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
 		this.bill.setBase(2001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(12));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(12)));
 		this.amount = 12;
 		this.runAndAssert(0.02 * 1);
 	}
 	
 	@Test
-	public void testRule5pt1() {
+	public void testRule7pt1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -194,7 +187,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule5pt2() {
+	public void testRule7pt2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -205,7 +198,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule5pt3() {
+	public void testRule7pt3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -216,31 +209,31 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule6pt1() {
+	public void testRule8() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(150001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(9));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(9)));
 		this.amount = 9;
 		this.runAndAssert(0.015 * 1);
 	}
 	
 	@Test
-	public void testRule6pt2() {
+	public void testRule9() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
 		this.bill.setBase(1501);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(8));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(8)));
 		this.amount = 8;
 		this.runAndAssert(0.015 * 1);
 	}
 	
 	@Test
-	public void testRule7pt1() {
+	public void testRule10pt1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -251,7 +244,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule7pt2() {
+	public void testRule10pt2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -262,7 +255,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule7pt3() {
+	public void testRule10pt3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -273,31 +266,31 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule8pt1() {
+	public void testRule11() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
 		this.bill.setBase(75001);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(5));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(5)));
 		this.amount = 5;
 		this.runAndAssert(0.01 * 1);
 	}
 	
 	@Test
-	public void testRule8pt2() {
+	public void testRule12() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
 		this.bill.setBase(751);
 		this.bill.setInterest(1);
-		this.bill.getRenewals().add(ObjectFactory.getRenewal(4));
+		this.bill.setRenewals(Set.of(ObjectFactory.getRenewal(4)));
 		this.amount = 4;
 		this.runAndAssert(0.01 * 1);
 	}
 	
 	@Test
-	public void testRule9() {
+	public void testRule13() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));

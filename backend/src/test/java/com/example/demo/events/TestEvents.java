@@ -1,6 +1,5 @@
 package com.example.demo.events;
 
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.core.ClassObjectFilter;
@@ -38,25 +37,24 @@ public class TestEvents {
 	
 	private KieSession kieSession;
 	private SessionPseudoClock clock;
-
 	private Account account;
 	private Bill bill;
 
 	@Before
 	public void before() {
 		KieServices kieService = KieServices.Factory.get();
-		KieContainer kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
 		this.kieSession = kieContainer.newKieSession(Constants.EVENTS_RULES_PSEUDO);
-        
         this.kieSession.setGlobal("notificationService", this.notificationService);
         this.kieSession.setGlobal("account", this.account);
-        this.clock = this.kieSession.getSessionClock();
         
+        this.clock = this.kieSession.getSessionClock();
         this.account = new Account();
         this.bill = new Bill();
+        
         this.bill.setType(BillType.RSD);
         this.bill.setBase(25001);
-        
         User user = new User();
         user.setFirstName("first name");
         user.setLastName("last name");
@@ -75,21 +73,23 @@ public class TestEvents {
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
-
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CreateBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CreateBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CreateBillEvent.class)).size(), 0);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	
@@ -102,17 +102,20 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	
@@ -125,17 +128,20 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	
@@ -152,16 +158,17 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 4);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	
@@ -177,16 +184,17 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 3);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 
@@ -203,16 +211,17 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 4);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 
@@ -228,16 +237,17 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 3);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 
@@ -254,16 +264,17 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 		
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 4);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(24, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
-		
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	
@@ -279,16 +290,22 @@ public class TestEvents {
 		this.kieSession.fireAllRules();
 
 		Mockito.verify(this.notificationService, times(1)).save(any(Notification.class));
-        Collection<?> response = this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class));
-        assertEquals(response.size(), 1);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 3);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
 		this.clock.advanceTime(23, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
-
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 3);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 		
+		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
+
 		this.clock.advanceTime(72, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
+		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
 	}
 	

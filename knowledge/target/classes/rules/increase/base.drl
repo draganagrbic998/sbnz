@@ -2,12 +2,12 @@ package rules
 import com.example.demo.model.Bill
 import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
-import com.example.demo.model.TransactionType
 import com.example.demo.rules.IncreaseResponse
 
 
 rule "90% increase pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         $amount: Double()
@@ -24,13 +24,14 @@ end
 
 rule "90% increase pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         Bill($base: base, $transactions: transactions)
         $amount: Double()
         $response: IncreaseResponse(valid, baseUpdate == null)
         Number(doubleValue > 0.5 * $base) from accumulate(
-        	Transaction($temp: amount, passedMonths() <= 5, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($temp: amount, passedMonths() <= 5) from $transactions,
         	sum($temp)
         )
     then
@@ -40,6 +41,7 @@ end
 
 rule "80% increase pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         $amount: Double()
@@ -56,13 +58,14 @@ end
 
 rule "80% increase pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         Bill($base: base, $transactions: transactions)
         $amount: Double()
         $response: IncreaseResponse(valid, baseUpdate == null)
         Number(doubleValue > 0.45 * $base) from accumulate(
-        	Transaction($temp: amount, passedMonths() <= 6, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($temp: amount, passedMonths() <= 6) from $transactions,
         	sum($temp)
         )
     then
@@ -72,6 +75,7 @@ end
 
 rule "70% increase pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         $amount: Double()
@@ -88,13 +92,14 @@ end
 
 rule "70% increase pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         Bill($base: base, $transactions: transactions)
         $amount: Double()
         $response: IncreaseResponse(valid, baseUpdate == null)
         Number(doubleValue > 0.4 * $base) from accumulate(
-        	Transaction($temp: amount, passedMonths() <= 7, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($temp: amount, passedMonths() <= 7) from $transactions,
         	sum($temp)
         )
     then
@@ -104,6 +109,7 @@ end
 
 rule "60% increase pt1"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         $amount: Double()
@@ -120,13 +126,14 @@ end
 
 rule "60% increase pt2"
 	agenda-group "increase-rules"
+	salience 10
 
     when
         Bill($base: base, $transactions: transactions)
         $amount: Double()
         $response: IncreaseResponse(valid, baseUpdate == null)
         Number(doubleValue > 0.35 * $base) from accumulate(
-        	Transaction($temp: amount, passedMonths() <= 8, type.equals(TransactionType.INCREASE)) from $transactions,
+        	Transaction($temp: amount, passedMonths() <= 8) from $transactions,
         	sum($temp)
         )
     then
@@ -136,6 +143,7 @@ end
 
 rule "50% increase"
 	agenda-group "increase-rules"
+	salience 1
 
     when
         $amount: Double()

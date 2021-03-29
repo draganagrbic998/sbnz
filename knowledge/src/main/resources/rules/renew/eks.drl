@@ -5,6 +5,7 @@ import com.example.demo.rules.RenewalResponse
 
 rule "2.5% increase pt1"
 	agenda-group "renew-rules"
+	salience 10
 
     when
 		$amount: Integer()
@@ -21,29 +22,37 @@ end
 
 rule "2.5% increase pt2"
 	agenda-group "renew-rules"
+	salience 10
 
     when
     	Bill($bills: account.bills, $interest: interest)
 		$response: RenewalResponse(valid, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 15) from accumulate(
 			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+		modify($response){setInterestUpdate(0.025 * $interest);}
+end
+
+rule "2.5% increase pt3"
+	agenda-group "renew-rules"
+	salience 10
+
+    when
+    	Bill($bills: account.bills, $interest: interest)
+		$response: RenewalResponse(valid, interestUpdate == null)
+		Number(doubleValue > 14) from accumulate(
 			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 15 || 
-			$avg2.doubleValue() > 14
+			average($avg)
 		)
     then
 		modify($response){setInterestUpdate(0.025 * $interest);}
@@ -51,6 +60,7 @@ end
 
 rule "2% increase pt1"
 	agenda-group "renew-rules"
+	salience 10
 
     when
 		$amount: Integer()
@@ -67,29 +77,37 @@ end
 
 rule "2% increase pt2"
 	agenda-group "renew-rules"
+	salience 10
 
     when
     	Bill($bills: account.bills, $interest: interest)
 		$response: RenewalResponse(valid, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 12) from accumulate(
 			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+		modify($response){setInterestUpdate(0.02 * $interest);}
+end
+
+rule "2% increase pt3"
+	agenda-group "renew-rules"
+	salience 10
+
+    when
+    	Bill($bills: account.bills, $interest: interest)
+		$response: RenewalResponse(valid, interestUpdate == null)
+		Number(doubleValue > 11) from accumulate(
 			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 12 || 
-			$avg2.doubleValue() > 11
+			average($avg)
 		)
     then
 		modify($response){setInterestUpdate(0.02 * $interest);}
@@ -97,6 +115,7 @@ end
 
 rule "1.5% increase pt1"
 	agenda-group "renew-rules"
+	salience 10
 
     when
 		$amount: Integer()
@@ -113,29 +132,37 @@ end
 
 rule "1.5% increase pt2"
 	agenda-group "renew-rules"
+	salience 10
 
     when
     	Bill($bills: account.bills, $interest: interest)
 		$response: RenewalResponse(valid, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 8) from accumulate(
 			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+		modify($response){setInterestUpdate(0.015 * $interest);}
+end
+
+rule "1.5% increase pt3"
+	agenda-group "renew-rules"
+	salience 10
+
+    when
+    	Bill($bills: account.bills, $interest: interest)
+		$response: RenewalResponse(valid, interestUpdate == null)
+		Number(doubleValue > 7) from accumulate(
 			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 8 || 
-			$avg2.doubleValue() > 7
+			average($avg)
 		)
     then
 		modify($response){setInterestUpdate(0.015 * $interest);}
@@ -143,6 +170,7 @@ end
 
 rule "1% increase pt1"
 	agenda-group "renew-rules"
+	salience 10
 
     when
 		$amount: Integer()
@@ -159,29 +187,37 @@ end
 
 rule "1% increase pt2"
 	agenda-group "renew-rules"
+	salience 10
 
     when
     	Bill($bills: account.bills, $interest: interest)
 		$response: RenewalResponse(valid, interestUpdate == null)
-		accumulate(
+		Number(doubleValue > 4) from accumulate(
 			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg1: average($avg)
+			average($avg)
 		)
-		accumulate(
+    then
+		modify($response){setInterestUpdate(0.01 * $interest);}
+end
+
+rule "1% increase pt3"
+	agenda-group "renew-rules"
+	salience 10
+
+    when
+    	Bill($bills: account.bills, $interest: interest)
+		$response: RenewalResponse(valid, interestUpdate == null)
+		Number(doubleValue > 3) from accumulate(
 			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
 			),
-			$avg2: average($avg)
-		)
-		eval(
-			$avg1.doubleValue() > 4 || 
-			$avg2.doubleValue() > 3
+			average($avg)
 		)
     then
 		modify($response){setInterestUpdate(0.01 * $interest);}
@@ -189,6 +225,7 @@ end
 
 rule "0.5% increase"
 	agenda-group "renew-rules"
+	salience 1
 
     when
     	Bill($interest: interest)

@@ -24,7 +24,5 @@ public class Constants {
 	public static final String ENABLE_HEADER = "Access-Control-Expose-Headers";
 	public static final String FIRST_PAGE = "First-Page";
 	public static final String LAST_PAGE = "Last-Page";
-
-	public static final String INITIAL_PASSWORD = "password";
 	
 }

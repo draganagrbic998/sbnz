@@ -8,7 +8,6 @@ import com.example.demo.model.BillStatus;
 import com.example.demo.model.BillType;
 import com.example.demo.model.Renewal;
 import com.example.demo.model.Transaction;
-import com.example.demo.model.TransactionType;
 
 public class ObjectFactory {
 
@@ -17,6 +16,12 @@ public class ObjectFactory {
 		bill.setStatus(status);
 		bill.setTransactions(transactions);
 		bill.setRenewals(renewals);
+		return bill;
+	}
+
+	public static Bill getBill(BillStatus status, BillType type, double base, LocalDate startDate, LocalDate endDate) {
+		Bill bill = getBill(type, base, startDate, endDate);
+		bill.setStatus(status);
 		return bill;
 	}
 
@@ -73,21 +78,7 @@ public class ObjectFactory {
 		transaction.setAmount(amount);
 		return transaction;
 	}
-	
-	public static Transaction getTransaction(double amount, int minusMonthsOffset) {
-		Transaction transaction = new Transaction();
-		transaction.setAmount(amount);
-		transaction.setDate(LocalDate.now().minusMonths(minusMonthsOffset));
-		return transaction;
-	}
 
-	public static Transaction getTransaction(TransactionType type, double amount) {
-		Transaction transaction = new Transaction();
-		transaction.setType(TransactionType.INCREASE);
-		transaction.setAmount(amount);
-		return transaction;
-	}
-	
 	public static Renewal getRenewal(int amount) {
 		Renewal renewal = new Renewal();
 		renewal.setAmount(amount);

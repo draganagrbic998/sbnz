@@ -4,14 +4,12 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import com.example.demo.rules.BillRequest;
 import com.example.demo.rules.BillResponse;
@@ -21,44 +19,37 @@ import com.example.demo.utils.Constants;
 
 public class TestNKS {
 
-	private static KieContainer kieContainer;
-	private static KieSession kieSession;
+	private KieSession kieSession;
 
 	private Account account;
 	private BillRequest request;
 	private BillResponse response;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		KieServices kieService = KieServices.Factory.get();
-		kieContainer = kieService.newKieContainer(kieService.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, "0.0.1-SNAPSHOT"));
-		kieSession = kieContainer.newKieSession(Constants.CREATE_RULES);
-	}
-	
-	@AfterClass
-	public static void afterClass() {
-		kieSession.dispose();
-		kieSession.destroy();
-	}
-	
+		
 	@Before
 	public void before() {
-		for (FactHandle fh: kieSession.getFactHandles()) {
-			kieSession.delete(fh);
-		}		
-		
+		KieServices kieService = KieServices.Factory.get();
+		KieContainer kieContainer = kieService.newKieContainer(kieService
+				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
+		this.kieSession = kieContainer.newKieSession(Constants.CREATE_RULES);
+		this.kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
+
 		this.account = new Account();
 		this.request = new BillRequest();
 		this.response = new BillResponse();
 		this.account.setBirthDate(LocalDate.now().plusYears(18).plusDays(1));
 	}
 
+	@After
+	public void after() {
+		this.kieSession.dispose();
+		this.kieSession.destroy();
+	}
+
 	public void runAndAssert(double nks) {
-		kieSession.insert(this.account);
-		kieSession.insert(this.request);
-		kieSession.insert(this.response);
-		kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
-		kieSession.fireAllRules();
+		this.kieSession.insert(this.account);
+		this.kieSession.insert(this.request);
+		this.kieSession.insert(this.response);
+		this.kieSession.fireAllRules();
 		
 		assertTrue(this.response.isValid());
 		assertNull(this.response.getMessage());

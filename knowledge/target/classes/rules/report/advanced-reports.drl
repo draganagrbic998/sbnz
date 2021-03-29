@@ -4,7 +4,6 @@ import com.example.demo.model.Bill
 import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
-import com.example.demo.model.TransactionType
 import com.example.demo.model.Renewal
 import com.example.demo.utils.Utils
 import java.util.List
@@ -13,6 +12,7 @@ import java.util.List
 rule "First report"
 	agenda-group "first-report"
 	no-loop
+	salience 10
 
     when
         $accounts: List()
@@ -38,6 +38,7 @@ end
 rule "Second report"
 	agenda-group "second-report"
 	no-loop
+	salience 10
 
     when
         $accounts: List()
@@ -67,6 +68,7 @@ end
 rule "Third report"
 	agenda-group "third-report"
 	no-loop
+	salience 10
 
     when
         $accounts: List()
@@ -92,7 +94,7 @@ rule "Third report"
 			and Number(doubleValue > 500000) from accumulate(			
 				Bill($transactions: transactions) from $bills 
 				and accumulate(
-	        		Transaction(type.equals(TransactionType.INCREASE), $amount: Utils.convertToRSD(bill.type, amount)) from $transactions,
+	        		Transaction($amount: Utils.convertToRSD(bill.type, amount)) from $transactions,
 	        		$temp: average($amount)
 	        	),
 	        	average($temp)

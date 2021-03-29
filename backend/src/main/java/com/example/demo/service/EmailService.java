@@ -17,7 +17,7 @@ public class EmailService {
 			+ "In order to activate your bank account, please click the following link: \n"
 			+ Constants.BACKEND + "/auth/activate/%s\n"
 			+ "We advise you to change your password the first time you sign in.\n"
-			+ "Initial password: " + Constants.INITIAL_PASSWORD + "\n\n"
+			+ "Initial password: %s\n\n"
 			+ "Best regards, \n"
 			+ "Your banking system.";
 

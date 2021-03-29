@@ -138,8 +138,8 @@ public class BillService {
 	}
 
 	private void checkEnabled(Bill bill) {
-		if (bill.getAccount().getId() != this.userService.currentUser().getAccount().getId() 
-				|| !bill.getStatus().equals(BillStatus.ACTIVE)) {
+		if (!bill.getStatus().equals(BillStatus.ACTIVE) ||
+				bill.getAccount().getId() != this.userService.currentUser().getAccount().getId()) {
 			throw new MyException();
 		}
 	}

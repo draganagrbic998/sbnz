@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	com.example.demo.increase.TestEKS.class, 
 	com.example.demo.renewal.TestValidation.class, com.example.demo.renewal.TestEKS.class,
 	com.example.demo.close.TestValidation.class,
-	com.example.demo.report.TestBaseReport.class, com.example.demo.report.TestAdvancedReports.class
+	com.example.demo.report.TestBaseReport.class, com.example.demo.report.TestAdvancedReports.class,
+	com.example.demo.events.TestEvents.class
 })
 public class AllTests {
 
