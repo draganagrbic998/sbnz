@@ -48,7 +48,8 @@ rule "RSD statistic"
 
     then
         modify($response){setRsd(new ReportUnit(
-        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$activeCnt.intValue(), $closedCnt.intValue(), 
+        	$closedCnt.intValue() != 0 ? $abortedCnt.intValue() / $closedCnt.intValue() : 0,
         	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
         	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
         ));}
@@ -94,7 +95,8 @@ rule "EUR statistic"
 	    
 	then
         modify($response){setEur(new ReportUnit(
-        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$activeCnt.intValue(), $closedCnt.intValue(), 
+        	$closedCnt.intValue() != 0 ? $abortedCnt.intValue() / $closedCnt.intValue() : 0,
         	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
         	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
         ));}
@@ -140,7 +142,8 @@ rule "USD statistic"
 
 	then
         modify($response){setUsd(new ReportUnit(
-        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$activeCnt.intValue(), $closedCnt.intValue(), 
+        	$closedCnt.intValue() != 0 ? $abortedCnt.intValue() / $closedCnt.intValue() : 0,
         	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
         	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
         ));}
@@ -186,7 +189,8 @@ rule "CHF statistic"
 	    
     then
         modify($response){setChf(new ReportUnit(
-        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$activeCnt.intValue(), $closedCnt.intValue(), 
+        	$closedCnt.intValue() != 0 ? $abortedCnt.intValue() / $closedCnt.intValue() : 0,
         	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
         	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
         ));}
@@ -232,7 +236,8 @@ rule "GBP statistic"
     	
     then
         modify($response){setGbp(new ReportUnit(
-        	$activeCnt.intValue(), $closedCnt.intValue(), $abortedCnt.intValue(),
+        	$activeCnt.intValue(), $closedCnt.intValue(), 
+        	$closedCnt.intValue() != 0 ? $abortedCnt.intValue() / $closedCnt.intValue() : 0,
         	$baseAvg.doubleValue(), $monthsAvg.doubleValue(),
         	$increaseAvg.doubleValue(), $renewAvg.doubleValue()
         ));}

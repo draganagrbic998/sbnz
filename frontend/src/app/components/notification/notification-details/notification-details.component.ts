@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { Notification } from 'src/app/models/notification';
-import { NotificationService } from 'src/app/services/notification/notification.service';
-import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/delete-confirmation.component';
+import { NotificationService } from 'src/app/services/notification.service';
+import { DeleteConfirmationComponent } from '../../common/delete-confirmation/delete-confirmation.component';
+import { DeleteData } from 'src/app/models/delete-data';
 
 @Component({
   selector: 'app-notification-details',
@@ -21,13 +22,11 @@ export class NotificationDetailsComponent implements OnInit {
   @Input() index = 0;
 
   delete(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.notificationService.delete(this.notification.id)}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.notificationService.announceRefreshData();
-      }
-    });
+    const deleteData: DeleteData = {
+      deleteFunction: () => this.notificationService.delete(this.notification.id),
+      refreshFunction: () => this.notificationService.announceRefreshData()
+    };
+    this.dialog.open(DeleteConfirmationComponent, {...DIALOG_OPTIONS, ...{data: deleteData}});
   }
 
   ngOnInit(): void {

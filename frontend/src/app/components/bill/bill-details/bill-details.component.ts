@@ -1,13 +1,12 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { Bill } from 'src/app/models/bill';
-import { BillService } from 'src/app/services/bill/bill.service';
-import { DrawerService } from 'src/app/services/drawer/drawer.service';
-import { RenewalDialogComponent } from '../../renewal/renewal-dialog/renewal-dialog.component';
+import { DrawerService } from 'src/app/services/drawer.service';
+import { RenewalFormComponent } from '../../renewal/renewal-form/renewal-form.component';
 import { CloseConfirmationComponent } from '../close-confirmation/close-confirmation.component';
-import { TransactionDialogComponent } from '../../transaction/transaction-dialog/transaction-dialog.component';
+import { TransactionFormComponent } from '../../transaction/transaction-form/transaction-form.component';
 
 @Component({
   selector: 'app-bill-details',
@@ -17,7 +16,6 @@ import { TransactionDialogComponent } from '../../transaction/transaction-dialog
 export class BillDetailsComponent implements AfterViewInit {
 
   constructor(
-    private billService: BillService,
     private dialog: MatDialog,
     public drawerService: DrawerService
   ) { }
@@ -26,33 +24,15 @@ export class BillDetailsComponent implements AfterViewInit {
   @Input() bill: Bill = {} as Bill;
 
   transction(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.bill}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(TransactionDialogComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.billService.announceRefreshData();
-      }
-    });
+    this.dialog.open(TransactionFormComponent, {...DIALOG_OPTIONS, ...{data: this.bill.id}});
   }
 
-  renew(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.bill}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(RenewalDialogComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.billService.announceRefreshData();
-      }
-    });
+  renewal(): void{
+    this.dialog.open(RenewalFormComponent, {...DIALOG_OPTIONS, ...{data: this.bill.id}});
   }
 
   close(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.bill}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(CloseConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.billService.announceRefreshData();
-      }
-    });
+    this.dialog.open(CloseConfirmationComponent, {...DIALOG_OPTIONS, ...{data: this.bill.id}});
   }
 
   ngAfterViewInit(): void{

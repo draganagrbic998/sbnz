@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS } from 'src/app/constants/dialog';
-import { ADMIN, KLIJENT, SLUZBENIK } from 'src/app/constants/roles';
+import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS } from 'src/app/utils/dialog';
+import { ADMIN, SLUZBENIK } from 'src/app/utils/constants';
 import { User } from 'src/app/models/user';
-import { StorageService } from 'src/app/services/storage/storage.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -23,7 +23,7 @@ export class LoginFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  loginPending = false;
+  pending = false;
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     password: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
@@ -33,11 +33,11 @@ export class LoginFormComponent implements OnInit {
     if (this.loginForm.invalid){
       return;
     }
-    this.loginPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.userService.login(this.loginForm.value).subscribe(
       (user: User) => {
-        this.loginPending = false;
+        this.pending = false;
         if (user){
           this.storageService.setUser(user);
           if (user.role === ADMIN){
@@ -46,8 +46,8 @@ export class LoginFormComponent implements OnInit {
           else if (user.role === SLUZBENIK){
             this.router.navigate([environment.accountListRoute]);
           }
-          else if (user.role === KLIJENT){
-            this.router.navigate([`${environment.billListRoute}/rsd`]);
+          else {
+            this.router.navigate([environment.myAccountRoute]);
           }
         }
         else{

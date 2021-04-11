@@ -1,20 +1,20 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Transaction;
 import com.example.demo.repository.TransactionRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class TransactionService {
 
-	@Autowired
-	private TransactionRepository transactionRepository;
+	private final TransactionRepository transactionRepository;
 	
-	@Transactional(readOnly = false)
 	public Transaction save(Transaction transaction) {
 		return this.transactionRepository.save(transaction);
 	}

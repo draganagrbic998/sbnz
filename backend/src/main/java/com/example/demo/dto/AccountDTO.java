@@ -5,9 +5,15 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.example.demo.model.Account;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class AccountDTO {
 	
 	private Long id;
@@ -15,34 +21,31 @@ public class AccountDTO {
 	private double balance;
 	private int billsCount;
 
-	@Email
-	@NotBlank
-	private String email;
-
-	@NotBlank
-	private String firstName;
-	
-	@NotBlank
-	private String lastName;
-	
-	@NotNull
+	@NotNull(message = "Birth date cannot be null")
 	private LocalDate birthDate;
 
-	@NotBlank
+	@NotBlank(message = "JMBG cannot be blank")
+	@Size(min = 13, max = 13, message = "JMBG must have 13 characters")
 	private String jmbg;
-		
-	@NotBlank
+
+	@Email(message = "Email must be valid")
+	@NotBlank(message = "Email cannot be blank")
+	private String email;
+
+	@NotBlank(message = "First name cannot be blank")
+	private String firstName;
+	
+	@NotBlank(message = "Last name cannot be blank")
+	private String lastName;
+			
+	@NotBlank(message = "Address cannot be blank")
 	private String address;
 	
-	@NotBlank
+	@NotBlank(message = "City cannot be blank")
 	private String city;
 	
-	@NotBlank
+	@NotBlank(message = "Zip code cannot be blank")
 	private String zipCode;
-				
-	public AccountDTO() {
-		super();
-	}
 
 	public AccountDTO(Account account) {
 		super();
@@ -50,110 +53,14 @@ public class AccountDTO {
 		this.date = account.getDate();
 		this.balance = account.getBalance();
 		this.billsCount = account.getBills().size();
+		this.birthDate = account.getBirthDate();
+		this.jmbg = account.getJmbg();
 		this.email = account.getUser().getEmail();
 		this.firstName = account.getUser().getFirstName();
 		this.lastName = account.getUser().getLastName();
-		this.birthDate = account.getBirthDate();
-		this.jmbg = account.getJmbg();
 		this.address = account.getAddress();
 		this.city = account.getCity();
 		this.zipCode = account.getZipCode();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
-	public int getBillsCount() {
-		return billsCount;
-	}
-
-	public void setBillsCount(int billsCount) {
-		this.billsCount = billsCount;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getJmbg() {
-		return jmbg;
-	}
-
-	public void setJmbg(String jmbg) {
-		this.jmbg = jmbg;
-	}
-
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-	
 }

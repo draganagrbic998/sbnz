@@ -5,7 +5,7 @@ import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
 import com.example.demo.rules.IncreaseResponse
 
-
+/*
 rule "Passed time less than 5%"
 	agenda-group "increase-rules"
 	salience 10
@@ -17,6 +17,7 @@ rule "Passed time less than 5%"
 		modify($response){setMessage("You can't increase bill with passed time less than 5%.");}
 
 end
+*/
 
 rule "Passed time more than 95%"
 	agenda-group "increase-rules"

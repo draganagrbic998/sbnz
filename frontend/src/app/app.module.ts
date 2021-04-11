@@ -1,83 +1,40 @@
 import { NgModule } from '@angular/core';
 
-import { MaterialModule } from './material.module';
-import { CommonModule } from './common.module';
 import { AppRoutingModule } from './app-routing.module';
+import { MaterialModule } from './material.module';
+import { COMPONENTS } from './components';
 import { AppComponent } from './app.component';
 
-import { BoldTextComponent } from './components/containers/bold-text/bold-text.component';
-import { CenterContainerComponent } from './components/containers/center-container/center-container.component';
-import { SpacerContainerComponent } from './components/containers/spacer-container/spacer-container.component';
-import { EmptyContainerComponent } from './components/containers/empty-container/empty-container.component';
-import { FormContainerComponent } from './components/containers/form-container/form-container.component';
-import { RuleResponseComponent } from './components/utils/rule-response/rule-response.component';
-import { PreloaderComponent } from './components/loaders/preloader/preloader.component';
-import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
-import { PaginatorComponent } from './components/utils/paginator/paginator.component';
-import { DeleteConfirmationComponent } from './components/utils/delete-confirmation/delete-confirmation.component';
-import { CloseConfirmationComponent } from './components/bill/close-confirmation/close-confirmation.component';
-import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
-import { NotificationDetailsComponent } from './components/notification/notification-details/notification-details.component';
-import { TransactionDetailsComponent } from './components/transaction/transaction-details/transaction-details.component';
-import { TransactionDialogComponent } from './components/transaction/transaction-dialog/transaction-dialog.component';
-import { RenewalDetailsComponent } from './components/renewal/renewal-details/renewal-details.component';
-import { RenewalDialogComponent } from './components/renewal/renewal-dialog/renewal-dialog.component';
-import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { UserListComponent } from './components/user/user-list/user-list.component';
-import { UserDialogComponent } from './components/user/user-dialog/user-dialog.component';
-import { PasswordDialogComponent } from './components/user/password-dialog/password-dialog.component';
-import { BillDetailsComponent } from './components/bill/bill-details/bill-details.component';
-import { BillListComponent } from './components/bill/bill-list/bill-list.component';
-import { BillFormComponent } from './components/bill/bill-form/bill-form.component';
-import { BaseReportComponent } from './components/utils/base-report/base-report.component';
-import { AccountDetailsComponent } from './components/account/account-details/account-details.component';
-import { AccountListComponent } from './components/account/account-list/account-list.component';
-import { AccountFormComponent } from './components/account/account-form/account-form.component';
-import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { ToolbarComponent } from './components/utils/toolbar/toolbar.component';
-import { OnlyNumbersDirective } from './directives/only-numbers.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './utils/auth.interceptor';
+import { OnlyNumbersDirective } from './utils/only-numbers.directive';
 
 @NgModule({
-  declarations: [
+  declarations: [...COMPONENTS, ...[
     AppComponent,
-    BoldTextComponent,
-    CenterContainerComponent,
-    SpacerContainerComponent,
-    EmptyContainerComponent,
-    FormContainerComponent,
-    RuleResponseComponent,
-    PreloaderComponent,
-    SpinnerButtonComponent,
-    PaginatorComponent,
-    DeleteConfirmationComponent,
-    CloseConfirmationComponent,
-    NotificationListComponent,
-    NotificationDetailsComponent,
-    TransactionDetailsComponent,
-    TransactionDialogComponent,
-    RenewalDetailsComponent,
-    RenewalDialogComponent,
-    LoginFormComponent,
-    UserListComponent,
-    UserDialogComponent,
-    PasswordDialogComponent,
-    BillDetailsComponent,
-    BillListComponent,
-    BillFormComponent,
-    BaseReportComponent,
-    AccountDetailsComponent,
-    AccountListComponent,
-    AccountFormComponent,
-    MyAccountComponent,
-    ToolbarComponent,
     OnlyNumbersDirective
-  ],
+  ]],
   imports: [
     AppRoutingModule,
-    CommonModule,
-    MaterialModule
+    MaterialModule,
+    NgbModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+bootstrap: [AppComponent]
 })
 export class AppModule { }

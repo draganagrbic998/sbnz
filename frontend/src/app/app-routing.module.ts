@@ -1,21 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { AccountFormComponent } from './components/account/account-form/account-form.component';
 import { AccountListComponent } from './components/account/account-list/account-list.component';
 import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { BaseReportComponent } from './components/utils/base-report/base-report.component';
-import { BillFormComponent } from './components/bill/bill-form/bill-form.component';
+import { BaseReportComponent } from './components/common/base-report/base-report.component';
 import { BillListComponent } from './components/bill/bill-list/bill-list.component';
 import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
 import { LoginFormComponent } from './components/user/login-form/login-form.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
-import { ADMIN, KLIJENT, SLUZBENIK } from './constants/roles';
-import { AuthGuard } from './guard/auth.guard';
+import { ADMIN, KLIJENT, SLUZBENIK } from './utils/constants';
+import { AuthGuard } from './utils/auth.guard';
 
 const routes: Routes = [
   {
-    path: environment.loginRoute,
+    path: environment.loginFormRoute,
     component: LoginFormComponent
   },
   {
@@ -27,12 +25,6 @@ const routes: Routes = [
   {
     path: environment.accountListRoute,
     component: AccountListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: [SLUZBENIK]}
-  },
-  {
-    path: `${environment.accountFormRoute}/:mode`,
-    component: AccountFormComponent,
     canActivate: [AuthGuard],
     data: {roles: [SLUZBENIK]}
   },
@@ -49,16 +41,10 @@ const routes: Routes = [
     data: {roles: [KLIJENT]}
   },
   {
-    path: environment.billFormRoute,
-    component: BillFormComponent,
-    canActivate: [AuthGuard],
-    data: {roles: [KLIJENT]}
-  },
-  {
     path: environment.notificationList,
     component: NotificationListComponent,
     canActivate: [AuthGuard],
-    data: {roles: [KLIJENT]}
+    data: {roles: [ADMIN, KLIJENT]}
   },
   {
     path: environment.baseReport,
@@ -69,7 +55,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: environment.loginRoute
+    redirectTo: environment.loginFormRoute
   }
 ];
 @NgModule({

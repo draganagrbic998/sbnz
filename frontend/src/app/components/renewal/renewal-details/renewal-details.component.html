@@ -1,22 +1,4 @@
-<div class="root mat-elevation-z24">
-    <mat-card>
-        <mat-card-content>
-            <div class="details">
-                <span>
-                    #{{index}}
-                </span>
-                <span>
-                    {{renewal.date | date: "dd MMM yyyy"}}
-                </span>
-            </div>
-            <div class="text">
-                <div>
-                    <app-bold-text>Date: </app-bold-text>{{renewal.date | date: "dd MMM yyyy"}}
-                </div>
-                <div>
-                    <app-bold-text>Renewal amount (in months): </app-bold-text>{{renewal.amount}}
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+<app-details-container [index]="index" [date]="renewal.date">
+    <app-bold-text>Date: </app-bold-text>{{renewal.date | date: "dd MMM yyyy"}}<br>
+    <app-bold-text>Renewal amount: </app-bold-text>{{renewal.amount}}<br>
+</app-details-container>

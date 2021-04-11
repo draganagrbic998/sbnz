@@ -2,32 +2,17 @@ package com.example.demo.dto;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class PasswordChangeDTO {
 	
-	@NotBlank
+	@NotBlank(message = "Old password cannot be blank")
 	private String oldPassword;
 	
-	@NotBlank
+	@NotBlank(message = "New password cannot be blank")
 	private String newPassword;
-	
-	public PasswordChangeDTO() {
-		super();
-	}
-
-	public String getOldPassword() {
-		return oldPassword;
-	}
-
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
 
 }

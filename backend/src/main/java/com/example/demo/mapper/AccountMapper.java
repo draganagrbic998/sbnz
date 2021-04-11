@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,64 +19,53 @@ import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Component
 public class AccountMapper {
 
-	@Autowired
-	private AuthorityRepository authorityRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
-		
-	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final AuthorityRepository authorityRepository;
+	private final UserRepository userRepository;
+	private final AccountRepository accountRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Transactional(readOnly = true)
 	public Account map(AccountDTO accountDTO) {
-		Account account = new Account();
-		account.setJmbg(accountDTO.getJmbg());
-		account.setBirthDate(accountDTO.getBirthDate());
-		account.setAddress(accountDTO.getAddress());
-		account.setCity(accountDTO.getCity());
-		account.setZipCode(accountDTO.getZipCode());
-		account.setBalance(1000000);
 		User user = new User();
 		Set<Authority> authorities = new HashSet<>();
-		authorities.add(this.authorityRepository.findByName(Role.KLIJENT.name()));
+		authorities.add(this.authorityRepository.findByName(Role.KLIJENT));
 		user.setAuthorities(authorities);
-		user.setEmail(accountDTO.getEmail());	
 		user.setPassword(this.passwordEncoder.encode(UUID.randomUUID().toString()));
-		user.setFirstName(accountDTO.getFirstName());
-		user.setLastName(accountDTO.getLastName());
-		account.setUser(user);
+		Account account = new Account();
+		account.setBalance(1000000);
 		user.setAccount(account);
+		account.setUser(user);
+		this.setModel(user, account, accountDTO);
 		return account;
 	}
 	
 	@Transactional(readOnly = true)
 	public Account map(long id, AccountDTO accountDTO) {
-		Account account = this.accountRepository.findById(id).get();
-		account.setJmbg(accountDTO.getJmbg());
-		account.setBirthDate(accountDTO.getBirthDate());
-		account.setAddress(accountDTO.getAddress());
-		account.setCity(accountDTO.getCity());
-		account.setZipCode(accountDTO.getZipCode());
 		User user = this.userRepository.findByAccountId(id);
-		user.setEmail(accountDTO.getEmail());
-		user.setFirstName(accountDTO.getFirstName());
-		user.setLastName(accountDTO.getLastName());
+		Account account = this.accountRepository.findById(id).get();
+		this.setModel(user, account, accountDTO);
 		return account;
-	}
-
-	public AccountDTO map(Account account) {
-		return new AccountDTO(account);
 	}
 
 	public List<AccountDTO> map(List<Account> accounts) {
 		return accounts.stream().map(AccountDTO::new).collect(Collectors.toList());
 	}
-
+	
+	private void setModel(User user, Account account, AccountDTO accountDTO) {
+		user.setEmail(accountDTO.getEmail());
+		user.setFirstName(accountDTO.getFirstName());
+		user.setLastName(accountDTO.getLastName());
+		account.setBirthDate(accountDTO.getBirthDate());
+		account.setJmbg(accountDTO.getJmbg());
+		account.setAddress(accountDTO.getAddress());
+		account.setCity(accountDTO.getCity());
+		account.setZipCode(accountDTO.getZipCode());
+	}
+	
 }

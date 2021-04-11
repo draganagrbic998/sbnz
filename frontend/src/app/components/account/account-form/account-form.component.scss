@@ -1,11 +1,13 @@
-.row{
+form{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-width: 800px;
+    width: 700px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.row > div{
+form > div{
     width: 45%;
-    margin: 15px;
+    margin: 10px;
 }

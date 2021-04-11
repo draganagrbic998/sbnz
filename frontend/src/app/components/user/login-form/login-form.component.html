@@ -1,41 +1,40 @@
-<br><br><br><br>
-<app-form-container>
-    <h1>Log In</h1>
-    <br><br><br>
-    <form [formGroup]="loginForm">
-        <div [class.disabled]="loginPending">
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input 
-                formControlName="email" 
-                matInput 
-                autocomplete="off"
-                placeholder="Enter email">
-                <mat-error>
-                    Email is required!
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input 
-                formControlName="password"
-                type="password" 
-                matInput 
-                autocomplete="off"
-                placeholder="Enter password">
-                <mat-error>
-                    Password is required!
-                </mat-error>    
-            </mat-form-field>
-        </div>
-        <br><br><br>
-        <app-center-container>
-            <button 
-            *ngIf="!loginPending"
-            mat-raised-button 
-            color="primary"
-            (click)="login()">Login</button>
-            <app-spinner-button *ngIf="loginPending"></app-spinner-button>
-        </app-center-container>
-    </form>
-</app-form-container>
+<div class="root">
+    <mat-card class="mat-elevation-z24">
+        <mat-card-content>
+            <h1>Log In</h1>
+            <form [formGroup]="loginForm">
+                <div [class.disabled]="pending">
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input 
+                        formControlName="email" 
+                        matInput 
+                        placeholder="Enter email">
+                        <mat-error>
+                            Email is required!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input 
+                        formControlName="password"
+                        type="password" 
+                        matInput 
+                        placeholder="Enter password">
+                        <mat-error>
+                            Password is required!
+                        </mat-error>    
+                    </mat-form-field>
+                </div>
+                <div class="center">
+                    <button 
+                    *ngIf="!pending"
+                    (click)="login()"
+                    mat-raised-button 
+                    color="primary">Login</button>
+                    <app-spinner-button *ngIf="pending"></app-spinner-button>
+                </div>
+            </form>    
+        </mat-card-content>
+    </mat-card>
+</div>

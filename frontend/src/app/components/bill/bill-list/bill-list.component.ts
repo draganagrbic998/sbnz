@@ -1,10 +1,9 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Bill } from 'src/app/models/bill';
 import { Pagination } from 'src/app/models/pagination';
-import { BillService } from 'src/app/services/bill/bill.service';
+import { BillService } from 'src/app/services/bill.service';
+import { Page } from 'src/app/models/page';
 
 @Component({
   selector: 'app-bill-list',
@@ -19,7 +18,7 @@ export class BillListComponent implements OnInit {
   ) { }
 
   bills: Bill[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     firstPage: true,
     lastPage: true,
@@ -33,22 +32,14 @@ export class BillListComponent implements OnInit {
   }
 
   fetchBills(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.billService.findAll(this.route.snapshot.params.type, this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Bill[]>) => {
-        this.fetchPending = false;
-        if (data){
-          this.bills = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.bills = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+      (page: Page<Bill>) => {
+        this.pending = false;
+        this.bills = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }

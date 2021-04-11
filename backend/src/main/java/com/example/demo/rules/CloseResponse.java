@@ -1,28 +1,13 @@
 package com.example.demo.rules;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class CloseResponse {
 
 	private boolean valid;
 	private String message;
-	
-	public CloseResponse() {
-		super();
-	}
-
-	public boolean isValid() {
-		return valid;
-	}
-
-	public void setValid(boolean valid) {
-		this.valid = valid;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
 	
 }

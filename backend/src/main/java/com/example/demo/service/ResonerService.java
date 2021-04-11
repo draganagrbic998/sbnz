@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.rules.BillRequest;
@@ -17,11 +16,13 @@ import com.example.demo.model.Account;
 import com.example.demo.model.Bill;
 import com.example.demo.utils.Constants;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class ResonerService {
 	
-	@Autowired
-	private KieContainer kieContainer;
+	private final KieContainer kieContainer;
 	
 	public BillResponse createBill(Account account, BillRequest request) {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CREATE_RULES);
@@ -76,9 +77,9 @@ public class ResonerService {
 		return response;
 	}
 
-	public List<Account> advancedReport(List<Account> accounts, int reportNumber){
-		String agendaGroup = reportNumber == 1 ? Constants.FIRST_REPORT : 
-			reportNumber == 2 ? Constants.SECOND_REPORT : Constants.THIRD_REPORT;
+	public List<Account> advancedReport(List<Account> accounts, int index){
+		String agendaGroup = index == 1 ? Constants.FIRST_REPORT : 
+			index == 2 ? Constants.SECOND_REPORT : Constants.THIRD_REPORT;
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.REPORT_RULES);
 		kieSession.getAgenda().getAgendaGroup(agendaGroup).setFocus();
 		kieSession.insert(accounts);

@@ -1,124 +1,93 @@
-<br>
-<app-form-container>
-    <h1>{{account.id ? 'Edit' : 'New'}} Account</h1>
-    <br><br><br>
-    <form [formGroup]="accountForm">
-        <div [class.disabled]="savePending" class="row">
-            <div>
-                <mat-form-field>
-                    <mat-label>First name</mat-label>
-                    <input 
-                    formControlName="firstName" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter first name">
-                    <mat-error>
-                        First name is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Last name</mat-label>
-                    <input 
-                    formControlName="lastName" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter last name">
-                    <mat-error>
-                        Last name is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>JMBG</mat-label>
-                    <input 
-                    appOnlyNumbers
-                    maxlength="13"
-                    formControlName="jmbg" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter JMBG">
-                    <mat-error>
-                        Valid JMBG is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field> 
-                    <mat-label>Birth date</mat-label>
-                    <input 
-                    formControlName="birthDate"
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter birth date"
-                    [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                    <mat-error>
-                        Valid birth date is required!
-                    </mat-error>    
-                </mat-form-field>    
-            </div>
-            <div>
-                <mat-form-field>
-                    <mat-label>Address</mat-label>
-                    <input 
-                    formControlName="address" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter address">
-                    <mat-error>
-                        Address is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>City</mat-label>
-                    <input 
-                    formControlName="city" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter city">
-                    <mat-error>
-                        City is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Zip code</mat-label>
-                    <input 
-                    formControlName="zipCode" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter zip code">
-                    <mat-error>
-                        Zip code is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Email</mat-label>
-                    <input 
-                    formControlName="email" 
-                    matInput 
-                    autocomplete="off"
-                    placeholder="Enter email">
-                    <mat-error>
-                        Valid email is required!
-                    </mat-error>
-                </mat-form-field>    
-            </div>
+<app-dialog-container [title]="account.id ? 'Edit Account' : 'New Account'" 
+[pending]="pending" [disabled]="accountForm.invalid" (confirmed)="confirm()">
+    <form [formGroup]="accountForm" [class.disabled]="pending">
+        <div>
+            <mat-form-field>
+                <mat-label>First name</mat-label>
+                <input 
+                formControlName="firstName" 
+                matInput 
+                placeholder="Enter first name">
+                <mat-error>
+                    Valid first name is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Last name</mat-label>
+                <input 
+                formControlName="lastName" 
+                matInput 
+                placeholder="Enter last name">
+                <mat-error>
+                    Valid last name is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>JMBG</mat-label>
+                <input 
+                maxlength="13"
+                formControlName="jmbg" 
+                matInput 
+                placeholder="Enter JMBG">
+                <mat-error>
+                    Valid JMBG is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field> 
+                <mat-label>Birth date</mat-label>
+                <input 
+                formControlName="birthDate"
+                matInput 
+                placeholder="Enter birth date"
+                [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+                <mat-error>
+                    Valid birth date is required!
+                </mat-error>    
+            </mat-form-field>    
         </div>
-        <br><br><br>
-        <app-spacer-container>
-            <span>
-                <button 
-                *ngIf="!savePending"
-                mat-raised-button 
-                color="primary"
-                (click)="location.back()">Back</button>
-            </span>
-            <span>
-                <button 
-                *ngIf="!savePending"
-                mat-raised-button 
-                color="accent"
-                (click)="save()">Save</button>
-                <app-spinner-button *ngIf="savePending"></app-spinner-button>    
-            </span>
-        </app-spacer-container>
+        <div>
+            <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input 
+                formControlName="address" 
+                matInput 
+                placeholder="Enter address">
+                <mat-error>
+                    Valid address is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>City</mat-label>
+                <input 
+                formControlName="city" 
+                matInput 
+                placeholder="Enter city">
+                <mat-error>
+                    Valid city is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Zip code</mat-label>
+                <input 
+                formControlName="zipCode" 
+                matInput 
+                placeholder="Enter zip code">
+                <mat-error>
+                    Valid zip code is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input 
+                formControlName="email" 
+                matInput 
+                placeholder="Enter email">
+                <mat-error>
+                    Valid email is required!
+                </mat-error>
+            </mat-form-field>    
+        </div>
     </form>
-</app-form-container>
+</app-dialog-container>

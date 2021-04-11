@@ -1,7 +1,6 @@
   
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,30 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.PasswordChangeDTO;
-import com.example.demo.dto.ProfileDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.TokenUtils;
-import com.example.demo.utils.Email;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private EmailService emailService;
-		
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private AuthenticationManager authManager;
-
-	@Autowired
-	private TokenUtils tokenUtils;
+	private final UserRepository userRepository;
+	private final EmailService emailService;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authManager;
+	private final TokenUtils tokenUtils;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
@@ -50,29 +42,13 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional(readOnly = false)
-	public User save(User user) {
-		boolean emailVerification = user.getId() == null;
-		user = this.userRepository.save(user);
-		if (emailVerification) {
-			this.emailService.sendEmail(new Email(
-				user.getEmail(),
-				EmailService.ACTIVATION_TITLE,
-				String.format(EmailService.ACTIVATION_TEXT, 
-						user.getFirstName(), user.getLastName(), 
-						user.getActivationLink(), user.getPassword())
-			));			
-		}
-		return user;
-	}
-
-	@Transactional(readOnly = false)
 	public void delete(long id) {
 		this.userRepository.deleteById(id);
 	}
 	
-	public ProfileDTO login(LoginDTO loginDTO) {
+	public UserDTO login(LoginDTO loginDTO) {
 		User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
-		return new ProfileDTO(user, this.tokenUtils.generateToken(loginDTO.getEmail()));
+		return new UserDTO(user, this.tokenUtils.generateToken(loginDTO.getEmail()));
 	}
 
 	@Transactional(readOnly = false)
@@ -91,6 +67,22 @@ public class UserService implements UserDetailsService {
 		this.save(user);
 	}
 	
+	@Transactional(readOnly = false)
+	public User save(User user) {
+		boolean emailVerification = user.getId() == null;
+		user = this.userRepository.save(user);
+		if (emailVerification) {
+			this.emailService.sendEmail(
+				user.getEmail(),
+				EmailService.ACTIVATION_TITLE,
+				String.format(EmailService.ACTIVATION_TEXT, 
+						user.getFirstName(), user.getLastName(), 
+						user.getActivationLink(), user.getPassword())
+			);			
+		}
+		return user;
+	}
+
 	public User currentUser() {
 		try {
 			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

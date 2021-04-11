@@ -45,7 +45,7 @@ public class TestEvents {
 		KieServices kieService = KieServices.Factory.get();
 		KieContainer kieContainer = kieService.newKieContainer(kieService
 				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
-		this.kieSession = kieContainer.newKieSession(Constants.EVENTS_RULES_PSEUDO);
+		this.kieSession = kieContainer.newKieSession(Constants.EVENT_RULES_PSEUDO);
         this.kieSession.setGlobal("notificationService", this.notificationService);
         this.kieSession.setGlobal("account", this.account);
         

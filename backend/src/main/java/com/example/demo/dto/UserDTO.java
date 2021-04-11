@@ -1,28 +1,33 @@
 package com.example.demo.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class UserDTO {
 	
 	private Long id;
+	private String token;
+
+	@NotBlank(message = "Role cannot be blank")
+	private Role role;
 	
-	@NotBlank
-	private String role;
-	
-	@NotBlank
+	@Email(message = "Email must be valid")
+	@NotBlank(message = "Email cannot be blank")
 	private String email;
 	
-	@NotBlank
+	@NotBlank(message = "First name cannot be blank")
 	private String firstName;
 	
-	@NotBlank
+	@NotBlank(message = "Last name cannot be blank")
 	private String lastName;
-	
-	public UserDTO() {
-		super();
-	}
 	
 	public UserDTO(User user) {
 		super();
@@ -32,45 +37,10 @@ public class UserDTO {
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 	
+	public UserDTO(User user, String token) {
+		this(user);
+		this.token = token;
+	}
+
 }

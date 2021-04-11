@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
@@ -25,7 +24,6 @@ import com.example.demo.utils.Constants;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebMvc
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -69,9 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/h2").permitAll()
 			.and().cors().and()
-			.addFilterBefore(new AuthFilter(this.userService, this.tokenUtils), BasicAuthenticationFilter.class);
-		http.csrf().disable();
-    	http.headers().frameOptions().disable();
+			.addFilterBefore(new AuthFilter(this.userService, this.tokenUtils), BasicAuthenticationFilter.class)
+			.csrf().disable().headers().frameOptions().disable();
 	}
 		
 }

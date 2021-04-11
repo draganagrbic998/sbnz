@@ -32,7 +32,7 @@ public class EventService {
 	}
 	
 	private void initSession(Account account) {
-		KieSession kieSession = this.kieContainer.newKieSession(Constants.EVENTS_RULES_REALTIME);
+		KieSession kieSession = this.kieContainer.newKieSession(Constants.EVENT_RULES_REALTIME);
 		kieSession.setGlobal("notificationService", this.notificationService);
 		kieSession.setGlobal("account", account);
         new Thread() {

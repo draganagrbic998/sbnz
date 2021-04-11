@@ -12,30 +12,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 	
-	private UserDetailsService userService;
-	private TokenUtils tokenUtils;
+	private static final String AUTH_HEADER = "Authorization";
 	
-	public AuthFilter(UserDetailsService userService, TokenUtils tokenUtils) {
-		super();
-		this.userService = userService;
-		this.tokenUtils = tokenUtils;
-	}
+	private final UserDetailsService userService;
+	private final TokenUtils tokenUtils;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		String token = this.tokenUtils.getToken(request);
-		if (token != null) {
-			String username = this.tokenUtils.getUsername(token);
-			if (username != null) {
-				UserDetails user = this.userService.loadUserByUsername(username);
-				if (user != null && this.tokenUtils.validateToken(token, user)) {
-					AuthToken authToken = new AuthToken(user, token);
-					SecurityContextHolder.getContext().setAuthentication(authToken);
-				}
+		String token = request.getHeader(AUTH_HEADER);
+		if (token != null && !token.trim().equals("")) {
+			UserDetails user = this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
+			if (user != null && this.tokenUtils.validateToken(user, token)) {
+				AuthToken authToken = new AuthToken(user, token);
+				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
 		filterChain.doFilter(request, response);		

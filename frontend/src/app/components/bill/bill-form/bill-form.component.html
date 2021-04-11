@@ -1,91 +1,53 @@
-<app-form-container>
-    <h3>Bill Params</h3>
-    <form [formGroup]="billForm">
-        <div [class.disabled]="responsePending">
-            <mat-form-field>
-                <mat-label>Bill type</mat-label>
-                <mat-select formControlName="type" placeholder="Select type">
-                    <mat-option value="RSD">RSD</mat-option>
-                    <mat-option value="EUR">EUR</mat-option>
-                    <mat-option value="USD">USD</mat-option>
-                    <mat-option value="CHF">CHF</mat-option>
-                    <mat-option value="GBP">GBP</mat-option>
-                    <mat-option value="RUB">RUB</mat-option>
-                </mat-select>
-                <mat-error>
-                    Bill type is required!
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Number of months</mat-label>
-                <input 
-                appOnlyNumbers
-                formControlName="months" 
-                matInput 
-                autocomplete="off"
-                placeholder="Enter number of months">
-                <mat-error>
-                    Valid number of months is required!
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Base balance</mat-label>
-                <input 
-                appOnlyNumbers
-                formControlName="base" 
-                matInput 
-                autocomplete="off"
-                placeholder="Enter base balance">
-                <mat-error>
-                    Valid base balance is required!
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <br><br>
-        <div *ngIf="response">
-            <h3>Response Terms</h3>
-            <app-rule-response *ngIf="response?.valid==false">
-                <app-bold-text>Error: </app-bold-text>{{response.message}}
-            </app-rule-response>
-            <app-rule-response *ngIf="response?.valid">
-                <div>
-                    <app-bold-text>NKS: </app-bold-text>{{response.nks * 100}}%
-                </div>
-                <div>
-                    <app-bold-text>EKS: </app-bold-text>{{response.eks * 100}}%
-                </div>
-                <div>
-                    <app-bold-text>Reward: </app-bold-text>{{response.reward}} RSD
-                </div>
-            </app-rule-response>
-            <br><br>    
-        </div>
-        <app-spacer-container>
-            <span>
-                <button 
-                *ngIf="response && !responsePending && !acceptPending"
-                mat-raised-button 
-                color="primary"
-                (click)="reset()">Reset</button>
-                <button 
-                *ngIf="!response && !responsePending && !acceptPending"
-                mat-raised-button 
-                color="primary"
-                (click)="location.back()">Back</button>
-            </span>
-            <span>
-                <button 
-                *ngIf="!acceptPending && response?.valid"
-                mat-raised-button 
-                color="accent"
-                (click)="accept()">Accept</button>
-                <button 
-                *ngIf="!responsePending && !response?.valid"
-                mat-raised-button 
-                color="accent"
-                (click)="send()">Send</button>
-                <app-spinner-button *ngIf="responsePending || acceptPending"></app-spinner-button>    
-            </span>
-        </app-spacer-container>
+<app-dialog-container 
+[pending]="pending" [disabled]="billForm.invalid"
+(confirmed)="response?.valid ? accept() : send()" title="Bill Params">
+    <form [formGroup]="billForm" [class.disabled]="pending || response?.valid">
+        <mat-form-field>
+            <mat-label>Bill type</mat-label>
+            <mat-select formControlName="type" placeholder="Select type">
+                <mat-option value="RSD">RSD</mat-option>
+                <mat-option value="EUR">EUR</mat-option>
+                <mat-option value="USD">USD</mat-option>
+                <mat-option value="CHF">CHF</mat-option>
+                <mat-option value="GBP">GBP</mat-option>
+                <mat-option value="RUB">RUB</mat-option>
+            </mat-select>
+            <mat-error>
+                Bill type is required!
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Number of months</mat-label>
+            <input 
+            appOnlyNumbers
+            formControlName="months" 
+            matInput 
+            placeholder="Enter number of months">
+            <mat-error>
+                Valid number of months is required!
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Base balance</mat-label>
+            <input 
+            appOnlyNumbers
+            formControlName="base" 
+            matInput 
+            placeholder="Enter base balance">
+            <mat-error>
+                Valid base balance is required!
+            </mat-error>
+        </mat-form-field>
     </form>
-</app-form-container>
+    <div *ngIf="response">
+        <h5>Response Terms</h5>
+        <app-rule-response *ngIf="response?.valid==false">
+            <app-bold-text>Error: </app-bold-text>{{response.message}}
+        </app-rule-response>
+        <app-rule-response *ngIf="response?.valid">
+            <app-bold-text>NKS: </app-bold-text>{{response.nks * 100}}%<br>
+            <app-bold-text>EKS: </app-bold-text>{{response.eks * 100}}%<br>
+            <app-bold-text>Reward: </app-bold-text>{{response.reward}} RSD<br>
+        </app-rule-response>
+    </div>
+</app-dialog-container>

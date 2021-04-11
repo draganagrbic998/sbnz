@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.example.demo.utils.Constants;
 
 @Configuration
-@EnableAsync
 @EnableTransactionManagement
+@EnableAsync
 public class AppConfig {
 
 	@Bean

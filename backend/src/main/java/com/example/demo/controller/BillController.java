@@ -1,14 +1,9 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,60 +24,52 @@ import com.example.demo.rules.CloseResponse;
 import com.example.demo.rules.IncreaseResponse;
 import com.example.demo.rules.RenewalResponse;
 import com.example.demo.rules.ReportResponse;
-import com.example.demo.mapper.BillMapper;
-import com.example.demo.model.Bill;
 import com.example.demo.service.BillService;
-import com.example.demo.utils.Constants;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
-@RequestMapping(value = "/bills", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/bills", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('KLIJENT')")	
 public class BillController {
 
-	@Autowired
-	private BillService billService;
-	
-	@Autowired
-	private BillMapper billMapper;
-		
+	private final BillService billService;
+			
 	@GetMapping
-	public ResponseEntity<List<BillDTO>> findAll(@RequestParam boolean rsd, Pageable pageable, @RequestParam String search, HttpServletResponse response){
-		Page<Bill> bills = this.billService.findAll(rsd, pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
-		response.setHeader(Constants.FIRST_PAGE, bills.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE, bills.isLast() + "");
-		return new ResponseEntity<>(this.billMapper.map(bills.toList()), HttpStatus.OK);
+	public ResponseEntity<Page<BillDTO>> findAll(@RequestParam boolean rsd, Pageable pageable, @RequestParam String search){
+		return ResponseEntity.ok(this.billService.findAll(rsd, pageable, search).map(BillDTO::new));
 	}
 
 	@PostMapping
 	public ResponseEntity<BillResponse> create(@Valid @RequestBody BillRequest request){
-		return new ResponseEntity<>(this.billService.create(request), HttpStatus.CREATED);
+		return ResponseEntity.ok(this.billService.create(request));
 	}
 	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<CloseResponse> delete(@PathVariable long id){
+		return ResponseEntity.ok(this.billService.close(id));
+	}
+
 	@PostMapping(value = "/terms")
 	public ResponseEntity<BillResponse> terms(@Valid @RequestBody BillRequest request){
-		return new ResponseEntity<>(this.billService.terms(request), HttpStatus.OK);
+		return ResponseEntity.ok(this.billService.terms(request));
 	}
 
 	@PutMapping(value = "/{id}/increase/{amount}")
 	public ResponseEntity<IncreaseResponse> increase(@PathVariable long id, @PathVariable int amount){
-		return new ResponseEntity<>(this.billService.increase(id, amount), HttpStatus.OK);
+		return ResponseEntity.ok(this.billService.increase(id, amount));
 	}
 
 	@PutMapping(value = "/{id}/renew/{amount}")
 	public ResponseEntity<RenewalResponse> renew(@PathVariable long id, @PathVariable int amount){
-		return new ResponseEntity<>(this.billService.renew(id, amount), HttpStatus.OK);
-	}
-
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<CloseResponse> close(@PathVariable long id){
-		return new ResponseEntity<>(this.billService.close(id), HttpStatus.OK);
+		return ResponseEntity.ok(this.billService.renew(id, amount));
 	}
 
 	@GetMapping(value = "/base-report")
 	@PreAuthorize("hasAuthority('SLUZBENIK')")	
 	public ResponseEntity<ReportResponse> baseReport(){
-		return new ResponseEntity<>(this.billService.baseReport(), HttpStatus.OK);
+		return ResponseEntity.ok(this.billService.baseReport());
 	}
 
 }

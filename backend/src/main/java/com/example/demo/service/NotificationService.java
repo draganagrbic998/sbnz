@@ -1,23 +1,31 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Notification;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 import com.example.demo.repository.NotificationRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class NotificationService {
 
-	@Autowired
-	private NotificationRepository notificationRepository;
-		
+	private final NotificationRepository notificationRepository;
+	private final UserService userService;
+	
 	public Page<Notification> findAll(Pageable pageable) {
-		return this.notificationRepository.findAll(pageable);
+		User user = this.userService.currentUser();
+		if (user.getAuthority().getName().equals(Role.ADMIN)) {
+			return this.notificationRepository.findByAccountIsNull(pageable);			
+		}
+		return this.notificationRepository.findByAccountId(pageable, user.getAccount().getId());
 	}
 
 	@Transactional(readOnly = false)

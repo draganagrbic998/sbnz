@@ -1,6 +1,6 @@
-<app-preloader *ngIf="fetchPending"></app-preloader>
+<app-preloader *ngIf="pending"></app-preloader>
 
-<div class="root" *ngIf="!fetchPending">
+<div class="root" *ngIf="!pending">
   <div class="mat-elevation-z24">
     <table mat-table [dataSource]="users">
       
@@ -31,20 +31,20 @@
             <span>
               <button 
               *ngIf="user.role==='SLUZBENIK'"
-              matTooltip="Edit"
+              (click)="edit(user)"
               mat-icon-button 
-              color="primary"
-              (click)="edit(user)">
+              matTooltip="Edit"
+              color="primary">
                   <mat-icon>edit</mat-icon>
               </button>
             </span>
             <span>
               <button 
               *ngIf="user.role==='SLUZBENIK'"
-              matTooltip="Delete"
+              (click)="delete(user.id)"
               mat-icon-button 
-              color="warn"
-              (click)="delete(user.id)">
+              matTooltip="Delete"
+              color="warn">
                   <mat-icon>delete</mat-icon>
               </button>
           </span>
@@ -64,7 +64,7 @@
         <span>
           <app-paginator 
           [small]="true" 
-          [pending]="fetchPending"
+          [pending]="pending"
           [pagination]="pagination" 
           (changedPage)="changePage($event)"
           ></app-paginator>

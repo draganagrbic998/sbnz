@@ -1,11 +1,10 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
-import { BillRequest } from 'src/app/models/bill-request';
+import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 import { BillResponse } from 'src/app/models/bill-response';
-import { BillService } from 'src/app/services/bill/bill.service';
+import { BillService } from 'src/app/services/bill.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-bill-form',
@@ -16,8 +15,8 @@ export class BillFormComponent implements OnInit {
 
   constructor(
     private billService: BillService,
-    private snackBar: MatSnackBar,
-    public location: Location
+    private dialogRef: MatDialogRef<BillFormComponent>,
+    private snackBar: MatSnackBar
   ) { }
 
   billForm: FormGroup = new FormGroup({
@@ -26,21 +25,18 @@ export class BillFormComponent implements OnInit {
     base: new FormControl('', [Validators.required]),
   });
 
-  request: BillRequest;
   response: BillResponse;
-  responsePending = false;
-  acceptPending = false;
+  pending = false;
 
   send(): void{
     if (this.billForm.invalid){
       return;
     }
-    this.request = this.billForm.value;
-    this.responsePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
-    this.billService.terms(this.request).subscribe(
+    this.billService.terms(this.billForm.value).subscribe(
       (response: BillResponse) => {
-        this.responsePending = false;
+        this.pending = false;
         if (response){
           this.response = response;
         }
@@ -52,27 +48,21 @@ export class BillFormComponent implements OnInit {
   }
 
   accept(): void{
-    this.acceptPending = false;
+    this.pending = false;
     // tslint:disable-next-line: deprecation
-    this.billService.create(this.request).subscribe(
+    this.billService.create(this.billForm.value).subscribe(
       (response: BillResponse) => {
-        this.acceptPending = false;
+        this.pending = false;
         if (response){
+          this.billService.announceRefreshData();
           this.snackBar.open('Bill saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
-          this.reset();
+          this.dialogRef.close();
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
         }
       }
     );
-  }
-
-  reset(): void{
-    this.billForm.reset();
-    this.billForm.clearValidators();
-    this.request = null;
-    this.response = null;
   }
 
   ngOnInit(): void {

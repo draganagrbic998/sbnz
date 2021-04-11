@@ -2,32 +2,32 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.exception.MyException;
 import com.example.demo.model.Account;
 import com.example.demo.model.BillStatus;
 import com.example.demo.repository.AccountRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class AccountService {
 
-	@Autowired
-	private AccountRepository accountRepository;
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private ResonerService resonserService;
+	private final AccountRepository accountRepository;
+	private final UserService userService;
+	private final ResonerService resonserService;
 		
 	public Page<Account> findAll(Pageable pageable, String search) {
 		return this.accountRepository.findAll(pageable, search);
+	}
+
+	public Account findOne() {
+		return this.accountRepository.findByUserId(this.userService.currentUser().getId());
 	}
 
 	@Transactional(readOnly = false)
@@ -39,18 +39,15 @@ public class AccountService {
 	@Transactional(readOnly = false)
 	public void delete(long id) {
 		Account account = this.accountRepository.findById(id).get();
-		if (account.getBills().stream().filter(bill -> bill.getStatus().equals(BillStatus.ACTIVE)).count() > 0) {
-			throw new MyException();
+		if (account.getBills().stream().filter(
+				bill -> bill.getStatus().equals(BillStatus.ACTIVE)).count() > 0) {
+			throw new RuntimeException();
 		}
 		this.accountRepository.deleteById(id);
 	}
-
-	public Account myAccount() {
-		return this.accountRepository.findByUserId(this.userService.currentUser().getId());
-	}
 	
-	public List<Account> advancedReport(int reportNumber){
-		return this.resonserService.advancedReport(this.accountRepository.findAll(), reportNumber);
+	public List<Account> advancedReport(int index){
+		return this.resonserService.advancedReport(this.accountRepository.findAll(), index);
 	}
 
 }

@@ -1,41 +1,19 @@
 package com.example.demo.rules;
 
-import com.example.demo.model.BillType;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
+import com.example.demo.model.BillType;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class BillRequest {
 	
-	@NotNull
+	@NotNull(message = "Type cannot be null")
 	private BillType type;
 	private double base;
 	private int months;
-	
-	public BillRequest() {
-		super();
-	}
-
-	public BillType getType() {
-		return type;
-	}
-
-	public void setType(BillType type) {
-		this.type = type;
-	}
-
-	public double getBase() {
-		return base;
-	}
-
-	public void setBase(double base) {
-		this.base = base;
-	}
-
-	public int getMonths() {
-		return months;
-	}
-
-	public void setMonths(int months) {
-		this.months = months;
-	}
 
 }

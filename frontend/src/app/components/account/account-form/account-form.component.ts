@@ -1,12 +1,10 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
+import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 import { Account } from 'src/app/models/account';
-import { AccountService } from 'src/app/services/account/account.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { AccountService } from 'src/app/services/account.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-account-form',
@@ -16,15 +14,13 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 export class AccountFormComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService,
+    @Inject(MAT_DIALOG_DATA) public account: Account,
     private accountService: AccountService,
-    private snackBar: MatSnackBar,
-    public location: Location,
-    private route: ActivatedRoute
+    private dialogRef: MatDialogRef<AccountFormComponent>,
+    private snackBar: MatSnackBar
   ) { }
 
-  account: Account = {} as Account;
-  savePending = false;
+  pending = false;
   accountForm: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     lastName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
@@ -37,21 +33,19 @@ export class AccountFormComponent implements OnInit {
     Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')])
   });
 
-  save(): void{
+  confirm(): void{
     if (this.accountForm.invalid){
       return;
     }
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.accountService.save({...this.account, ...this.accountForm.value}).subscribe(
       (account: Account) => {
-        this.savePending = false;
+        this.pending = false;
         if (account){
+          this.accountService.announceRefreshData();
           this.snackBar.open('Account saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
-          if (!this.account.id){
-            this.accountForm.reset();
-            this.accountForm.clearValidators();
-          }
+          this.dialogRef.close();
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
@@ -71,11 +65,8 @@ export class AccountFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.route.snapshot.params.mode === 'edit'){
-      this.account = this.storageService.get(this.storageService.ACCOUNT_KEY) as Account;
-      this.accountForm.reset(this.account);
-      this.accountForm.controls.birthDate.reset(new Date(this.account.birthDate));
-    }
+    this.accountForm.reset(this.account);
+    this.accountForm.controls.birthDate.reset(new Date(this.account.birthDate));
   }
 
 }

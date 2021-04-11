@@ -1,9 +1,8 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Account } from 'src/app/models/account';
 import { Pagination } from 'src/app/models/pagination';
-import { AccountService } from 'src/app/services/account/account.service';
+import { AccountService } from 'src/app/services/account.service';
+import { Page } from 'src/app/models/page';
 
 @Component({
   selector: 'app-account-list',
@@ -17,7 +16,7 @@ export class AccountListComponent implements OnInit {
   ) { }
 
   accounts: Account[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     firstPage: true,
     lastPage: true,
@@ -31,32 +30,24 @@ export class AccountListComponent implements OnInit {
   }
 
   fetchAccounts(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.accountService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Account[]>) => {
-        this.fetchPending = false;
-        if (data){
-          this.accounts = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.accounts = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+      (page: Page<Account>) => {
+        this.pending = false;
+        this.accounts = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }
 
   getReport(index: number): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.accountService.getReport(index).subscribe(
       (accounts: Account[]) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.accounts = accounts;
         this.pagination.firstPage = true;
         this.pagination.lastPage = true;

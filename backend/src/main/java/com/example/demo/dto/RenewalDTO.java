@@ -4,15 +4,16 @@ import java.time.LocalDate;
 
 import com.example.demo.model.Renewal;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class RenewalDTO {
 
 	private long id;
 	private LocalDate date;
 	private int amount;
-	
-	public RenewalDTO() {
-		super();
-	}
 
 	public RenewalDTO(Renewal renewal) {
 		super();
@@ -21,28 +22,4 @@ public class RenewalDTO {
 		this.amount = renewal.getAmount();
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-	
 }

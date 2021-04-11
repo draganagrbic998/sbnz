@@ -1,12 +1,6 @@
-<app-preloader *ngIf="fetchPending"></app-preloader>
+<app-preloader *ngIf="pending"></app-preloader>
+<app-empty-container *ngIf="!pending && !account" title="ERROR LOADING ACCOUNT"></app-empty-container>
 
-<app-empty-container *ngIf="!fetchPending && !account" 
-[title]="'ERROR LOADING ACCOUNT'"></app-empty-container>
-
-<div *ngIf="!fetchPending && account">
-    <app-account-details 
-    *ngIf="!fetchPending"
-    [account]="account"
-    [big]="true"
-    ></app-account-details>
+<div *ngIf="!pending && account">
+    <app-account-details [account]="account" [myAccount]="true"></app-account-details>
 </div>

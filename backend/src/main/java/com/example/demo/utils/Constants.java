@@ -13,16 +13,12 @@ public class Constants {
 	public static final String RENEW_RULES = "renew-rules";
 	public static final String CLOSE_RULES = "close-rules";
 	public static final String REPORT_RULES = "report-rules";
-	public static final String EVENTS_RULES_REALTIME = "events-rules-realtime";
-	public static final String EVENTS_RULES_PSEUDO = "events-rules-pseudo";
+	public static final String EVENT_RULES_REALTIME = "events-rules-realtime";
+	public static final String EVENT_RULES_PSEUDO = "events-rules-pseudo";
 	
 	public static final String BASE_REPORT = "base-report";
 	public static final String FIRST_REPORT = "first-report";
 	public static final String SECOND_REPORT = "second-report";
 	public static final String THIRD_REPORT = "third-report";
-
-	public static final String ENABLE_HEADER = "Access-Control-Expose-Headers";
-	public static final String FIRST_PAGE = "First-Page";
-	public static final String LAST_PAGE = "Last-Page";
 	
 }

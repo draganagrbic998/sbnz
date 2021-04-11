@@ -1,0 +1,13 @@
+<div class="root mat-elevation-z24">
+    <mat-card>
+        <mat-card-content>
+            <div class="details">
+                <span>#{{index}}</span>
+                <span>{{date | date: "dd MMM yyyy"}}</span>
+            </div>
+            <div class="text">
+                <ng-content></ng-content>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

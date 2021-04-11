@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from 'src/app/models/account';
-import { AccountService } from 'src/app/services/account/account.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-my-account',
@@ -14,13 +14,13 @@ export class MyAccountComponent implements OnInit {
   ) { }
 
   account: Account;
-  fetchPending = true;
+  pending = true;
 
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
-    this.accountService.myAccount().subscribe(
+    this.accountService.findOne().subscribe(
       (account: Account) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.account = account;
       }
     );

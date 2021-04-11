@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { Account } from 'src/app/models/account';
-import { AccountService } from 'src/app/services/account/account.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
-import { environment } from 'src/environments/environment';
-import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/delete-confirmation.component';
+import { AccountService } from 'src/app/services/account.service';
+import { DeleteConfirmationComponent } from '../../common/delete-confirmation/delete-confirmation.component';
+import { DeleteData } from 'src/app/models/delete-data';
+import { AccountFormComponent } from '../account-form/account-form.component';
 
 @Component({
   selector: 'app-account-details',
@@ -16,32 +15,23 @@ import { DeleteConfirmationComponent } from '../../utils/delete-confirmation/del
 export class AccountDetailsComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService,
     private accountService: AccountService,
-    private dialog: MatDialog,
-    private router: Router
+    private dialog: MatDialog
   ) { }
 
   @Input() account: Account = {} as Account;
-  @Input() big: boolean;
-
-  get myAccount(): boolean{
-    return this.router.url.substr(1) === 'my-account';
-  }
+  @Input() myAccount: boolean;
 
   edit(): void{
-    this.storageService.set(this.storageService.ACCOUNT_KEY, this.account);
-    this.router.navigate([`${environment.accountFormRoute}/edit`]);
+    this.dialog.open(AccountFormComponent, {...DIALOG_OPTIONS, ...{data: this.account}});
   }
 
   delete(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.accountService.delete(this.account.id)}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.accountService.announceRefreshData();
-      }
-    });
+    const deleteData: DeleteData = {
+      deleteFunction: () => this.accountService.delete(this.account.id),
+      refreshFunction: () => this.accountService.announceRefreshData()
+    };
+    this.dialog.open(DeleteConfirmationComponent, {...DIALOG_OPTIONS, ...{data: deleteData}});
   }
 
   ngOnInit(): void {

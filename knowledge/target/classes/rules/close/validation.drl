@@ -4,7 +4,7 @@ import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
 import com.example.demo.rules.CloseResponse
 
-
+/*
 rule "Passed time less than 20%"
 	agenda-group "close-rules"
 	salience 10
@@ -16,6 +16,7 @@ rule "Passed time less than 20%"
         modify($response){setMessage("You can't close bill with passed time less than 20%.");}
 
 end
+*/
 
 rule "Passed time more than 80%"
 	agenda-group "close-rules"

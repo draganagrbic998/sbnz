@@ -1,25 +1,7 @@
-<div class="root">
-
-    <div class="header">
-        <h3>Close confirmation</h3>
-    </div>
-
-    <div class="content">
-        <p>
-            Are you sure you want to close selected bill?
-        </p>
-        <app-rule-response *ngIf="response?.valid==false" [small]="true">
-            <app-bold-text>Error: </app-bold-text>{{response.message}}
-        </app-rule-response>
-        <app-spacer-container>
-            <span>
-                <button *ngIf="!closePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
-            </span>
-            <span>
-                <button *ngIf="!closePending" mat-button (click)="confirm()">Confirm</button>
-                <app-spinner-button *ngIf="closePending"></app-spinner-button>
-            </span>
-        </app-spacer-container>    
-    </div>
-        
-</div>
+<app-dialog-container title="Close Confirmation"
+[pending]="pending" [warn]="true" (confirmed)="confirm()">
+    <p>Are you sure you want to close selected bill?</p>
+    <app-rule-response *ngIf="response?.valid==false" [small]="true">
+        <app-bold-text>Error: </app-bold-text>{{response.message}}
+    </app-rule-response>
+</app-dialog-container>

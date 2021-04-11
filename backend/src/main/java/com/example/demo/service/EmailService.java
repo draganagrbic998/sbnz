@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.utils.Constants;
-import com.example.demo.utils.Email;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class EmailService {
 
@@ -21,15 +22,14 @@ public class EmailService {
 			+ "Best regards, \n"
 			+ "Your banking system.";
 
-	@Autowired
-	private JavaMailSenderImpl sender;
+	private final JavaMailSenderImpl sender;
 	
 	@Async
-	public void sendEmail(Email email) {
+	public void sendEmail(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(email.getTo());
-		message.setSubject(email.getSubject());
-		message.setText(email.getText());
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(text);
 		this.sender.send(message);
 	}
 	
