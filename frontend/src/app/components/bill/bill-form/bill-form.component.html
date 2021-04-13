@@ -10,21 +10,9 @@
                 <mat-option value="USD">USD</mat-option>
                 <mat-option value="CHF">CHF</mat-option>
                 <mat-option value="GBP">GBP</mat-option>
-                <mat-option value="RUB">RUB</mat-option>
             </mat-select>
             <mat-error>
                 Bill type is required!
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Number of months</mat-label>
-            <input 
-            appOnlyNumbers
-            formControlName="months" 
-            matInput 
-            placeholder="Enter number of months">
-            <mat-error>
-                Valid number of months is required!
             </mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -38,6 +26,17 @@
                 Valid base balance is required!
             </mat-error>
         </mat-form-field>
+        <mat-form-field>
+            <mat-label>Number of months</mat-label>
+            <input 
+            appOnlyNumbers
+            formControlName="months" 
+            matInput 
+            placeholder="Enter number of months">
+            <mat-error>
+                Valid number of months is required!
+            </mat-error>
+        </mat-form-field>
     </form>
     <div *ngIf="response">
         <h5>Response Terms</h5>
@@ -45,7 +44,7 @@
             <app-bold-text>Error: </app-bold-text>{{response.message}}
         </app-rule-response>
         <app-rule-response *ngIf="response?.valid">
-            <app-bold-text>NKS: </app-bold-text>{{response.nks * 100}}%<br>
+            <app-bold-text>NKS: </app-bold-text>{{response.nks}}%<br>
             <app-bold-text>EKS: </app-bold-text>{{response.eks * 100}}%<br>
             <app-bold-text>Reward: </app-bold-text>{{response.reward}} RSD<br>
         </app-rule-response>

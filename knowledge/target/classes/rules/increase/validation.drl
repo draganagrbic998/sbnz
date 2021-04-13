@@ -5,23 +5,10 @@ import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
 import com.example.demo.rules.IncreaseResponse
 
-/*
-rule "Passed time less than 5%"
-	agenda-group "increase-rules"
-	salience 10
-	
-	when
-		Bill(passedTime() < 0.05)
-		$response: IncreaseResponse(!valid, message == null)
-	then
-		modify($response){setMessage("You can't increase bill with passed time less than 5%.");}
-
-end
-*/
 
 rule "Passed time more than 95%"
 	agenda-group "increase-rules"
-	salience 10
+	salience 19
 
 	when
 		Bill(passedTime() > 0.95)
@@ -33,7 +20,7 @@ end
 
 rule "Amount less than 10% of bill balance"
 	agenda-group "increase-rules"
-	salience 10
+	salience 18
 
 	when
         Bill($balance: balance)
@@ -46,7 +33,7 @@ end
 
 rule "Amount more than 50% of bill balance"
 	agenda-group "increase-rules"
-	salience 10
+	salience 17
 
 	when
         Bill($balance: balance)
@@ -59,7 +46,7 @@ end
 
 rule "RSD bill - duration less than 6 months"
 	agenda-group "increase-rules"
-	salience 10
+	salience 16
 
 	when
         Bill(type.equals(BillType.RSD), months() < 6)
@@ -71,7 +58,7 @@ end
 
 rule "RSD bill - base less than 75.000 RSD"
 	agenda-group "increase-rules"
-	salience 10
+	salience 15
 
 	when
         Bill(type.equals(BillType.RSD), base < 75000)
@@ -83,7 +70,7 @@ end
 
 rule "RSD bill - 5 more increases"
 	agenda-group "increase-rules"
-	salience 10
+	salience 14
 
 	when
         Bill(type.equals(BillType.RSD), $transactions: transactions)
@@ -99,7 +86,7 @@ end
 
 rule "Foreign bill - duration less than 4 months"
 	agenda-group "increase-rules"
-	salience 10
+	salience 13
 
 	when
         Bill(!type.equals(BillType.RSD), months() < 4)
@@ -111,7 +98,7 @@ end
 
 rule "Foreign bill - base less than 750 currency units"
 	agenda-group "increase-rules"
-	salience 10
+	salience 12
 
 	when
         Bill(!type.equals(BillType.RSD), base < 750)
@@ -123,7 +110,7 @@ end
 
 rule "Foreign bill - 3 more increases"
 	agenda-group "increase-rules"
-	salience 10
+	salience 11
 
 	when
         Bill(!type.equals(BillType.RSD), $transactions: transactions)
@@ -156,7 +143,7 @@ end
 
 rule "Maximum increase amount is 40% of balance pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 9
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
@@ -181,7 +168,7 @@ end
 
 rule "Maximum increase amount is 40% of balance pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 8
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
@@ -206,7 +193,7 @@ end
 
 rule "Maximum increase amount is 35% of balance pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 7
 
 	when
         Bill(
@@ -223,7 +210,7 @@ end
 
 rule "Maximum increase amount is 35% of balance pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 6
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
@@ -247,7 +234,7 @@ end
 
 rule "Maximum increase amount is 35% of balance pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 5
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
@@ -272,7 +259,7 @@ end
 
 rule "Maximum increase amount is 30% of balance pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 4
 
 	when
         Bill(
@@ -289,7 +276,7 @@ end
 
 rule "Maximum increase amount is 30% of balance pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 3
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
@@ -314,7 +301,7 @@ end
 
 rule "Maximum increase amount is 30% of balance pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 2
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)

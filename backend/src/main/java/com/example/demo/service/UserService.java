@@ -69,18 +69,17 @@ public class UserService implements UserDetailsService {
 	
 	@Transactional(readOnly = false)
 	public User save(User user) {
-		boolean emailVerification = user.getId() == null;
-		user = this.userRepository.save(user);
-		if (emailVerification) {
+		if (user.getId() == null) {
 			this.emailService.sendEmail(
 				user.getEmail(),
 				EmailService.ACTIVATION_TITLE,
 				String.format(EmailService.ACTIVATION_TEXT, 
 						user.getFirstName(), user.getLastName(), 
 						user.getActivationLink(), user.getPassword())
-			);			
+			);		
+			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		}
-		return user;
+		return this.userRepository.save(user);
 	}
 
 	public User currentUser() {

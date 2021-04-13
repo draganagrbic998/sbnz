@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -16,7 +17,7 @@ public class UserDTO {
 	private Long id;
 	private String token;
 
-	@NotBlank(message = "Role cannot be blank")
+	@NotNull(message = "Role cannot be null")
 	private Role role;
 	
 	@Email(message = "Email must be valid")

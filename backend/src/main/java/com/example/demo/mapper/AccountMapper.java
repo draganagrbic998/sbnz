@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +27,6 @@ public class AccountMapper {
 	private final AuthorityRepository authorityRepository;
 	private final UserRepository userRepository;
 	private final AccountRepository accountRepository;
-	private final PasswordEncoder passwordEncoder;
 	
 	@Transactional(readOnly = true)
 	public Account map(AccountDTO accountDTO) {
@@ -36,7 +34,7 @@ public class AccountMapper {
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(this.authorityRepository.findByName(Role.KLIJENT));
 		user.setAuthorities(authorities);
-		user.setPassword(this.passwordEncoder.encode(UUID.randomUUID().toString()));
+		user.setPassword(UUID.randomUUID().toString());
 		Account account = new Account();
 		account.setBalance(1000000);
 		user.setAccount(account);

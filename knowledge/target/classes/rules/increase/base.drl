@@ -7,7 +7,7 @@ import com.example.demo.rules.IncreaseResponse
 
 rule "90% increase pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 9
 
     when
         $amount: Double()
@@ -24,7 +24,7 @@ end
 
 rule "90% increase pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 8
 
     when
         Bill($base: base, $transactions: transactions)
@@ -41,7 +41,7 @@ end
 
 rule "80% increase pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 7
 
     when
         $amount: Double()
@@ -58,7 +58,7 @@ end
 
 rule "80% increase pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 6
 
     when
         Bill($base: base, $transactions: transactions)
@@ -75,7 +75,7 @@ end
 
 rule "70% increase pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 5
 
     when
         $amount: Double()
@@ -92,7 +92,7 @@ end
 
 rule "70% increase pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 4
 
     when
         Bill($base: base, $transactions: transactions)
@@ -109,7 +109,7 @@ end
 
 rule "60% increase pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 3
 
     when
         $amount: Double()
@@ -126,7 +126,7 @@ end
 
 rule "60% increase pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 2
 
     when
         Bill($base: base, $transactions: transactions)

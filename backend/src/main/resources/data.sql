@@ -18,5 +18,5 @@ insert into user_authority (user_id, authority_id) values (3, 3);
 
 ------------------------------ACCOUNTS------------------------------
 insert into account (user_id, date, birth_date, jmbg, address, city, zip_code, balance)
-values (3, '2020-02-02', '1998-05-28', '2805998805053', 'Lasla Gala 23', 'Novi Sad', '21000', 1000000);
+values (3, '2019-10-13', '1998-05-28', '2805998805053', 'Lasla Gala 23', 'Novi Sad', '21000', 30000000);
 update user_table set account_id = 1 where id = 3;

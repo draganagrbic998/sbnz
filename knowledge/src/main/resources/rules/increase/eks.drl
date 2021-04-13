@@ -7,7 +7,7 @@ import com.example.demo.rules.IncreaseResponse
 
 rule "3% decrease pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 13
 
     when
 		$amount: Double()
@@ -24,7 +24,7 @@ end
 
 rule "3% decrease pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 12
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -43,7 +43,7 @@ end
 
 rule "3% decrease pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 11
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -79,7 +79,7 @@ end
 
 rule "2.5% decrease pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 9
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -98,7 +98,7 @@ end
 
 rule "2.5% decrease pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 8
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -117,7 +117,7 @@ end
 
 rule "2% decrease pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 7
 
     when
 		$amount: Double()
@@ -134,7 +134,7 @@ end
 
 rule "2% decrease pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 6
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -153,7 +153,7 @@ end
 
 rule "2% decrease pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 5
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -172,7 +172,7 @@ end
 
 rule "1.5% decrease pt1"
 	agenda-group "increase-rules"
-	salience 10
+	salience 4
 
     when
 		$amount: Double()
@@ -189,7 +189,7 @@ end
 
 rule "1.5% decrease pt2"
 	agenda-group "increase-rules"
-	salience 10
+	salience 3
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)
@@ -208,7 +208,7 @@ end
 
 rule "1.5% decrease pt3"
 	agenda-group "increase-rules"
-	salience 10
+	salience 2
 
     when
         Bill($main: account.balance, $interest: interest, $bills: account.bills)

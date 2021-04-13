@@ -7,7 +7,7 @@ import com.example.demo.rules.RenewalResponse
 
 rule "Amount less than 3 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 17
 
     when
 		Integer(this < 3)
@@ -19,7 +19,7 @@ end
 
 rule "Amount more than 24 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 16
 
     when
 		Integer(this > 24)
@@ -31,7 +31,7 @@ end
 
 rule "RSD bill - duration of 4 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 15
 
     when
         Bill(type.equals(BillType.RSD), months() <= 4)
@@ -43,7 +43,7 @@ end
 
 rule "RSD bill - duration of at least 42 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 14
 
     when
         Bill(type.equals(BillType.RSD), months() >= 42)
@@ -55,7 +55,7 @@ end
 
 rule "RSD bill - base less than 75.000 RSD"
 	agenda-group "renew-rules"
-	salience 10
+	salience 13
 
 	when
         Bill(type.equals(BillType.RSD), base < 75000)
@@ -67,7 +67,7 @@ end
 
 rule "Foreign bill - duration of 2 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 12
 
     when
         Bill(!type.equals(BillType.RSD), months() <= 2)
@@ -79,7 +79,7 @@ end
 
 rule "Foreign bill - duration of at least 36 months"
 	agenda-group "renew-rules"
-	salience 10
+	salience 11
 
     when
         Bill(!type.equals(BillType.RSD), months() >= 36)
@@ -103,7 +103,7 @@ end
 
 rule "Maximum renewal amount is 18 months pt1"
 	agenda-group "renew-rules"
-	salience 10
+	salience 9
 
 	when
         Bill(
@@ -119,7 +119,7 @@ end
 
 rule "Maximum renewal amount is 18 months pt2"
 	agenda-group "renew-rules"
-	salience 10
+	salience 8
 
 	when
 		Bill($renewals: renewals)
@@ -136,7 +136,7 @@ end
 
 rule "Maximum renewal amount is 12 months pt1"
 	agenda-group "renew-rules"
-	salience 10
+	salience 7
 
 	when
         Bill(
@@ -152,7 +152,7 @@ end
 
 rule "Maximum renewal amount is 12 months pt2"
 	agenda-group "renew-rules"
-	salience 10
+	salience 6
 
 	when
 		Bill($renewals: renewals)
@@ -169,7 +169,7 @@ end
 
 rule "Maximum renewal amount is 9 months pt1"
 	agenda-group "renew-rules"
-	salience 10
+	salience 5
 
 	when
         Bill(
@@ -185,7 +185,7 @@ end
 
 rule "Maximum renewal amount is 9 months pt2"
 	agenda-group "renew-rules"
-	salience 10
+	salience 4
 
 	when
 		Bill($renewals: renewals)
@@ -202,7 +202,7 @@ end
 
 rule "Maximum renewal amount is 6 months pt1"
 	agenda-group "renew-rules"
-	salience 10
+	salience 3
 
 	when
         Bill(
@@ -218,7 +218,7 @@ end
 
 rule "Maximum renewal amount is 6 months pt2"
 	agenda-group "renew-rules"
-	salience 10
+	salience 2
 
 	when
 		Bill($renewals: renewals)

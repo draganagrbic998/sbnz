@@ -35,12 +35,7 @@ public class EventService {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.EVENT_RULES_REALTIME);
 		kieSession.setGlobal("notificationService", this.notificationService);
 		kieSession.setGlobal("account", account);
-        new Thread() {
-            @Override
-            public void run() {
-                kieSession.fireUntilHalt();
-            }
-        }.start();
+        new Thread(() -> kieSession.fireUntilHalt()).start();
         this.kieSessions.put(account.getId(), kieSession);
 	}
 	

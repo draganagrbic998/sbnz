@@ -9,7 +9,7 @@ import com.example.demo.rules.BillResponse
 
 rule "EKS of 100%"
 	agenda-group "create-rules"
-	salience 10
+	salience 6
 
     when
     	Account($bills: bills)
@@ -35,7 +35,7 @@ end
 
 rule "EKS of 98%"
 	agenda-group "create-rules"
-	salience 10
+	salience 5
 
     when
     	Account($bills: bills)
@@ -61,7 +61,7 @@ end
 
 rule "EKS of 95%"
 	agenda-group "create-rules"
-	salience 10
+	salience 4
 
     when
     	Account($bills: bills)
@@ -87,7 +87,7 @@ end
 
 rule "EKS of 90%"
 	agenda-group "create-rules"
-	salience 10
+	salience 3
 
     when
     	Account($bills: bills)
@@ -108,7 +108,7 @@ end
 
 rule "EKS of 87%"
 	agenda-group "create-rules"
-	salience 10
+	salience 2
 
     when
     	Account($bills: bills)

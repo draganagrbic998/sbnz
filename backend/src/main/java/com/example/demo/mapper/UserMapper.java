@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ public class UserMapper {
 
 	private final AuthorityRepository authorityRepository;
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
 
 	@Transactional(readOnly = true)
 	public User map(UserDTO userDTO) {
@@ -31,7 +29,7 @@ public class UserMapper {
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(this.authorityRepository.findByName(Role.SLUZBENIK));
 		user.setAuthorities(authorities);
-		user.setPassword(this.passwordEncoder.encode(UUID.randomUUID().toString()));
+		user.setPassword(UUID.randomUUID().toString());
 		this.setModel(user, userDTO);
 		return user;
 	}

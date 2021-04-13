@@ -9,7 +9,7 @@ import java.util.List
 
 rule "5 points"
 	agenda-group "create-rules"
-	salience 10
+	salience 6
 
     when
     	$account: Account($bills: bills)
@@ -42,7 +42,7 @@ end
 
 rule "4 points"
 	agenda-group "create-rules"
-	salience 10
+	salience 5
 
     when
     	$account: Account($bills: bills)
@@ -76,7 +76,7 @@ end
 
 rule "3 points"
 	agenda-group "create-rules"
-	salience 10
+	salience 4
 
     when
     	$account: Account($bills: bills)
@@ -124,7 +124,7 @@ end
 
 rule "2 points"
 	agenda-group "create-rules"
-	salience 10
+	salience 3
 
     when
     	$account: Account($bills: bills)
@@ -174,7 +174,7 @@ end
 
 rule "1 point"
 	agenda-group "create-rules"
-	salience 10
+	salience 2
 
     when
     	$account: Account($bills: bills)
