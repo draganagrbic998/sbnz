@@ -9,23 +9,23 @@
 
 1. инсталирати Eclipse IDE for Java EE Developers
 2. у Еclipsе-у instalirati JBoss tools:
-a. у Еclipsе-у: Help -> Eclipse Marketplace..
-b. у search укуцати JBoss Tools, након проналаска алата кликнути на install
-c. чекирати све опције и инсталирати
+- у Еclipsе-у: Help -> Eclipse Marketplace..
+- у search укуцати JBoss Tools, након проналаска алата кликнути на install
+- чекирати све опције и инсталирати
 3. са сајта www.drools.org скинути „Drools and jBPM tools“ и распаковати архиву
 4. у Еclipsе-у инсталирати „Drools and jBPM tools“:
-a. Help -> Install new software
-b. у оквиру Work with: кликнути на Add… дугме
-c. у новоотвореном дијалогу у поље name унети „drools local update site“
-d. кликнути на дугме Local…
-e. позиционирати се на org.drools.updatesite фолдер који се налази у binaries фолдеру распаковане архиве
-f. чекирати све опције и инсталирати
+- Help -> Install new software
+- у оквиру Work with: кликнути на Add… дугме
+- у новоотвореном дијалогу у поље name унети „drools local update site“
+- кликнути на дугме Local…
+- позиционирати се на org.drools.updatesite фолдер који се налази у binaries фолдеру распаковане архиве
+- чекирати све опције и инсталирати
 5. након инсталације са сајта www.drools.org скинути drools distribution (Drools Engine) и распаковати архиву
 6. у Еclipsе-у додати drools runtime:
-a. Window -> Preferences
-b. Drools -> Installed Drools Runtimes
-c. кликнути на дугме ADD
-d. у дијалогу кликнути на дугме Browse и пронаћи binares фолдер у оквиру drools distribution
+- Window -> Preferences
+- Drools -> Installed Drools Runtimes
+- кликнути на дугме ADD
+- у дијалогу кликнути на дугме Browse и пронаћи binares фолдер у оквиру drools distribution
 7. клонирати репозиторијум са git -clone https://github.com/draganagrbic998/sbnz
 8. импортовати пројекте backend и knowledge у Eclipse
 9. десни клик на backend пројекат у Project Explorer-у у Eclipse-у
