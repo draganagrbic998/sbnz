@@ -4,12 +4,10 @@
 1. Драгана Грбић SW22/2017
 2. Петар Николић SW31/2017
 
-Линк на демонстрациони видео:
+Линк за демонстрациони видео:
 https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
 
 Упутство за покретање:
-
-
 1. инсталирати Eclipse IDE for Java EE Developers
 2. у Еclipsе-у instalirati JBoss tools:
   - у Еclipsе-у: Help -> Eclipse Marketplace..
