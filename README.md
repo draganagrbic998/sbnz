@@ -19,6 +19,7 @@
 11. Run As -> Maven install
 12. Boot Dashborad -> local -> десни клик на backend -> (Re)start
 13. u CommandPrompt-u се позиционирати у frontend folder у клонираном репозиторијуму
-14. унети ng serve --open и притиснути Enter
+14. унети npm install и притиснути Enter
+15. унети ng serve --open и притиснути Enter
 
 \* уколико инсталациони програм за lombok не може да лоцира Eclipse, одабарти произвољну локацију и инсталирати библиотеку у њој
