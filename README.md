@@ -6,20 +6,40 @@
 
 Упутство за покретање:
 
-1. клонирати репозиторијум са git -clone https://github.com/draganagrbic998/sbnz
-2. импортовати пројекте backend и knowledge у Eclipse
-3. десни клик на backend пројекат у Project Explorer-у у Eclipse-у
-4. \*отићи на https://www.baeldung.com/lombok-ide#eclipse и пратити упутство за Eclipse (3. Lombok in Eclipse)
-5. Properties -> Java Build Path -> Libraries -> Classpath -> Add External JARs
-6. Пронаћи и одабарти lombok.jar
-7. Open -> Apply and Close
-8. десни клик на backend пројекат у Project Explorer-у у Eclipse-у
-9. Maven -> Update Project...
-10. десни клик на knowledge пројекат у Project Explorer-у у Eclipse-у
-11. Run As -> Maven install
-12. Boot Dashborad -> local -> десни клик на backend -> (Re)start
-13. u CommandPrompt-u се позиционирати у frontend folder у клонираном репозиторијуму
-14. унети npm install и притиснути Enter
-15. унети ng serve --open и притиснути Enter
+
+1. инсталирати Eclipse IDE for Java EE Developers
+2. у Еclipsе-у instalirati JBoss tools:
+a. у Еclipsе-у: Help -> Eclipse Marketplace..
+b. у search укуцати JBoss Tools, након проналаска алата кликнути на install
+c. чекирати све опције и инсталирати
+3. са сајта www.drools.org скинути „Drools and jBPM tools“ и распаковати архиву
+4. у Еclipsе-у инсталирати „Drools and jBPM tools“:
+a. Help -> Install new software
+b. у оквиру Work with: кликнути на Add… дугме
+c. у новоотвореном дијалогу у поље name унети „drools local update site“
+d. кликнути на дугме Local…
+e. позиционирати се на org.drools.updatesite фолдер који се налази у binaries фолдеру распаковане архиве
+f. чекирати све опције и инсталирати
+5. након инсталације са сајта www.drools.org скинути drools distribution (Drools Engine) и распаковати архиву
+6. у Еclipsе-у додати drools runtime:
+a. Window -> Preferences
+b. Drools -> Installed Drools Runtimes
+c. кликнути на дугме ADD
+d. у дијалогу кликнути на дугме Browse и пронаћи binares фолдер у оквиру drools distribution
+7. клонирати репозиторијум са git -clone https://github.com/draganagrbic998/sbnz
+8. импортовати пројекте backend и knowledge у Eclipse
+9. десни клик на backend пројекат у Project Explorer-у у Eclipse-у
+10. \*отићи на https://www.baeldung.com/lombok-ide#eclipse и пратити упутство за Eclipse (3. Lombok in Eclipse)
+11. Properties -> Java Build Path -> Libraries -> Classpath -> Add External JARs
+12. Пронаћи и одабарти lombok.jar
+13. Open -> Apply and Close
+14. десни клик на backend пројекат у Project Explorer-у у Eclipse-у
+15. Maven -> Update Project...
+16. десни клик на knowledge пројекат у Project Explorer-у у Eclipse-у
+17. Run As -> Maven install
+18. Boot Dashborad -> local -> десни клик на backend -> (Re)start
+19. u CommandPrompt-u се позиционирати у frontend folder у клонираном репозиторијуму
+20. унети npm install и притиснути Enter
+21. унети ng serve --open и притиснути Enter
 
 \* уколико инсталациони програм за lombok не може да лоцира Eclipse, одабарти произвољну локацију и инсталирати библиотеку у њој
