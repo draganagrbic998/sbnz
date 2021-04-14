@@ -39,7 +39,7 @@ https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
 17. десни клик на knowledge пројекат у Project Explorer-у у Eclipse-у
 18. Run As -> Maven install
 19. Boot Dashborad -> local -> десни клик на backend -> (Re)start
-20. u CommandPrompt-u се позиционирати у frontend директоријум клонираног репозиторијума
+20. у CommandPrompt-у се позиционирати у frontend директоријум клонираног репозиторијума
 21. унети npm install и притиснути Enter
 22. унети npm start и притиснути Enter
 23. креденцијали за пријаву на систем:
