@@ -12,7 +12,6 @@ import java.util.List
 rule "First report"
 	agenda-group "first-report"
 	no-loop
-	salience 10
 
     when
         $accounts: List()
@@ -38,7 +37,6 @@ end
 rule "Second report"
 	agenda-group "second-report"
 	no-loop
-	salience 10
 
     when
         $accounts: List()
@@ -68,7 +66,6 @@ end
 rule "Third report"
 	agenda-group "third-report"
 	no-loop
-	salience 10
 
     when
         $accounts: List()

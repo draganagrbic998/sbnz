@@ -9,7 +9,7 @@ import java.util.List
 
 rule "5 points"
 	agenda-group "create-rules"
-	salience 6
+	salience 5
 
     when
     	Account($bills: bills, $years: passedYears())
@@ -42,7 +42,7 @@ end
 
 rule "4 points"
 	agenda-group "create-rules"
-	salience 5
+	salience 4
 
     when
     	Account($bills: bills, $years: passedYears())
@@ -75,7 +75,7 @@ end
 
 rule "3 points"
 	agenda-group "create-rules"
-	salience 4
+	salience 3
 
     when
     	Account($bills: bills, $years: passedYears())
@@ -122,7 +122,7 @@ end
 
 rule "2 points"
 	agenda-group "create-rules"
-	salience 3
+	salience 2
 
     when
     	Account($bills: bills, $years: passedYears())
@@ -171,7 +171,7 @@ end
 
 rule "1 point"
 	agenda-group "create-rules"
-	salience 2
+	salience 1
 
     when
     	Account($bills: bills, $years: passedYears())
@@ -220,7 +220,7 @@ end
 
 rule "0 points"
 	agenda-group "create-rules"
-	salience 1
+	salience 0
 
     when
     	$response: BillResponse(valid, nks != null, points == null)

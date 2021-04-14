@@ -5,7 +5,7 @@ import com.example.demo.rules.RenewalResponse
 
 rule "2.5% increase pt1"
 	agenda-group "renew-rules"
-	salience 13
+	salience 4
 
     when
 		$amount: Integer()
@@ -22,7 +22,7 @@ end
 
 rule "2.5% increase pt2"
 	agenda-group "renew-rules"
-	salience 12
+	salience 4
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -41,7 +41,7 @@ end
 
 rule "2.5% increase pt3"
 	agenda-group "renew-rules"
-	salience 11
+	salience 4
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -60,7 +60,7 @@ end
 
 rule "2% increase pt1"
 	agenda-group "renew-rules"
-	salience 10
+	salience 3
 
     when
 		$amount: Integer()
@@ -77,7 +77,7 @@ end
 
 rule "2% increase pt2"
 	agenda-group "renew-rules"
-	salience 9
+	salience 3
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -96,7 +96,7 @@ end
 
 rule "2% increase pt3"
 	agenda-group "renew-rules"
-	salience 8
+	salience 3
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -115,7 +115,7 @@ end
 
 rule "1.5% increase pt1"
 	agenda-group "renew-rules"
-	salience 7
+	salience 2
 
     when
 		$amount: Integer()
@@ -132,7 +132,7 @@ end
 
 rule "1.5% increase pt2"
 	agenda-group "renew-rules"
-	salience 6
+	salience 2
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -151,7 +151,7 @@ end
 
 rule "1.5% increase pt3"
 	agenda-group "renew-rules"
-	salience 5
+	salience 2
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -170,7 +170,7 @@ end
 
 rule "1% increase pt1"
 	agenda-group "renew-rules"
-	salience 4
+	salience 1
 
     when
 		$amount: Integer()
@@ -187,7 +187,7 @@ end
 
 rule "1% increase pt2"
 	agenda-group "renew-rules"
-	salience 3
+	salience 1
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -206,7 +206,7 @@ end
 
 rule "1% increase pt3"
 	agenda-group "renew-rules"
-	salience 2
+	salience 1
 
     when
     	Bill($interest: interest, $bills: account.bills)
@@ -225,7 +225,7 @@ end
 
 rule "0.5% increase"
 	agenda-group "renew-rules"
-	salience 1
+	salience 0
 
     when
     	Bill($interest: interest)

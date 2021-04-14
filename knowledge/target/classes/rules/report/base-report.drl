@@ -11,7 +11,6 @@ import java.util.List
 
 rule "RSD statistic"
 	agenda-group "base-report"
-	salience 10
 
     when
         $bills: List()
@@ -56,7 +55,6 @@ end
 
 rule "EUR statistic"
 	agenda-group "base-report"
-	salience 10
 
     when
         $bills: List()
@@ -101,7 +99,6 @@ end
 
 rule "USD statistic"
 	agenda-group "base-report"
-	salience 10
 
     when
         $bills: List()
@@ -146,7 +143,6 @@ end
 
 rule "CHF statistic"
 	agenda-group "base-report"
-	salience 10
 
     when
         $bills: List()
@@ -191,7 +187,6 @@ end
 
 rule "GBP statistic"
 	agenda-group "base-report"
-	salience 10
 
     when
         $bills: List()
