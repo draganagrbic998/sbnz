@@ -11,6 +11,7 @@ export class DetailsContainerComponent implements OnInit {
 
   @Input() index: number;
   @Input() date: Date;
+  @Input() time: boolean;
 
   ngOnInit(): void {
   }

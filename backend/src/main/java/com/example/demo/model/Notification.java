@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +24,7 @@ public class Notification {
 	private Long id;
 	
 	@NotNull
-	private LocalDate date;
+	private Date date;
 
 	@NotBlank
 	private String message;
@@ -35,7 +35,7 @@ public class Notification {
 
 	public Notification() {
 		super();
-		this.date = LocalDate.now();
+		this.date = new Date();
 	}
 
 	public Notification(Account account, String message) {

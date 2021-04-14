@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import com.example.demo.model.Notification;
 
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class NotificationDTO {
 
 	private long id;
-	private LocalDate date;
+	private Date date;
 	private String message;
 
 	public NotificationDTO(Notification notification) {

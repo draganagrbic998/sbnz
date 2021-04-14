@@ -3,7 +3,8 @@
         <mat-card-content>
             <div class="details">
                 <span>#{{index}}</span>
-                <span>{{date | date: "dd MMM yyyy"}}</span>
+                <span *ngIf="!time">{{date | date: "dd MMM yyyy"}}</span>
+                <span *ngIf="time">{{date | date: "dd MMM yyyy hh:mm:ss"}}</span>
             </div>
             <div class="text">
                 <ng-content></ng-content>
