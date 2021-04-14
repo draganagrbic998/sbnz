@@ -10,7 +10,7 @@ https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
 Упутство за покретање:
 1. инсталирати Eclipse IDE for Java EE Developers
 2. у Еclipsе-у instalirati „JBoss tools“:
-  - у Еclipsе-у: Help -> Eclipse Marketplace..
+  - Help -> Eclipse Marketplace..
   - у search укуцати JBoss Tools, након проналаска алата кликнути на install
   - чекирати све опције и инсталирати
 3. са сајта www.drools.org скинути „Drools and jBPM tools“ и распаковати архиву
