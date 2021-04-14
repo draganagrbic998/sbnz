@@ -5,7 +5,7 @@
 2. Петар Николић SW31/2017
 
 Линк на демонстрациони видео:
-https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
+https://www.mediafire.com/file/iygtaf0jyf9ahw5/sbnz.mp4/file
 
 Упутство за покретање:
 1. инсталирати Eclipse IDE for Java EE Developers
