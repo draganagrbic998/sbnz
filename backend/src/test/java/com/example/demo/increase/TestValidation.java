@@ -62,17 +62,7 @@ public class TestValidation {
 		assertNull(this.response.getBaseUpdate());
 		assertNull(this.response.getInterestUpdate());
 	}
-	
-	/*
-	@Test
-	public void testRule1() {
-		this.bill.setType(BillType.RSD);
-		this.bill.setStartDate(LocalDate.now());
-		this.bill.setEndDate(LocalDate.now().plusMonths(1));
-		this.runAndAssert("You can't increase bill with passed time less than 5%.");
-	}
-	*/
-	
+		
 	@Test
 	public void testRule2() {
 		this.bill.setType(BillType.RSD);

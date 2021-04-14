@@ -59,16 +59,6 @@ public class TestValidation {
 		assertEquals(this.response.getMessage(), message);
 	}
 
-	/*
-	@Test
-	public void testRule1() {
-		this.bill.setType(BillType.RSD);
-		this.bill.setStartDate(LocalDate.now());
-		this.bill.setEndDate(LocalDate.now().plusMonths(1));
-		this.runAndAssert(false, "You can't close bill with passed time less than 20%.");
-	}
-	*/
-
 	@Test
 	public void testRule2() {
 		this.bill.setType(BillType.RSD);
