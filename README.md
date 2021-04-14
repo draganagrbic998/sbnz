@@ -16,7 +16,7 @@ https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
 3. са сајта www.drools.org скинути „Drools and jBPM tools“ и распаковати архиву
 4. у Еclipsе-у инсталирати „Drools and jBPM tools“:
   - Help -> Install new software
-  - у оквиру „Work with“ кликнути на Add… дугме
+  - у оквиру Work with кликнути на Add… дугме
   - у новоотвореном дијалогу у поље name унети „drools local update site“
   - кликнути на дугме Local…
   - позиционирати се на org.drools.updatesite фолдер који се налази у binaries фолдеру распаковане архиве
