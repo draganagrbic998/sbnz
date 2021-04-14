@@ -10,7 +10,7 @@ import com.example.demo.model.Notification;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-	public Page<Notification> findByAccountIsNull(Pageable pageable);
-	public Page<Notification> findByAccountId(Pageable pageable, long id);
+	public Page<Notification> findByAccountIsNullOrderByDateDesc(Pageable pageable);
+	public Page<Notification> findByAccountIdOrderByDateDesc(Pageable pageable, long id);
 	
 }

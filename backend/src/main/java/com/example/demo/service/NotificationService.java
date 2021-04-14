@@ -23,9 +23,9 @@ public class NotificationService {
 	public Page<Notification> findAll(Pageable pageable) {
 		User user = this.userService.currentUser();
 		if (user.getAuthority().getName().equals(Role.ADMIN)) {
-			return this.notificationRepository.findByAccountIsNull(pageable);			
+			return this.notificationRepository.findByAccountIsNullOrderByDateDesc(pageable);			
 		}
-		return this.notificationRepository.findByAccountId(pageable, user.getAccount().getId());
+		return this.notificationRepository.findByAccountIdOrderByDateDesc(pageable, user.getAccount().getId());
 	}
 
 	@Transactional(readOnly = false)
