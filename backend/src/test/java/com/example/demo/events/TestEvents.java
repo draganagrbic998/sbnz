@@ -53,7 +53,6 @@ public class TestEvents {
         this.account = new Account();
         this.bill = new Bill();
         
-        this.bill.setType(BillType.RSD);
         this.bill.setBase(25001);
         User user = new User();
         user.setFirstName("first name");
@@ -147,6 +146,7 @@ public class TestEvents {
 	
 	@Test
 	public void testRule4() {
+        this.bill.setType(BillType.RSD);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
@@ -200,6 +200,7 @@ public class TestEvents {
 
 	@Test
 	public void testRule6() {
+        this.bill.setType(BillType.RSD);
 		this.kieSession.insert(new IncreaseBillEvent(new Transaction(this.bill, 30001)));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new IncreaseBillEvent(new Transaction(this.bill, 30001)));
@@ -253,6 +254,7 @@ public class TestEvents {
 
 	@Test
 	public void testRule8() {
+        this.bill.setType(BillType.RSD);
 		this.kieSession.insert(new RenewBillEvent(new Renewal(this.bill, 10)));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new RenewBillEvent(new Renewal(this.bill, 10)));

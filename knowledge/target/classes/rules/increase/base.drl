@@ -13,8 +13,8 @@ rule "90% increase pt1"
         $amount: Double()
         Bill(
         	$amount > 0.4 * base ||
-        	type.equals(BillType.RSD) && balance > 300000 ||
-        	!type.equals(BillType.RSD) && balance > 3000
+        	type == BillType.RSD && balance > 300000 ||
+        	type != BillType.RSD && balance > 3000
         )
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
@@ -47,8 +47,8 @@ rule "80% increase pt1"
         $amount: Double()
         Bill(
         	$amount > 0.35 * base ||
-        	type.equals(BillType.RSD) && balance > 250000 ||
-        	!type.equals(BillType.RSD) && balance > 2500
+        	type == BillType.RSD && balance > 250000 ||
+        	type != BillType.RSD && balance > 2500
         )
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
@@ -81,8 +81,8 @@ rule "70% increase pt1"
         $amount: Double()
         Bill(
         	$amount > 0.3 * base ||
-        	type.equals(BillType.RSD) && balance > 200000 ||
-        	!type.equals(BillType.RSD) && balance > 2000
+        	type == BillType.RSD && balance > 200000 ||
+        	type != BillType.RSD && balance > 2000
         )
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
@@ -115,8 +115,8 @@ rule "60% increase pt1"
         $amount: Double()
         Bill(
         	$amount > 0.25 * base ||
-        	type.equals(BillType.RSD) && balance > 150000 ||
-        	!type.equals(BillType.RSD) && balance > 1500
+        	type == BillType.RSD && balance > 150000 ||
+        	type != BillType.RSD && balance > 1500
         )
         $response: IncreaseResponse(valid, baseUpdate == null)
     then

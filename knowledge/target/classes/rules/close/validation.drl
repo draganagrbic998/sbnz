@@ -22,7 +22,7 @@ rule "RSD bill - base less than 20.000 RSD"
 	salience 7
 
     when
-        Bill(type.equals(BillType.RSD), base < 20000)
+        Bill(type == BillType.RSD, base < 20000)
         $response: CloseResponse(!valid, message == null)
     then
         modify($response){setMessage("You can't close RSD bill with base less than 20.000 RSD.");}
@@ -34,10 +34,10 @@ rule "The only active RSD bill"
 	salience 6
 
     when
-        Bill(type.equals(BillType.RSD), $bills: account.bills)
+        Bill(type == BillType.RSD, $bills: account.bills)
         Number(intValue <= 1) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, type == BillType.RSD) from $bills,
+        	count($b)
         )
         $response: CloseResponse(!valid, message == null)
     then
@@ -50,10 +50,10 @@ rule "6 more closed RSD bills"
 	salience 5
 
     when
-        Bill(type.equals(BillType.RSD), $bills: account.bills)
+        Bill(type == BillType.RSD, $bills: account.bills)
         Number(intValue >= 6) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ABORTED), type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ABORTED, type == BillType.RSD) from $bills,
+        	count($b)
         )
         $response: CloseResponse(!valid, message == null)
     then
@@ -66,7 +66,7 @@ rule "Foreign bill - base less than 200 units"
 	salience 4
 
     when
-        Bill(!type.equals(BillType.RSD), base < 200)
+        Bill(type != BillType.RSD, base < 200)
         $response: CloseResponse(!valid, message == null)
     then
         modify($response){setMessage("You can't close foreign bill with base less than 200 currency units.");}
@@ -78,10 +78,10 @@ rule "The only active foreign bill"
 	salience 3
 
     when
-        Bill(!type.equals(BillType.RSD), $bills: account.bills)
+        Bill(type != BillType.RSD, $bills: account.bills)
         Number(intValue <= 1) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, type != BillType.RSD) from $bills,
+        	count($b)
         )
         $response: CloseResponse(!valid, message == null)
     then
@@ -94,10 +94,10 @@ rule "4 more closed foreign bills"
 	salience 2
 
     when
-        Bill(!type.equals(BillType.RSD), $bills: account.bills)
+        Bill(type != BillType.RSD, $bills: account.bills)
         Number(intValue >= 4) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ABORTED), !type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ABORTED, type != BillType.RSD) from $bills,
+        	count($b)
         )
         $response: CloseResponse(!valid, message == null)
     then

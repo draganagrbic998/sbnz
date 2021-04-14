@@ -18,16 +18,16 @@ rule "First report"
         $accounts: List()
 
         accumulate(
-        	Account($account: this, passedYears() >= 5, $bills: bills) from $accounts 
+        	Account($a: this, passedYears() >= 5, $bills: bills) from $accounts 
         	and Number(intValue > 10) from accumulate(
-        		Bill($bill: this, passedMonths() <= 18) from $bills,
-        		count($bill)
+        		Bill($b: this, passedMonths() <= 18) from $bills,
+        		count($b)
         	)
         	and Number(doubleValue > 10000000) from accumulate(
         		Bill(passedMonths() <= 18, $base: base) from $bills,
 	        	sum($base)
         	),
-        	$result: collectSet($account)
+        	$result: collectSet($a)
         )
 
     then
@@ -44,20 +44,20 @@ rule "Second report"
         $accounts: List()
 
         accumulate(
-        	Account($account: this, $bills: bills) from $accounts 
+        	Account($a: this, $bills: bills) from $accounts 
         	and Number(intValue <= 0) from accumulate(
-        		Bill($bill: this, status.equals(BillStatus.ABORTED)) from $bills,
-        		count($bill)
+        		Bill($b: this, status == BillStatus.ABORTED) from $bills,
+        		count($b)
         	)
         	and Number(intValue > 10) from accumulate(
-        		Bill($bill: this, months() > 8, passedMonths() <= 18) from $bills,
-	        	count($bill)
+        		Bill($b: this, months() > 8, passedMonths() <= 18) from $bills,
+	        	count($b)
         	)
         	and Number(doubleValue > 1000000) from accumulate(
-        		Bill(passedMonths() <= 12, !type.equals(BillType.RSD), $base: Utils.convertToRSD(type, base)) from $bills,
+        		Bill(passedMonths() <= 12, type != BillType.RSD, $base: Utils.convertToRSD(type, base)) from $bills,
         		sum($base) 
         	),
-        	$result: collectSet($account)
+        	$result: collectSet($a)
         )
         
     then
@@ -74,12 +74,12 @@ rule "Third report"
         $accounts: List()
 
         accumulate(
-        	Account($account: this, $bills: bills) from $accounts 
+        	Account($a: this, $bills: bills) from $accounts 
 			and Number(intValue >= 5) from accumulate(
 				Bill($renewals: renewals) from $bills 
 				and accumulate(
-	        		Renewal($renewal: this) from $renewals,
-	        		$temp: count($renewal)
+	        		Renewal($r: this) from $renewals,
+	        		$temp: count($r)
 	        	),
 	        	sum($temp)
 			)
@@ -99,7 +99,7 @@ rule "Third report"
 	        	),
 	        	average($temp)
 			),
-	        $result: collectSet($account)
+	        $result: collectSet($a)
         )
 
     then

@@ -61,7 +61,6 @@ public class TestValidation {
 
 	@Test
 	public void testRule2() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now());
 		this.runAndAssert(false, "You can't close bill with passed time more than 80%.");

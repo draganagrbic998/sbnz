@@ -80,6 +80,10 @@ public class Bill {
 		this.balance = request.getBase() + Utils.convertToCurrency(request.getType(), response.getReward());	
 	}
 	
+	public boolean sameType(BillType type) {
+		return this.type.ordinal() > 0 == type.ordinal() > 0;
+	}
+	
 	public double close() {
 		this.status = BillStatus.ABORTED;
 		this.endDate = LocalDate.now();

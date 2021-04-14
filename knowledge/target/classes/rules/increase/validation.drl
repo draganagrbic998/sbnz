@@ -49,7 +49,7 @@ rule "RSD bill - duration less than 6 months"
 	salience 16
 
 	when
-        Bill(type.equals(BillType.RSD), months() < 6)
+        Bill(type == BillType.RSD, months() < 6)
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase RSD bill with duration less than 6 months.");}
@@ -61,7 +61,7 @@ rule "RSD bill - base less than 75.000 RSD"
 	salience 15
 
 	when
-        Bill(type.equals(BillType.RSD), base < 75000)
+        Bill(type == BillType.RSD, base < 75000)
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase RSD bill with base less than 75.000 RSD.");}
@@ -73,11 +73,11 @@ rule "RSD bill - 5 more increases"
 	salience 14
 
 	when
-        Bill(type.equals(BillType.RSD), $transactions: transactions)
+        Bill(type == BillType.RSD, $transactions: transactions)
 		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 5) from accumulate(
-        	Transaction($transaction: this) from $transactions,
-        	count($transaction)
+        	Transaction($t: this) from $transactions,
+        	count($t)
         )
 	then
 		modify($response){setMessage("You can't increase RSD bill that has already been increased at least 5 times.");}
@@ -89,7 +89,7 @@ rule "Foreign bill - duration less than 4 months"
 	salience 13
 
 	when
-        Bill(!type.equals(BillType.RSD), months() < 4)
+        Bill(type != BillType.RSD, months() < 4)
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase foreign bill with duration less than 4 months.");}
@@ -101,7 +101,7 @@ rule "Foreign bill - base less than 750 currency units"
 	salience 12
 
 	when
-        Bill(!type.equals(BillType.RSD), base < 750)
+        Bill(type != BillType.RSD, base < 750)
 		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase foreign bill with base less than 750 currency units.");}
@@ -113,11 +113,11 @@ rule "Foreign bill - 3 more increases"
 	salience 11
 
 	when
-        Bill(!type.equals(BillType.RSD), $transactions: transactions)
+        Bill(type != BillType.RSD, $transactions: transactions)
 		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 3) from accumulate(
-        	Transaction($transaction: this) from $transactions,
-        	count($transaction)
+        	Transaction($t: this) from $transactions,
+        	count($t)
         )
 	then
 		modify($response){setMessage("You can't increase foreign bill that has already been increased at least 3 times.");}
@@ -130,8 +130,8 @@ rule "Maximum increase amount is 40% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base > 200000 ||
-        	!type.equals(BillType.RSD) && base > 2000,
+        	type == BillType.RSD && base > 200000 ||
+        	type != BillType.RSD && base > 2000,
         	$balance: balance
         )
 		Double(this > 0.4 * $balance)
@@ -150,16 +150,12 @@ rule "Maximum increase amount is 40% of balance pt2"
 		Double(this > 0.4 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
-        	$cnt1: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
-        	$cnt2: count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
+        	$cnt: count($b)
         )
         eval(
-        	$type.equals(BillType.RSD) && $cnt1.intValue() > 3 || 
-        	!$type.equals(BillType.RSD) && $cnt2.intValue() > 2
+        	$type == BillType.RSD && $cnt > 3 || 
+        	$type != BillType.RSD && $cnt > 2
         )
 	then
 		modify($response){setMessage("You can't increase by more than 40% of balance.");}
@@ -176,15 +172,11 @@ rule "Maximum increase amount is 40% of balance pt3"
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
-			$sum1: sum($amount)
-        )
-        accumulate(
-			Transaction($amount: amount) from $transactions,
-			$sum2: sum($amount)
+			$sum: sum($amount)
         )
         eval(
-        	$type.equals(BillType.RSD) && $sum1.doubleValue() > 0.5 * $base || 
-        	!$type.equals(BillType.RSD) && $sum2.doubleValue() > 0.3 * $base
+        	$type == BillType.RSD && $sum > 0.5 * $base || 
+        	$type != BillType.RSD && $sum > 0.3 * $base
         )
 	then
 		modify($response){setMessage("You can't increase by more than 40% of balance.");}
@@ -197,8 +189,8 @@ rule "Maximum increase amount is 35% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base > 150000 || 
-        	!type.equals(BillType.RSD) && base > 1500,
+        	type == BillType.RSD && base > 150000 || 
+        	type != BillType.RSD && base > 1500,
         	$balance: balance
         )        
 		Double(this > 0.35 * $balance)
@@ -217,16 +209,13 @@ rule "Maximum increase amount is 35% of balance pt2"
 		Double(this > 0.35 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
-        	$cnt1: count($bill)
-        )
-        accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
-        	$cnt2: count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
+        	$cnt: count($b)
         )
         eval(
-        	$type.equals(BillType.RSD) && $cnt1.intValue() > 4 || 
-        	!$type.equals(BillType.RSD) && $cnt2.intValue() > 3)
+        	$type == BillType.RSD && $cnt > 4 || 
+        	$type != BillType.RSD && $cnt > 3
+        )
 	then
 		modify($response){setMessage("You can't increase by more than 35% of balance.");}
 
@@ -242,15 +231,11 @@ rule "Maximum increase amount is 35% of balance pt3"
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
-			$sum1: sum($amount)
-        )
-        accumulate(
-			Transaction($amount: amount) from $transactions,
-			$sum2: sum($amount)
+			$sum: sum($amount)
         )
         eval(
-        	$type.equals(BillType.RSD) && $sum1.doubleValue() > 0.6 * $base || 
-        	!$type.equals(BillType.RSD) && $sum2.doubleValue() > 0.4 * $base
+        	$type == BillType.RSD && $sum > 0.6 * $base || 
+        	$type != BillType.RSD && $sum > 0.4 * $base
         )
 	then
 		modify($response){setMessage("You can't increase by more than 35% of balance.");}
@@ -263,8 +248,8 @@ rule "Maximum increase amount is 30% of balance pt1"
 
 	when
         Bill(
-        	type.equals(BillType.RSD) && base > 100000 || 
-        	!type.equals(BillType.RSD) && base > 1000,
+        	type == BillType.RSD && base > 100000 || 
+        	type != BillType.RSD && base > 1000,
         	$balance: balance
         )
 		Double(this > 0.3 * $balance)
@@ -283,16 +268,12 @@ rule "Maximum increase amount is 30% of balance pt2"
 		Double(this > 0.3 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
-        	$cnt1: count($bill)
-        )
-		accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
-        	$cnt2: count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
+        	$cnt: count($b)
         )
         eval(
-        	$type.equals(BillType.RSD) && $cnt1.intValue() > 5 || 
-        	!$type.equals(BillType.RSD) && $cnt2.intValue() > 4
+        	$type == BillType.RSD && $cnt > 5 || 
+        	$type != BillType.RSD && $cnt > 4
         )
 	then
 		modify($response){setMessage("You can't increase by more than 30% of balance.");}
@@ -309,15 +290,11 @@ rule "Maximum increase amount is 30% of balance pt3"
 		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
-			$sum1: sum($amount)
-        )
-        accumulate(
-			Transaction($amount: amount) from $transactions,
-			$sum2: sum($amount)
+			$sum: sum($amount)
         )
         eval(
-        	$type.equals(BillType.RSD) && $sum1.doubleValue() > 0.7 * $base ||
-        	!$type.equals(BillType.RSD) && $sum2.doubleValue() > 0.5 * $base
+        	$type == BillType.RSD && $sum > 0.7 * $base ||
+        	$type != BillType.RSD && $sum > 0.5 * $base
         )
 	then
 		modify($response){setMessage("You can't increase by more than 30% of balance.");}

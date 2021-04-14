@@ -65,7 +65,6 @@ public class TestValidation {
 		
 	@Test
 	public void testRule2() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now());
 		this.runAndAssert("You can't increase bill with passed time more than 95%.");
@@ -73,7 +72,6 @@ public class TestValidation {
 	
 	@Test
 	public void testRule3() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBalance(10);
@@ -82,7 +80,6 @@ public class TestValidation {
 	
 	@Test
 	public void testRule4() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
 		this.bill.setBalance(10);

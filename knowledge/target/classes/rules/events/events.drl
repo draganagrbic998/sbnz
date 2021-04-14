@@ -16,11 +16,11 @@ global Account account;
 rule "Create and close bill within 24h"
 	no-loop
     when
-        CreateBillEvent($bill: bill)
-        CloseBillEvent(bill.id == $bill.id)
+        CreateBillEvent($id: bill.id)
+        CloseBillEvent(bill.id == $id)
     then
 		notificationService.save(new Notification(account, 
-		"You opened saving bill #" + $bill.getId() + " and closed it within 24h. Was this you?"));
+		"You opened saving bill #" + $id + " and closed it within 24h. Was this you?"));
 		insert (new SuspiciousClientEvent());
 
 end
@@ -28,11 +28,11 @@ end
 rule "Increase and close bill within 24h"
 	no-loop
     when
-        IncreaseBillEvent($bill: transaction.bill)
-        CloseBillEvent(bill.id == $bill.id)
+        IncreaseBillEvent($id: transaction.bill.id)
+        CloseBillEvent(bill.id == $id)
     then
 		notificationService.save(new Notification(account, 
-		"You increased saving bill #" + $bill.getId() + " and closed it within 24h. Was this you?"));
+		"You increased saving bill #" + $id + " and closed it within 24h. Was this you?"));
 		insert (new SuspiciousClientEvent());
 
 end
@@ -40,11 +40,11 @@ end
 rule "Renew and close bill within 24h"
 	no-loop
     when
-        RenewBillEvent($bill: renewal.bill)
-        CloseBillEvent(bill.id == $bill.id)
+        RenewBillEvent($id: renewal.bill.id)
+        CloseBillEvent(bill.id == $id)
     then
 		notificationService.save(new Notification(account, 
-		"You renewed saving bill #" + $bill.getId() + " and closed it within 24h. Was this you?"));
+		"You renewed saving bill #" + $id + " and closed it within 24h. Was this you?"));
 		insert (new SuspiciousClientEvent());
 
 end
@@ -53,8 +53,8 @@ rule "Closing more than 3 RSD bills"
 	no-loop
     when
     	Number(intValue > 3) from accumulate(
-    		CloseBillEvent($event: this, bill.type.equals(BillType.RSD), bill.base > 25000),
-    		count($event)
+    		CloseBillEvent($e: this, bill.type == BillType.RSD, bill.base > 25000),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account,
@@ -67,8 +67,8 @@ rule "Closing more than 2 foreign bills"
 	no-loop
     when
     	Number(intValue > 2) from accumulate(
-    		CloseBillEvent($event: this, !bill.type.equals(BillType.RSD), bill.base > 250),
-    		count($event)
+    		CloseBillEvent($e: this, bill.type != BillType.RSD, bill.base > 250),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account, 
@@ -81,8 +81,8 @@ rule "More than 3 large RSD increases"
 	no-loop
     when
     	Number(intValue > 3) from accumulate(
-    		IncreaseBillEvent($event: this, transaction.bill.type.equals(BillType.RSD), transaction.amount > 30000),
-    		count($event)
+    		IncreaseBillEvent($e: this, transaction.bill.type == BillType.RSD, transaction.amount > 30000),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account, 
@@ -95,8 +95,8 @@ rule "More than 2 large foreign increases"
 	no-loop
     when
     	Number(intValue > 2) from accumulate(
-    		IncreaseBillEvent($event: this, !transaction.bill.type.equals(BillType.RSD), transaction.amount > 300),
-    		count($event)
+    		IncreaseBillEvent($e: this, transaction.bill.type != BillType.RSD, transaction.amount > 300),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account, 
@@ -109,8 +109,8 @@ rule "More than 3 large RSD renewals"
 	no-loop
     when
     	Number(intValue > 3) from accumulate(
-    		RenewBillEvent($event: this, renewal.bill.type.equals(BillType.RSD), renewal.amount > 9),
-    		count($event)
+    		RenewBillEvent($e: this, renewal.bill.type == BillType.RSD, renewal.amount > 9),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account, 
@@ -123,8 +123,8 @@ rule "More than 2 large foreign renewals"
 	no-loop
     when
     	Number(intValue > 2) from accumulate(
-    		RenewBillEvent($event: this, !renewal.bill.type.equals(BillType.RSD), renewal.amount > 6),
-    		count($event)
+    		RenewBillEvent($e: this, renewal.bill.type != BillType.RSD, renewal.amount > 6),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(account, 
@@ -137,8 +137,8 @@ rule "Suspicious client"
 	no-loop
     when
     	Number(intValue >= 3) from accumulate(
-    		SuspiciousClientEvent($event: this),
-    		count($event)
+    		SuspiciousClientEvent($e: this),
+    		count($e)
     	)
     then
 		notificationService.save(new Notification(null, 

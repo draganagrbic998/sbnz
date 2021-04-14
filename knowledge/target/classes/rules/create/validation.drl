@@ -13,7 +13,7 @@ rule "RSD bill - base less than 10.000 RSD"
 	salience 15
 
     when
-        BillRequest(type.equals(BillType.RSD), base < 10000)
+        BillRequest(type == BillType.RSD, base < 10000)
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Base can't be less than 10.000 RSD.");}
@@ -25,7 +25,7 @@ rule "RSD bill - base more than 10.000.000 RSD"
 	salience 14
 
     when
-        BillRequest(type.equals(BillType.RSD), base > 10000000)
+        BillRequest(type == BillType.RSD, base > 10000000)
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Base can't be more than 10.000.000 RSD.");}
@@ -37,7 +37,7 @@ rule "RSD bill - duration less than 4 months"
 	salience 13
 
     when    
-        BillRequest(type.equals(BillType.RSD), months < 4)        
+        BillRequest(type == BillType.RSD, months < 4)        
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Duration can't be less than 4 months.");}
@@ -49,7 +49,7 @@ rule "RSD bill - duration more than 42 months"
 	salience 12
 
     when    
-        BillRequest(type.equals(BillType.RSD), months > 42)
+        BillRequest(type == BillType.RSD, months > 42)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Duration can't be more than 42 months.");}
@@ -62,7 +62,7 @@ rule "RSD bill - main balance isn't at least 200 RSD more than base"
 
     when
     	Account($balance: balance)
-        BillRequest(type.equals(BillType.RSD), $balance - base < 200)
+        BillRequest(type == BillType.RSD, $balance - base < 200)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Main balance must be at least 200 RSD more than base.");}
@@ -75,7 +75,7 @@ rule "RSD bill - underage client and base more than 100.000 RSD"
 
     when
     	Account(underage())
-        BillRequest(type.equals(BillType.RSD), base > 100000)
+        BillRequest(type == BillType.RSD, base > 100000)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Base can't be more than 100.000 RSD for underage clients.");}
@@ -88,11 +88,11 @@ rule "RSD bill - underage client and 2 more active bills"
 
     when
     	Account(underage(), $bills: bills)
-        BillRequest(type.equals(BillType.RSD))
+        BillRequest(type == BillType.RSD)
 		$response: BillResponse(!valid, message == null)
         Number(intValue > 1) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, type == BillType.RSD) from $bills,
+        	count($b)
         )
     then    
         modify($response){setMessage("Underage clients can't have more than 2 active RSD bills.");}
@@ -104,7 +104,7 @@ rule "Foreign bill - base less than 100 units"
 	salience 8
 
     when
-        BillRequest(!type.equals(BillType.RSD), base < 100)
+        BillRequest(type != BillType.RSD, base < 100)
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Base can't be less than 100 currency units.");}
@@ -116,7 +116,7 @@ rule "Foreign bill - base more than 100.000 units"
 	salience 7
 
     when
-        BillRequest(!type.equals(BillType.RSD), base > 100000)
+        BillRequest(type != BillType.RSD, base > 100000)
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Base can't be more than 100.000 currency units.");}
@@ -128,7 +128,7 @@ rule "Foreign bill - duration less than 2 months"
 	salience 6
 
     when    
-        BillRequest(!type.equals(BillType.RSD), months < 2)        
+        BillRequest(type != BillType.RSD, months < 2)        
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Duration can't be less than 2 months.");}
@@ -140,7 +140,7 @@ rule "Foreign bill - duration more than 36 months"
 	salience 5
 
     when    
-        BillRequest(!type.equals(BillType.RSD), months > 36)
+        BillRequest(type != BillType.RSD, months > 36)
 		$response: BillResponse(!valid, message == null)
     then
         modify($response){setMessage("Duration can't be more than 36 months.");}
@@ -153,7 +153,7 @@ rule "Foreign bill - main balance isn't at least 1000 RSD more than base"
 
     when
     	Account($balance: balance)
-        BillRequest(!type.equals(BillType.RSD), $balance - Utils.convertToRSD(type, base) < 1000)
+        BillRequest(type != BillType.RSD, $balance - Utils.convertToRSD(type, base) < 1000)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Main balance must be at least 1000 RSD more than base.");}
@@ -166,7 +166,7 @@ rule "Foreign bill - underage client and base more than 1000 units"
 
     when
     	Account(underage())
-        BillRequest(!type.equals(BillType.RSD), base > 1000)
+        BillRequest(type != BillType.RSD, base > 1000)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Base can't be more than 1000 currency units for underage clients.");}
@@ -179,11 +179,11 @@ rule "Foreign bill - underage client and 1 more active bill"
 
     when
     	Account(underage(), $bills: bills)
-        BillRequest(!type.equals(BillType.RSD))
+        BillRequest(type != BillType.RSD)
 		$response: BillResponse(!valid, message == null)
         Number(intValue > 0) from accumulate(
-        	Bill($bill: this, status.equals(BillStatus.ACTIVE), !type.equals(BillType.RSD)) from $bills,
-        	count($bill)
+        	Bill($b: this, status == BillStatus.ACTIVE, type != BillType.RSD) from $bills,
+        	count($b)
         )
     then    
         modify($response){setMessage("Underage clients can't have more than 1 active foreign bill.");}

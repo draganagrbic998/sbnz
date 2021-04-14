@@ -11,8 +11,8 @@ rule "2.5% increase pt1"
 		$amount: Integer()
 		Bill(
 			$amount > 16 || 
-			type.equals(BillType.RSD) && base > 270000 ||
-			!type.equals(BillType.RSD) && base > 2700,
+			type == BillType.RSD && base > 270000 ||
+			type != BillType.RSD && base > 2700,
 			$interest: interest
 		)
 		$response: RenewalResponse(valid, interestUpdate == null)
@@ -25,10 +25,10 @@ rule "2.5% increase pt2"
 	salience 12
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 15) from accumulate(
-			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type == BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -44,10 +44,10 @@ rule "2.5% increase pt3"
 	salience 11
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 14) from accumulate(
-			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type != BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -66,8 +66,8 @@ rule "2% increase pt1"
 		$amount: Integer()
 		Bill(
 			$amount > 13 || 
-			type.equals(BillType.RSD) && base > 220000 ||
-			!type.equals(BillType.RSD) && base > 2200,
+			type == BillType.RSD && base > 220000 ||
+			type != BillType.RSD && base > 2200,
 			$interest: interest
 		)
 		$response: RenewalResponse(valid, interestUpdate == null)
@@ -80,10 +80,10 @@ rule "2% increase pt2"
 	salience 9
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 12) from accumulate(
-			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type == BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -99,10 +99,10 @@ rule "2% increase pt3"
 	salience 8
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 11) from accumulate(
-			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type != BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -121,8 +121,8 @@ rule "1.5% increase pt1"
 		$amount: Integer()
 		Bill(
 			$amount > 9 || 
-			type.equals(BillType.RSD) && base > 170000 ||
-			!type.equals(BillType.RSD) && base > 1700,
+			type == BillType.RSD && base > 170000 ||
+			type != BillType.RSD && base > 1700,
 			$interest: interest
 		)
 		$response: RenewalResponse(valid, interestUpdate == null)
@@ -135,10 +135,10 @@ rule "1.5% increase pt2"
 	salience 6
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 8) from accumulate(
-			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type == BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -154,10 +154,10 @@ rule "1.5% increase pt3"
 	salience 5
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 7) from accumulate(
-			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type != BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -176,8 +176,8 @@ rule "1% increase pt1"
 		$amount: Integer()
 		Bill(
 			$amount > 5 || 
-			type.equals(BillType.RSD) && base > 120000 ||
-			!type.equals(BillType.RSD) && base > 1200,
+			type == BillType.RSD && base > 120000 ||
+			type != BillType.RSD && base > 1200,
 			$interest: interest
 		)
 		$response: RenewalResponse(valid, interestUpdate == null)
@@ -190,10 +190,10 @@ rule "1% increase pt2"
 	salience 3
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 4) from accumulate(
-			Bill(type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type == BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 24, $amount: amount) from $renewals,
 				$avg: average($amount)
@@ -209,10 +209,10 @@ rule "1% increase pt3"
 	salience 2
 
     when
-    	Bill($bills: account.bills, $interest: interest)
+    	Bill($interest: interest, $bills: account.bills)
 		$response: RenewalResponse(valid, interestUpdate == null)
 		Number(doubleValue > 3) from accumulate(
-			Bill(!type.equals(BillType.RSD), $renewals: renewals) from $bills and
+			Bill(type != BillType.RSD, $renewals: renewals) from $bills and
 			accumulate(
 				Renewal(passedMonths() <= 21, $amount: amount) from $renewals,
 				$avg: average($amount)
