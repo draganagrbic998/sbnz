@@ -63,7 +63,6 @@ public class TestValidation {
 	
 	@Test
 	public void testRule1() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now());
 		this.amount = 2;
@@ -72,7 +71,6 @@ public class TestValidation {
 
 	@Test
 	public void testRule2() {
-		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now());
 		this.amount = 25;

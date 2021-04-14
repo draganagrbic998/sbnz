@@ -40,6 +40,7 @@ public class TestEKS {
 		this.request = new BillRequest();
 		this.response = new BillResponse();
 		
+		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(4);
 		this.account.setBalance(10001 * 140 + 1001);
@@ -72,14 +73,12 @@ public class TestEKS {
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 100001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))		
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(1.0, 5000);
 	}
 	
 	@Test
 	public void testRule1pt2() {
 		this.account.setDate(LocalDate.now().plusYears(0).plusDays(1));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(1.0, 5000);		
 	}
 
@@ -96,7 +95,6 @@ public class TestEKS {
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 300001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))		
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.98, 2000);		
 	}
 	
@@ -127,7 +125,6 @@ public class TestEKS {
 			ObjectFactory.getBill(BillType.RSD, 100, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(0.3 * 100 + 1))),
 			ObjectFactory.getBill(BillType.RSD, 100, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(0.3 * 100 + 1)))
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.95, 1000);		
 	}
 	
@@ -158,7 +155,6 @@ public class TestEKS {
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(50001), ObjectFactory.getTransaction(50001))),
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(50001), ObjectFactory.getTransaction(50001)))
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.9, 500);		
 	}
 	
@@ -168,7 +164,6 @@ public class TestEKS {
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillStatus.CLOSED, BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.9, 500);
 	}
 	
@@ -179,7 +174,6 @@ public class TestEKS {
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(3).plusDays(2), Set.of(ObjectFactory.getTransaction(10001))),
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(3).plusDays(2), Set.of(ObjectFactory.getTransaction(10001)))
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.87, 200);
 	}
 	
@@ -199,7 +193,6 @@ public class TestEKS {
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))
 		));
-		this.request.setType(BillType.RSD);
 		this.runAndAssert(0.85, 0);
 	}
 
