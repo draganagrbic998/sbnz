@@ -42,5 +42,8 @@ https://www.mediafire.com/file/npsaxpbvdyq600e/sbn2z.mp4/file
 19. u CommandPrompt-u се позиционирати у frontend folder у клонираном репозиторијуму
 20. унети npm install и притиснути Enter
 21. унети ng serve --open и притиснути Enter
-
+22. креденцијали за пријаву на систем:
+  - admin@gmail.com asd
+  - sluzbenik@gmail.com asd
+  - klijent@gmail.com asd
 \* уколико инсталациони програм за lombok не може да лоцира Eclipse, одабарти произвољну локацију и инсталирати библиотеку у њој
