@@ -46,5 +46,13 @@ https://www.mediafire.com/file/iygtaf0jyf9ahw5/sbnz.mp4/file
   - admin@gmail.com, asd
   - sluzbenik@gmail.com, asd
   - klijent@gmail.com, asd
-
+24. За покретање тестова предлаже се коришћење suite-a:
+  - потребан је JUnit4
+  - отворити backend -> src/test/java -> com.example.demo -> AllTests.java
+  - десни клик у коду -> Run As -> JUnit Test
+25. уколико покретање suite-a не буде било могуће урадити следеће:
+  - десни клик у коду (AllTests.java) -> Run As -> Run Configurations...
+  - у пољу Test Runner одабрати JUnit4
+  - Apply
+  - Run
 \* уколико инсталациони програм за lombok не може да лоцира Eclipse, одабарти произвољну локацију и инсталирати библиотеку у њој
