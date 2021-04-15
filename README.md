@@ -54,5 +54,5 @@ https://www.mediafire.com/file/iygtaf0jyf9ahw5/sbnz.mp4/file
   - десни клик у коду (AllTests.java) -> Run As -> Run Configurations...
   - у пољу Test Runner одабрати JUnit4
   - Apply
-  - Run
+  - Run<br><br>
 \* уколико инсталациони програм за lombok не може да лоцира Eclipse, одабарти произвољну локацију и инсталирати библиотеку у њој
