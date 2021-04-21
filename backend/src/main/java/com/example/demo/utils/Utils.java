@@ -36,11 +36,4 @@ public class Utils {
 		return value;
 	}
 
-	public static int isAtLeast(double value, double limit) {
-		if (value >= limit) {
-			return 1;
-		}
-		return 0;
-	}
-
 }

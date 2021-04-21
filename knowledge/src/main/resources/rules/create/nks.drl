@@ -6,7 +6,6 @@ import com.example.demo.rules.BillResponse
 
 rule "NKS of 1.5%"
 	agenda-group "create-rules"
-	salience 5
 
     when
     	BillRequest(
@@ -24,7 +23,6 @@ end
 
 rule "NKS of 1.2%"
 	agenda-group "create-rules"
-	salience 4
 
     when
     	BillRequest(
@@ -42,7 +40,6 @@ end
 
 rule "NKS of 1.0%"
 	agenda-group "create-rules"
-	salience 3
 
     when
     	BillRequest(
@@ -60,7 +57,6 @@ end
 
 rule "NKS of 0.8%"
 	agenda-group "create-rules"
-	salience 2
 
     when
     	BillRequest(
@@ -78,7 +74,6 @@ end
 
 rule "NKS of 0.5%"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	BillRequest(

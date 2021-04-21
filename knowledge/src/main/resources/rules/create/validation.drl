@@ -10,7 +10,6 @@ import com.example.demo.utils.Utils
 
 rule "RSD bill - base less than 10.000 RSD"
 	agenda-group "create-rules"
-	salience 1
 
     when
         BillRequest(type == BillType.RSD, base < 10000)
@@ -22,7 +21,6 @@ end
 
 rule "RSD bill - base more than 10.000.000 RSD"
 	agenda-group "create-rules"
-	salience 1
 
     when
         BillRequest(type == BillType.RSD, base > 10000000)
@@ -34,7 +32,6 @@ end
 
 rule "RSD bill - duration less than 4 months"
 	agenda-group "create-rules"
-	salience 1
 
     when    
         BillRequest(type == BillType.RSD, months < 4)        
@@ -46,7 +43,6 @@ end
 
 rule "RSD bill - duration more than 42 months"
 	agenda-group "create-rules"
-	salience 1
 
     when    
         BillRequest(type == BillType.RSD, months > 42)
@@ -58,7 +54,6 @@ end
 
 rule "RSD bill - main balance isn't at least 200 RSD more than base"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account($balance: balance)
@@ -71,7 +66,6 @@ end
 
 rule "RSD bill - underage client and base more than 100.000 RSD"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account(underage())
@@ -84,7 +78,6 @@ end
 
 rule "RSD bill - underage client and 2 more active bills"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account(underage(), $bills: bills)
@@ -101,7 +94,6 @@ end
 
 rule "Foreign bill - base less than 100 units"
 	agenda-group "create-rules"
-	salience 1
 
     when
         BillRequest(type != BillType.RSD, base < 100)
@@ -113,7 +105,6 @@ end
 
 rule "Foreign bill - base more than 100.000 units"
 	agenda-group "create-rules"
-	salience 1
 
     when
         BillRequest(type != BillType.RSD, base > 100000)
@@ -125,7 +116,6 @@ end
 
 rule "Foreign bill - duration less than 2 months"
 	agenda-group "create-rules"
-	salience 1
 
     when    
         BillRequest(type != BillType.RSD, months < 2)        
@@ -137,7 +127,6 @@ end
 
 rule "Foreign bill - duration more than 36 months"
 	agenda-group "create-rules"
-	salience 1
 
     when    
         BillRequest(type != BillType.RSD, months > 36)
@@ -149,7 +138,6 @@ end
 
 rule "Foreign bill - main balance isn't at least 1000 RSD more than base"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account($balance: balance)
@@ -162,7 +150,6 @@ end
 
 rule "Foreign bill - underage client and base more than 1000 units"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account(underage())
@@ -175,7 +162,6 @@ end
 
 rule "Foreign bill - underage client and 1 more active bill"
 	agenda-group "create-rules"
-	salience 1
 
     when
     	Account(underage(), $bills: bills)
@@ -192,7 +178,6 @@ end
 
 rule "Valid params"
 	agenda-group "create-rules"
-	salience 0
 
     when
 		$response: BillResponse(!valid, message == null)
