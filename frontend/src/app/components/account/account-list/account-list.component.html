@@ -1,7 +1,0 @@
-<app-list-container [pagination]="pagination" (changedPage)="changePage($event)"
-[pending]="pending" [length]="accounts.length" title="NO ACCOUNTS">
-    <app-account-details
-    *ngFor="let account of accounts"
-    [account]="account"
-    ></app-account-details>
-</app-list-container>

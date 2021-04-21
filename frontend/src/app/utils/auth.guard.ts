@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     if (!route.data.roles.includes(this.storageService.getUser()?.role)){
-      this.router.navigate([environment.loginFormRoute]);
+      this.router.navigate([environment.loginRoute]);
       return false;
     }
     return true;

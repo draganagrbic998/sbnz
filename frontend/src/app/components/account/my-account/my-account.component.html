@@ -1,6 +1,0 @@
-<app-preloader *ngIf="pending"></app-preloader>
-<app-empty-container *ngIf="!pending && !account" title="ERROR LOADING ACCOUNT"></app-empty-container>
-
-<div *ngIf="!pending && account">
-    <app-account-details [account]="account" [myAccount]="true"></app-account-details>
-</div>

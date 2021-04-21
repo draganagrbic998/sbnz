@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/utils/constants';
+import { EMPTY_PAGE, PAGE_SIZE } from 'src/app/utils/constants';
 import { Account } from 'src/app/models/account';
 import { Page } from '../models/page';
 
@@ -29,7 +29,7 @@ export class AccountService {
   findAll(page: number, search: string): Observable<Page<Account>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<Page<Account>>(this.API_PATH, {params}).pipe(
-      catchError(() => of({content: [], first: true, last: true}))
+      catchError(() => of(EMPTY_PAGE))
     );
   }
 
@@ -53,7 +53,7 @@ export class AccountService {
   delete(id: number): Observable<boolean>{
     return this.http.delete<null>(`${this.API_PATH}/${id}`).pipe(
       map(() => true),
-      catchError(() => of(null))
+      catchError(() => of(false))
     );
   }
 
@@ -74,4 +74,5 @@ export class AccountService {
   announceReport(index: number): void{
     this.report.next(index);
   }
+
 }

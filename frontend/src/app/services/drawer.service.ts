@@ -6,18 +6,16 @@ import { MatDrawer } from '@angular/material/sidenav';
 })
 export class DrawerService {
 
-  constructor() { }
-
-  drawers: MatDrawer[] = [];
+  private drawers: MatDrawer[] = [];
 
   register(drawer: MatDrawer): void{
     this.drawers.push(drawer);
   }
 
-  closeAllExceptOne(exc: MatDrawer): void{
-    for (const drawer of this.drawers){
-      if (drawer !== exc){
-        drawer.close();
+  closeOthers(drawer: MatDrawer): void{
+    for (const d of this.drawers){
+      if (d !== drawer){
+        d.close();
       }
     }
   }

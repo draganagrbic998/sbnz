@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token: string = this.storageService.getUser()?.token;
+    const token = this.storageService.getUser()?.token;
     if (!token){
       return next.handle(request);
     }
@@ -21,6 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
         Authorization: token
       }
     });
+
     return next.handle(request);
   }
 }

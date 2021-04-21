@@ -4,7 +4,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { Login } from 'src/app/models/login';
 import { User } from 'src/app/models/user';
 import { catchError, map } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/utils/constants';
+import { EMPTY_PAGE, PAGE_SIZE } from 'src/app/utils/constants';
 import { PasswordChange } from 'src/app/models/password-change';
 import { Page } from '../models/page';
 
@@ -29,7 +29,7 @@ export class UserService {
   findAll(page: number, search: string): Observable<Page<User>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<Page<User>>(this.API_PATH, {params}).pipe(
-      catchError(() => of({content: [], first: true, last: true}))
+      catchError(() => of(EMPTY_PAGE))
     );
   }
 
@@ -47,7 +47,7 @@ export class UserService {
   delete(id: number): Observable<boolean>{
     return this.http.delete<null>(`${this.API_PATH}/${id}`).pipe(
       map(() => true),
-      catchError(() => of(null))
+      catchError(() => of(false))
     );
   }
 
@@ -60,7 +60,7 @@ export class UserService {
   changePassword(passwordChange: PasswordChange): Observable<boolean>{
     return this.http.put<null>(`${this.API_PATH}/change-password`, passwordChange).pipe(
       map(() => true),
-      catchError(() => of(null))
+      catchError(() => of(false))
     );
   }
 

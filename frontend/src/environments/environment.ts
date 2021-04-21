@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  loginFormRoute: 'login-form',
-  userListRoute: 'user-list',
-  accountListRoute: 'account-list',
-  myAccountRoute: 'my-account',
-  billListRoute: 'bill-list',
-  notificationList: 'notification-list',
-  baseReport: 'base-report'
+  loginRoute: 'login',
+  usersRoute: 'users',
+  accountsRoute: 'accounts',
+  accountRoute: 'account',
+  billsRoute: 'bills',
+  notificationsRoute: 'notifications',
+  reportRoute: 'report'
 };
 
 /*

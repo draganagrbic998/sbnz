@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { PasswordFormComponent } from 'src/app/components/user/password-form/password-form.component';
-import { UserFormComponent } from 'src/app/components/user/user-form/user-form.component';
+import { PasswordComponent } from 'src/app/components/user/password/password.component';
+import { UserComponent } from 'src/app/components/user/user/user.component';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { AccountService } from 'src/app/services/account.service';
 import { BillService } from 'src/app/services/bill.service';
@@ -11,14 +11,15 @@ import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import { AccountFormComponent } from '../../account/account-form/account-form.component';
-import { BillFormComponent } from '../../bill/bill-form/bill-form.component';
+import { CreateComponent } from '../../bill/create/create.component';
+import { ADMIN, KLIJENT, SLUZBENIK } from 'src/app/utils/constants';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
   constructor(
     private storageService: StorageService,
@@ -29,27 +30,32 @@ export class ToolbarComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
+  routes = environment;
+  roles = {ADMIN, SLUZBENIK, KLIJENT};
   search: FormControl = new FormControl('');
 
   get role(): string{
     return this.storageService.getUser()?.role;
   }
 
-  onRoute(param: string): boolean{
-    return this.router.url.substr(1).includes(param);
+  onRoute(param: string, includes?: boolean): boolean{
+    if (includes){
+      return this.router.url.substr(1).includes(param);
+    }
+    return this.router.url.substr(1) === param;
   }
 
   signOut(): void{
     this.storageService.removeUser();
-    this.router.navigate([environment.loginFormRoute]);
+    this.router.navigate([environment.loginRoute]);
   }
 
   openPasswordDialog(): void{
-    this.dialog.open(PasswordFormComponent, DIALOG_OPTIONS);
+    this.dialog.open(PasswordComponent, DIALOG_OPTIONS);
   }
 
   openUserDialog(): void{
-    this.dialog.open(UserFormComponent, {...DIALOG_OPTIONS, ...{data: {}}});
+    this.dialog.open(UserComponent, {...DIALOG_OPTIONS, ...{data: {}}});
   }
 
   openAccountDialog(): void{
@@ -57,14 +63,14 @@ export class ToolbarComponent implements OnInit {
   }
 
   openBillDialog(): void{
-    this.dialog.open(BillFormComponent, DIALOG_OPTIONS);
+    this.dialog.open(CreateComponent, DIALOG_OPTIONS);
   }
 
   announceSearchData(): void{
-    if (this.onRoute('user-list')){
+    if (this.onRoute(this.routes.usersRoute)){
       this.userService.announceSearchData(this.search.value);
     }
-    else if (this.onRoute('account-list')){
+    else if (this.onRoute(this.routes.accountsRoute)){
       this.accountService.announceSearchData(this.search.value);
     }
     else{
@@ -74,9 +80,6 @@ export class ToolbarComponent implements OnInit {
 
   announceReport(index: number): void{
     this.accountService.announceReport(index);
-  }
-
-  ngOnInit(): void {
   }
 
 }

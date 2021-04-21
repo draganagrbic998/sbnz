@@ -1,7 +1,0 @@
-<app-dialog-container title="Close Confirmation"
-[pending]="pending" [warn]="true" (confirmed)="confirm()">
-    <p>Are you sure you want to close selected bill?</p>
-    <app-rule-response *ngIf="response?.valid==false" [small]="true">
-        <app-bold-text>Error: </app-bold-text>{{response.message}}
-    </app-rule-response>
-</app-dialog-container>

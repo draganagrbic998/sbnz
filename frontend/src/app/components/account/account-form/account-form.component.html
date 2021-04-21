@@ -1,4 +1,4 @@
-<app-dialog-container [title]="account.id ? 'Edit Account' : 'New Account'" 
+<app-dialog [title]="account.id ? 'Edit Account' : 'New Account'" 
 [pending]="pending" [disabled]="accountForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="accountForm" [class.disabled]="pending">
         <div>
@@ -90,4 +90,4 @@
             </mat-form-field>    
         </div>
     </form>
-</app-dialog-container>
+</app-dialog>

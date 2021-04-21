@@ -1,21 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Pagination } from 'src/app/models/pagination';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Page } from 'src/app/models/page';
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent {
 
-  constructor() { }
-
-  @Input() small: boolean;
+  @Input() pagination!: Page<any>;
   @Input() pending: boolean;
-  @Input() pagination: Pagination = {firstPage: true, lastPage: true, pageNumber: 0};
+  @Input() small: boolean;
   @Output() changedPage: EventEmitter<number> = new EventEmitter();
-
-  ngOnInit(): void {
-  }
 
 }

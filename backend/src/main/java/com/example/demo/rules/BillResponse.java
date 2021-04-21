@@ -1,9 +1,14 @@
 package com.example.demo.rules;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.kie.api.definition.type.PropertyReactive;
 
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@PropertyReactive
+@Getter
+@Setter
 @NoArgsConstructor
 public class BillResponse {
 
@@ -13,5 +18,17 @@ public class BillResponse {
 	private Integer points;
 	private Double eks;
 	private Integer reward;
+	private int conditions;
+	private int level;
+	
+	public void setConditions(int level) {
+		if (level != this.level) {
+			this.conditions = 1;
+		}
+		else {
+			++this.conditions;
+		}
+		this.level = level;
+	}
 	
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/utils/constants';
+import { EMPTY_PAGE, PAGE_SIZE } from 'src/app/utils/constants';
 import { BaseReport } from 'src/app/models/base-report';
 import { Bill } from 'src/app/models/bill';
 import { BillRequest } from 'src/app/models/bill-request';
@@ -31,7 +31,7 @@ export class BillService {
     const params = new HttpParams().set('rsd', (type === 'rsd') + '')
     .set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<Page<Bill>>(this.API_PATH, {params}).pipe(
-      catchError(() => of({content: [], first: true, last: true}))
+      catchError(() => of(EMPTY_PAGE))
     );
   }
 
@@ -65,7 +65,7 @@ export class BillService {
     );
   }
 
-  baseReport(): Observable<BaseReport>{
+  getReport(): Observable<BaseReport>{
     return this.http.get<BaseReport>(`${this.API_PATH}/base-report`).pipe(
       catchError(() => of(null))
     );

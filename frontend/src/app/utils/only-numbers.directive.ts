@@ -5,8 +5,6 @@ import { Directive, HostListener } from '@angular/core';
 })
 export class OnlyNumbersDirective {
 
-  constructor() { }
-
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
     // tslint:disable-next-line: deprecation

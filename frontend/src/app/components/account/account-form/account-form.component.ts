@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 import { Account } from 'src/app/models/account';
@@ -17,20 +17,20 @@ export class AccountFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public account: Account,
     private accountService: AccountService,
     private dialogRef: MatDialogRef<AccountFormComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) { }
 
   pending = false;
-  accountForm: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    lastName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    jmbg: new FormControl('', [Validators.required, Validators.minLength(13)]),
-    birthDate: new FormControl('', [Validators.required, this.birthDateValidator()]),
-    address: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    city: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    zipCode: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    email: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S')),
-    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')])
+  accountForm = this.formBuilder.group({
+    firstName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    lastName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    jmbg: ['', [Validators.required, Validators.minLength(13)]],
+    birthDate: ['', [Validators.required, this.birthDateValidator()]],
+    address: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    city: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    zipCode: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    email: ['', [Validators.required, Validators.email]]
   });
 
   confirm(): void{
@@ -54,7 +54,7 @@ export class AccountFormComponent implements OnInit {
     );
   }
 
-  birthDateValidator(): ValidatorFn{
+  private birthDateValidator(): ValidatorFn{
     return (control: AbstractControl): ValidationErrors => {
       let dateValid = true;
       if (control.value >= new Date()){

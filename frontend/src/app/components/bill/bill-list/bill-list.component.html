@@ -1,7 +1,0 @@
-<app-list-container [pagination]="pagination" (changedPage)="changePage($event)"
-[pending]="pending" [length]="bills.length" title="NO BILLS">
-    <app-bill-details
-    *ngFor="let bill of bills"
-    [bill]="bill"
-    ></app-bill-details>
-</app-list-container>

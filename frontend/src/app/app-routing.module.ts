@@ -1,61 +1,61 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { AccountListComponent } from './components/account/account-list/account-list.component';
-import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { BaseReportComponent } from './components/common/base-report/base-report.component';
-import { BillListComponent } from './components/bill/bill-list/bill-list.component';
-import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
-import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { UserListComponent } from './components/user/user-list/user-list.component';
+import { AccountsComponent } from './components/account/accounts/accounts.component';
+import { AccountDetailsComponent } from './components/account/account-details/account-details.component';
+import { ReportComponent } from './components/common/report/report.component';
+import { BillsComponent } from './components/bill/bills/bills.component';
+import { NotificationsComponent } from './components/account/notifications/notifications.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { UsersComponent } from './components/user/users/users.component';
 import { ADMIN, KLIJENT, SLUZBENIK } from './utils/constants';
 import { AuthGuard } from './utils/auth.guard';
 
 const routes: Routes = [
   {
-    path: environment.loginFormRoute,
-    component: LoginFormComponent
+    path: environment.loginRoute,
+    component: LoginComponent
   },
   {
-    path: environment.userListRoute,
-    component: UserListComponent,
+    path: environment.usersRoute,
+    component: UsersComponent,
     canActivate: [AuthGuard],
     data: {roles: [ADMIN]}
   },
   {
-    path: environment.accountListRoute,
-    component: AccountListComponent,
+    path: environment.accountsRoute,
+    component: AccountsComponent,
     canActivate: [AuthGuard],
     data: {roles: [SLUZBENIK]}
   },
   {
-    path: environment.myAccountRoute,
-    component: MyAccountComponent,
+    path: environment.accountRoute,
+    component: AccountDetailsComponent,
     canActivate: [AuthGuard],
     data: {roles: [KLIJENT]}
   },
   {
-    path: `${environment.billListRoute}/:type`,
-    component: BillListComponent,
+    path: `${environment.billsRoute}/:type`,
+    component: BillsComponent,
     canActivate: [AuthGuard],
     data: {roles: [KLIJENT]}
   },
   {
-    path: environment.notificationList,
-    component: NotificationListComponent,
+    path: environment.notificationsRoute,
+    component: NotificationsComponent,
     canActivate: [AuthGuard],
     data: {roles: [ADMIN, KLIJENT]}
   },
   {
-    path: environment.baseReport,
-    component: BaseReportComponent,
+    path: environment.reportRoute,
+    component: ReportComponent,
     canActivate: [AuthGuard],
     data: {roles: [SLUZBENIK]}
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: environment.loginFormRoute
+    redirectTo: environment.loginRoute
   }
 ];
 @NgModule({

@@ -8,15 +8,6 @@
     height: 47px;
 }
 
-input, select{
-    height: 40px;
-    width: 250px;
-}
-
-.form-control:focus {
-    border-color: #00f7ff;
-}
-
 .main{
     display: flex;
     flex-direction: row;
@@ -24,4 +15,13 @@ input, select{
 
 form{
     margin-left: 20px;
+}
+
+input, select{
+    height: 40px;
+    width: 250px;
+}
+
+.form-control:focus {
+    border-color: #00f7ff;
 }

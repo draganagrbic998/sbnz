@@ -1,65 +1,59 @@
-import { BoldTextComponent } from './components/containers/bold-text/bold-text.component';
-import { SpacerContainerComponent } from './components/containers/spacer-container/spacer-container.component';
-import { EmptyContainerComponent } from './components/containers/empty-container/empty-container.component';
+import { BoldComponent } from './components/containers/bold/bold.component';
+import { SpacerComponent } from './components/containers/spacer/spacer.component';
+import { EmptyComponent } from './components/containers/empty/empty.component';
 import { PreloaderComponent } from './components/loaders/preloader/preloader.component';
-import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
-import { DetailsContainerComponent } from './components/containers/details-container/details-container.component';
-import { ListContainerComponent } from './components/containers/list-container/list-container.component';
-import { DialogContainerComponent } from './components/containers/dialog-container/dialog-container.component';
+import { SpinnerComponent } from './components/loaders/spinner/spinner.component';
+import { DetailsComponent } from './components/containers/details/details.component';
+import { ListComponent } from './components/containers/list/list.component';
+import { DialogComponent } from './components/containers/dialog/dialog.component';
 import { RuleResponseComponent } from './components/common/rule-response/rule-response.component';
 import { PaginatorComponent } from './components/common/paginator/paginator.component';
-import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { PasswordFormComponent } from './components/user/password-form/password-form.component';
-import { UserFormComponent } from './components/user/user-form/user-form.component';
-import { UserListComponent } from './components/user/user-list/user-list.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { PasswordComponent } from './components/user/password/password.component';
+import { UserComponent } from './components/user/user/user.component';
+import { UsersComponent } from './components/user/users/users.component';
 import { AccountFormComponent } from './components/account/account-form/account-form.component';
+import { AccountComponent } from './components/account/account/account.component';
+import { AccountsComponent } from './components/account/accounts/accounts.component';
 import { AccountDetailsComponent } from './components/account/account-details/account-details.component';
-import { AccountListComponent } from './components/account/account-list/account-list.component';
-import { MyAccountComponent } from './components/account/my-account/my-account.component';
-import { BillFormComponent } from './components/bill/bill-form/bill-form.component';
-import { BillDetailsComponent } from './components/bill/bill-details/bill-details.component';
-import { BillListComponent } from './components/bill/bill-list/bill-list.component';
-import { TransactionFormComponent } from './components/transaction/transaction-form/transaction-form.component';
-import { TransactionDetailsComponent } from './components/transaction/transaction-details/transaction-details.component';
-import { RenewalFormComponent } from './components/renewal/renewal-form/renewal-form.component';
-import { RenewalDetailsComponent } from './components/renewal/renewal-details/renewal-details.component';
-import { NotificationDetailsComponent } from './components/notification/notification-details/notification-details.component';
-import { NotificationListComponent } from './components/notification/notification-list/notification-list.component';
-import { BaseReportComponent } from './components/common/base-report/base-report.component';
+import { CreateComponent } from './components/bill/create/create.component';
+import { BillComponent } from './components/bill/bill/bill.component';
+import { BillsComponent } from './components/bill/bills/bills.component';
+import { TransactionComponent } from './components/bill/transaction/transaction.component';
+import { RenewalComponent } from './components/bill/renewal/renewal.component';
+import { NotificationsComponent } from './components/account/notifications/notifications.component';
+import { ReportComponent } from './components/common/report/report.component';
 import { ToolbarComponent } from './components/common/toolbar/toolbar.component';
-import { DeleteConfirmationComponent } from './components/common/delete-confirmation/delete-confirmation.component';
-import { CloseConfirmationComponent } from './components/bill/close-confirmation/close-confirmation.component';
+import { DeleteComponent } from './components/common/delete/delete.component';
+import { CloseComponent } from './components/bill/close/close.component';
 
 export const COMPONENTS = [
-    BoldTextComponent,
-    SpacerContainerComponent,
-    EmptyContainerComponent,
+    BoldComponent,
+    SpacerComponent,
+    EmptyComponent,
     PreloaderComponent,
-    SpinnerButtonComponent,
-    DetailsContainerComponent,
-    ListContainerComponent,
-    DialogContainerComponent,
+    SpinnerComponent,
+    DetailsComponent,
+    ListComponent,
+    DialogComponent,
     RuleResponseComponent,
     PaginatorComponent,
-    LoginFormComponent,
-    PasswordFormComponent,
-    UserFormComponent,
-    UserListComponent,
+    LoginComponent,
+    PasswordComponent,
+    UserComponent,
+    UsersComponent,
     AccountFormComponent,
+    AccountComponent,
+    AccountsComponent,
     AccountDetailsComponent,
-    AccountListComponent,
-    MyAccountComponent,
-    BillFormComponent,
-    BillDetailsComponent,
-    BillListComponent,
-    TransactionFormComponent,
-    TransactionDetailsComponent,
-    RenewalFormComponent,
-    RenewalDetailsComponent,
-    NotificationDetailsComponent,
-    NotificationListComponent,
-    BaseReportComponent,
+    CreateComponent,
+    BillComponent,
+    BillsComponent,
+    TransactionComponent,
+    RenewalComponent,
+    NotificationsComponent,
+    ReportComponent,
     ToolbarComponent,
-    DeleteConfirmationComponent,
-    CloseConfirmationComponent
+    DeleteComponent,
+    CloseComponent
 ];
