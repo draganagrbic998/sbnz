@@ -10,17 +10,26 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.ObjectFactory;
 import com.example.demo.model.Account;
 import com.example.demo.model.Bill;
 import com.example.demo.model.BillType;
+import com.example.demo.service.ExchangeRateService;
 import com.example.demo.utils.Constants;
 
+@RunWith(SpringRunner.class)
 public class TestAdvancedReports {
+
+	@MockBean
+	private ExchangeRateService rateService;
 
 	private KieSession kieSession;
 	private List<Account> accounts;
@@ -31,6 +40,7 @@ public class TestAdvancedReports {
 		KieContainer kieContainer = kieService.newKieContainer(kieService
 				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
 		this.kieSession = kieContainer.newKieSession(Constants.REPORT_RULES);
+        this.kieSession.setGlobal("rateService", this.rateService);
 
 		this.accounts = new ArrayList<>();
 	}
@@ -66,6 +76,8 @@ public class TestAdvancedReports {
 	@Test
 	public void testReport2() {
 		this.kieSession.getAgenda().getAgendaGroup(Constants.SECOND_REPORT).setFocus();
+		Mockito.when(this.rateService.convertToRSD(BillType.EUR, 9100))
+		.thenReturn(117.48 * 9100);
 		
 		Account account = new Account();
 		account.setId(1l);
@@ -87,7 +99,11 @@ public class TestAdvancedReports {
 	@Test
 	public void testReport3() {
 		this.kieSession.getAgenda().getAgendaGroup(Constants.THIRD_REPORT).setFocus();
-		
+		Mockito.when(this.rateService.convertToRSD(BillType.RSD, 500000))
+		.thenReturn(500000.0);
+		Mockito.when(this.rateService.convertToRSD(BillType.RSD, 500001))
+		.thenReturn(500001.0);
+
 		Account account = new Account();
 		account.setId(1l);
 		Bill bill = ObjectFactory.getBill(BillType.RSD);

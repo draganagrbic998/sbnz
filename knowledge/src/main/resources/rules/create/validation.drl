@@ -5,7 +5,9 @@ import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
 import com.example.demo.rules.BillRequest
 import com.example.demo.rules.BillResponse
-import com.example.demo.utils.Utils
+import com.example.demo.service.ExchangeRateService
+
+global ExchangeRateService rateService;
 
 
 rule "RSD bill - base less than 10.000 RSD"
@@ -82,11 +84,11 @@ rule "RSD bill - underage client and 2 more active bills"
     when
     	Account(underage(), $bills: bills)
         BillRequest(type == BillType.RSD)
-		$response: BillResponse(!valid, message == null)
         Number(intValue > 1) from accumulate(
         	Bill($b: this, status == BillStatus.ACTIVE, type == BillType.RSD) from $bills,
         	count($b)
         )
+		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Underage clients can't have more than 2 active RSD bills.");}
 
@@ -141,7 +143,7 @@ rule "Foreign bill - main balance isn't at least 1000 RSD more than base"
 
     when
     	Account($balance: balance)
-        BillRequest(type != BillType.RSD, $balance - Utils.convertToRSD(type, base) < 1000)
+        BillRequest(type != BillType.RSD, $balance - rateService.convertToRSD(type, base) < 1000)
 		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Main balance must be at least 1000 RSD more than base.");}
@@ -166,11 +168,11 @@ rule "Foreign bill - underage client and 1 more active bill"
     when
     	Account(underage(), $bills: bills)
         BillRequest(type != BillType.RSD)
-		$response: BillResponse(!valid, message == null)
         Number(intValue > 0) from accumulate(
         	Bill($b: this, status == BillStatus.ACTIVE, type != BillType.RSD) from $bills,
         	count($b)
         )
+		$response: BillResponse(!valid, message == null)
     then    
         modify($response){setMessage("Underage clients can't have more than 1 active foreign bill.");}
 

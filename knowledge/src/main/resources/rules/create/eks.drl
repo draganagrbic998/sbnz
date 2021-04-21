@@ -23,11 +23,11 @@ rule "EKS of 100% pt2"
     when
     	Account($bills: bills)
     	BillRequest($type: type)
-		$response: BillResponse(points != null, eks == null)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, sameType($type)) from $bills,
 			count($b) 
 		)
+		$response: BillResponse(points != null, eks == null)
     then
     	modify($response){setEks(1.0), setReward(5000);}
 
@@ -49,11 +49,11 @@ rule "EKS of 98% pt2"
     when
     	Account($bills: bills)
     	BillRequest(type == BillType.EUR || type == BillType.USD, $type: type)
-		$response: BillResponse(points != null, eks == null)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, type == $type) from $bills,
 			count($b) 
 		)
+		$response: BillResponse(points != null, eks == null)
     then
     	modify($response){setEks(0.98), setReward(2000);}
 
@@ -75,11 +75,11 @@ rule "EKS of 95% pt2"
     when
     	Account($bills: bills)
     	BillRequest(type == BillType.CHF || type == BillType.GBP, $type: type)
-		$response: BillResponse(points != null, eks == null)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, type == $type) from $bills,
 			count($b) 
 		)
+		$response: BillResponse(points != null, eks == null)
     then
     	modify($response){setEks(0.95), setReward(1000);}
 
@@ -101,11 +101,11 @@ rule "EKS of 90% pt2"
     when
     	Account($bills: bills)
     	BillRequest(type == BillType.RSD, $type: type)
-		$response: BillResponse(points != null, eks == null)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
 			count($b) 
 		)
+		$response: BillResponse(points != null, eks == null)
     then
     	modify($response){setEks(0.9), setReward(500);}
 
@@ -127,11 +127,11 @@ rule "EKS of 87% pt2"
     when
     	Account($bills: bills)
     	BillRequest(type != BillType.RSD, $type: type)
-		$response: BillResponse(points != null, eks == null)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
 			count($b) 
 		)
+		$response: BillResponse(points != null, eks == null)
     then
     	modify($response){setEks(0.87), setReward(200);}
 

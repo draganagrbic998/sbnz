@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 
 import com.example.demo.rules.BillRequest;
 import com.example.demo.rules.BillResponse;
-import com.example.demo.utils.Utils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -70,14 +69,14 @@ public class Bill {
 		this.startDate = LocalDate.now();
 	}
 	
-	public Bill(Account account, BillRequest request, BillResponse response) {
+	public Bill(Account account, BillRequest request, BillResponse response, double reward) {
 		this();
 		this.account = account;
 		this.type = request.getType();
 		this.base = request.getBase();
 		this.endDate = LocalDate.now().plusMonths(request.getMonths());
 		this.interest = response.getEks() * response.getNks() / 100.0;
-		this.balance = request.getBase() + Utils.convertToCurrency(request.getType(), response.getReward());	
+		this.balance = request.getBase() + reward;	
 	}
 	
 	public boolean sameType(BillType type) {

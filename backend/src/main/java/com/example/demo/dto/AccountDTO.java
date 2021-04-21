@@ -5,14 +5,16 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 import com.example.demo.model.Account;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class AccountDTO {
 	
@@ -25,7 +27,7 @@ public class AccountDTO {
 	private LocalDate birthDate;
 
 	@NotBlank(message = "JMBG cannot be blank")
-	@Size(min = 13, max = 13, message = "JMBG must have 13 characters")
+	@Pattern(regexp = "[0-9]{13}", message = "JMBG must have 13 digits")
 	private String jmbg;
 
 	@Email(message = "Email must be valid")

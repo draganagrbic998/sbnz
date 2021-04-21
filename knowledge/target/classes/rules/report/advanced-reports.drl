@@ -5,8 +5,10 @@ import com.example.demo.model.BillStatus
 import com.example.demo.model.BillType
 import com.example.demo.model.Transaction
 import com.example.demo.model.Renewal
-import com.example.demo.utils.Utils
 import java.util.List
+import com.example.demo.service.ExchangeRateService
+
+global ExchangeRateService rateService;
 
 
 rule "First report"
@@ -52,8 +54,8 @@ rule "Second report"
 	        	count($b)
         	)
         	and Number(doubleValue > 1000000) from accumulate(
-        		Bill(passedMonths() <= 12, type != BillType.RSD, $base: Utils.convertToRSD(type, base)) from $bills,
-        		sum($base) 
+        		Bill(passedMonths() <= 12, type != BillType.RSD, $type: type, $base: base) from $bills,
+        		sum(rateService.convertToRSD($type, $base)) 
         	),
         	$result: collectSet($a)
         )
@@ -72,29 +74,21 @@ rule "Third report"
 
         accumulate(
         	Account($a: this, $bills: bills) from $accounts 
-			and Number(intValue >= 5) from accumulate(
-				Bill($renewals: renewals) from $bills 
-				and accumulate(
-	        		Renewal($r: this) from $renewals,
-	        		$temp: count($r)
+			and accumulate(
+				Bill($transactions: transactions, $renewals: renewals) from $bills 
+	        	and accumulate(
+	        		Renewal($r: this, $amount: amount) from $renewals,
+	        		$rCnt: count($r),
+	        		$rAvg: average($amount)
+	        	) 
+	        	and accumulate(
+	        		Transaction($type: bill.type, $amount: amount) from $transactions,
+	        		$tAvg: average(rateService.convertToRSD($type, $amount))
 	        	),
-	        	sum($temp)
-			)
-			and Number(doubleValue > 6) from accumulate(			
-				Bill($renewals: renewals) from $bills 
-				and accumulate(
-	        		Renewal($amount: amount) from $renewals,
-	        		$temp: average($amount)
-	        	),
-	        	average($temp)
-			)
-			and Number(doubleValue > 500000) from accumulate(			
-				Bill($transactions: transactions) from $bills 
-				and accumulate(
-	        		Transaction($amount: Utils.convertToRSD(bill.type, amount)) from $transactions,
-	        		$temp: average($amount)
-	        	),
-	        	average($temp)
+	        	$stat1: sum($rCnt),
+	        	$stat2: average($rAvg),
+	        	$stat3: average($tAvg);
+				$stat1 >= 5 && $stat2 >= 6 && $stat3 > 500000
 			),
 	        $result: collectSet($a)
         )

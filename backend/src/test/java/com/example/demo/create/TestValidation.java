@@ -10,25 +10,33 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.ObjectFactory;
 import com.example.demo.rules.BillRequest;
 import com.example.demo.rules.BillResponse;
+import com.example.demo.service.ExchangeRateService;
 import com.example.demo.model.Account;
 import com.example.demo.model.BillType;
 import com.example.demo.utils.Constants;
 
+@RunWith(SpringRunner.class)
 public class TestValidation {
+
+	@MockBean
+	private ExchangeRateService rateService;
 
 	private KieSession kieSession;
 
 	private Account account;
 	private BillRequest request;
 	private BillResponse response;
-		
+			
 	@Before
 	public void before() {
 		KieServices kieService = KieServices.Factory.get();
@@ -36,6 +44,7 @@ public class TestValidation {
 				.newReleaseId(Constants.KNOWLEDGE_GROUP, Constants.KNOWLEDGE_ATRIFACT, Constants.KNOWLEDGE_VERSION));
 		this.kieSession = kieContainer.newKieSession(Constants.CREATE_RULES);
 		this.kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
+        this.kieSession.setGlobal("rateService", this.rateService);
 
 		this.account = new Account();
 		this.request = new BillRequest();

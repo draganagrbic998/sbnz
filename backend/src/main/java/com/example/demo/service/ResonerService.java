@@ -23,10 +23,12 @@ import lombok.AllArgsConstructor;
 public class ResonerService {
 	
 	private final KieContainer kieContainer;
+	private final ExchangeRateService rateService;
 	
 	public BillResponse createBill(Account account, BillRequest request) {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CREATE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
+		kieSession.setGlobal("rateService", this.rateService);
 		BillResponse response = new BillResponse();
 		kieSession.insert(account);
 		kieSession.insert(request);
@@ -82,6 +84,7 @@ public class ResonerService {
 			index == 2 ? Constants.SECOND_REPORT : Constants.THIRD_REPORT;
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.REPORT_RULES);
 		kieSession.getAgenda().getAgendaGroup(agendaGroup).setFocus();
+		kieSession.setGlobal("rateService", this.rateService);
 		kieSession.insert(accounts);
 		this.run(kieSession);
 		return accounts;

@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import com.example.demo.model.Transaction;
 import com.example.demo.model.TransactionType;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class TransactionDTO {
 

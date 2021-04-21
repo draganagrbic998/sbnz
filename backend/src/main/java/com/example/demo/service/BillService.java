@@ -21,7 +21,6 @@ import com.example.demo.model.BillStatus;
 import com.example.demo.model.Renewal;
 import com.example.demo.model.Transaction;
 import com.example.demo.repository.BillRepository;
-import com.example.demo.utils.Utils;
 
 import lombok.AllArgsConstructor;
 
@@ -37,6 +36,7 @@ public class BillService {
 	private final RenewalService renewalService;
 	private final ResonerService resonerService;
 	private final EventService eventService;
+	private final ExchangeRateService exchangeRateService;
 		
 	@Transactional(readOnly = false)
 	public BillResponse create(BillRequest request) {
@@ -44,9 +44,11 @@ public class BillService {
 
 		if (response.isValid()) {
 			Account account = this.userService.currentUser().getAccount();
-			account.setBalance(account.getBalance() - Utils.convertToRSD(request.getType(), request.getBase()));
+			account.setBalance(account.getBalance() 
+				- this.exchangeRateService.convertToRSD(request.getType(), request.getBase()));
 			this.accountService.save(account);
-			Bill bill = new Bill(account, request, response);
+			Bill bill = new Bill(account, request, response, 
+				this.exchangeRateService.convertToCurrency(request.getType(), response.getReward()));
 			this.billRepository.save(bill);
 			this.eventService.addEvent(new CreateBillEvent(bill));
 		}
@@ -62,7 +64,8 @@ public class BillService {
 		
 		if (response.isValid()) {
 			Account account = this.userService.currentUser().getAccount();
-			account.setBalance(account.getBalance() - Utils.convertToRSD(bill.getType(), amount));
+			account.setBalance(account.getBalance() 
+				- this.exchangeRateService.convertToRSD(bill.getType(), amount));
 			this.accountService.save(account);
 			bill.setBase(bill.getBase() + response.getBaseUpdate());
 			bill.setInterest(bill.getInterest() - response.getInterestUpdate());
@@ -101,7 +104,8 @@ public class BillService {
 
 		if (response.isValid()) {
 			Account account = bill.getAccount();
-			account.setBalance(account.getBalance() + Utils.convertToRSD(bill.getType(), bill.close()));
+			account.setBalance(account.getBalance() 
+				+ this.exchangeRateService.convertToRSD(bill.getType(), bill.close()));
 			this.accountService.save(account);
 			this.billRepository.save(bill);
 			this.eventService.addEvent(new CloseBillEvent(bill));

@@ -25,7 +25,7 @@ export class AccountFormComponent implements OnInit {
   accountForm = this.formBuilder.group({
     firstName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
     lastName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
-    jmbg: ['', [Validators.required, Validators.minLength(13)]],
+    jmbg: ['', [Validators.required, Validators.pattern('[0-9]{13}')]],
     birthDate: ['', [Validators.required, this.birthDateValidator()]],
     address: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
     city: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],

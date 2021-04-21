@@ -25,11 +25,11 @@ rule "5 points pt2"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, base > 200000) from $bills,
 			count($b) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(5);}
 
@@ -41,11 +41,11 @@ rule "5 points pt3"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, base > 2000) from $bills,
 			count($b) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(5);}
 
@@ -57,11 +57,11 @@ rule "5 points pt4"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 100000) from accumulate(
 			Bill(passedMonths() <= 9, type == BillType.RSD, $base: base) from $bills,
 			average($base) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(5);}
 
@@ -73,11 +73,11 @@ rule "5 points pt5"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 1000) from accumulate(
 			Bill(passedMonths() <= 12, type != BillType.RSD, $base: base) from $bills,
 			average($base) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(5);}
 
@@ -101,11 +101,11 @@ rule "4 points pt2"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, months() >= 12) from $bills,
 			count($b) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(4);}
 
@@ -117,11 +117,11 @@ rule "4 points pt3"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, months() >= 9) from $bills,
 			count($b) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(4);}
 
@@ -133,11 +133,11 @@ rule "4 points pt4"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 300000) from accumulate(
 			Bill(passedMonths() <= 9, type == BillType.RSD, $base: base) from $bills,
 			sum($base) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(4);}
 
@@ -149,11 +149,11 @@ rule "4 points pt5"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 3000) from accumulate(
 			Bill(passedMonths() <= 12, type != BillType.RSD, $base: base) from $bills,
 			sum($base) 
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(4);}
 
@@ -177,7 +177,6 @@ rule "3 points pt2"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, $transactions: transactions) from $bills and
          	List(size > 2) from collect(
@@ -185,6 +184,7 @@ rule "3 points pt2"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(3);}
 
@@ -196,7 +196,6 @@ rule "3 points pt3"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, $transactions: transactions) from $bills and
          	List(size > 1) from collect(
@@ -204,6 +203,7 @@ rule "3 points pt3"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(3);}
 
@@ -215,7 +215,6 @@ rule "3 points pt4"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, $base: base, $transactions: transactions) from $bills and
 			Number(doubleValue > 0.3 * $base) from accumulate(
@@ -224,6 +223,7 @@ rule "3 points pt4"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(3);}
 
@@ -235,7 +235,6 @@ rule "3 points pt5"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, $base: base, $transactions: transactions) from $bills and
 			Number(doubleValue > 0.2 * $base) from accumulate(
@@ -244,6 +243,7 @@ rule "3 points pt5"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(3);}
 
@@ -267,7 +267,6 @@ rule "2 points pt2"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, base > 50000, $transactions: transactions) from $bills and
 			Number(doubleValue > 10000) from accumulate(
@@ -276,6 +275,7 @@ rule "2 points pt2"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(2);}
 
@@ -287,7 +287,6 @@ rule "2 points pt3"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, base > 500, $transactions: transactions) from $bills and
 			Number(doubleValue > 100) from accumulate(
@@ -296,6 +295,7 @@ rule "2 points pt3"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(2);}
 
@@ -307,7 +307,6 @@ rule "2 points pt4"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 50000) from accumulate(
 			Bill(passedMonths() <= 9, type == BillType.RSD, $transactions: transactions) from $bills and
 			accumulate(
@@ -316,6 +315,7 @@ rule "2 points pt4"
          	),
 			average($avg)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(2);}
 
@@ -327,7 +327,6 @@ rule "2 points pt5"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 500) from accumulate(
 			Bill(passedMonths() <= 12, type != BillType.RSD, $transactions: transactions) from $bills and
 			accumulate(
@@ -336,6 +335,7 @@ rule "2 points pt5"
          	),
 			average($avg)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(2);}
 
@@ -359,7 +359,6 @@ rule "1 point pt2"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 2) from accumulate(
 			Bill($b: this, passedMonths() <= 9, type == BillType.RSD, months() >= 6, $transactions: transactions) from $bills and
 			Number(doubleValue > 10000) from accumulate(
@@ -368,6 +367,7 @@ rule "1 point pt2"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(1);}
 
@@ -379,7 +379,6 @@ rule "1 point pt3"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(intValue >= 1) from accumulate(
 			Bill($b: this, passedMonths() <= 12, type != BillType.RSD, months() >= 3, $transactions: transactions) from $bills and
 			Number(doubleValue > 100) from accumulate(
@@ -388,6 +387,7 @@ rule "1 point pt3"
          	),
 			count($b)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(1);}
 
@@ -399,7 +399,6 @@ rule "1 point pt4"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 80000) from accumulate(
 			Bill(passedMonths() <= 9, type == BillType.RSD, $transactions: transactions) from $bills and
 			accumulate(
@@ -408,6 +407,7 @@ rule "1 point pt4"
          	),
 			sum($sum)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(1);}
 
@@ -419,7 +419,6 @@ rule "1 point pt5"
 	
 	when
     	Account($bills: bills)
-    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 		Number(doubleValue >= 800) from accumulate(
 			Bill(passedMonths() <= 12, type != BillType.RSD, $transactions: transactions) from $bills and
 			accumulate(
@@ -428,6 +427,7 @@ rule "1 point pt5"
          	),
 			sum($sum)
 		)
+    	$response: BillResponse(nks != null, points == null) @Watch(!conditions)
 	then
 		modify ($response) {setConditions(1);}
 

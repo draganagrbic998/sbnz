@@ -7,10 +7,12 @@ import javax.validation.constraints.NotNull;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserDTO {
 	
