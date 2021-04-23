@@ -37,6 +37,7 @@ public class TestEvents {
 	
 	private KieSession kieSession;
 	private SessionPseudoClock clock;
+	
 	private Account account;
 	private Bill bill;
 
@@ -53,11 +54,7 @@ public class TestEvents {
         this.account = new Account();
         this.bill = new Bill();
         
-        this.bill.setBase(25001);
-        User user = new User();
-        user.setFirstName("first name");
-        user.setLastName("last name");
-        this.account.setUser(user);
+        this.account.setUser(new User());
 	}
 
 	@After
@@ -147,6 +144,7 @@ public class TestEvents {
 	@Test
 	public void testRule4() {
         this.bill.setType(BillType.RSD);
+        this.bill.setBase(25001);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
@@ -175,6 +173,7 @@ public class TestEvents {
 	@Test
 	public void testRule5() {
 		this.bill.setType(BillType.EUR);
+        this.bill.setBase(251);
 		this.kieSession.insert(new CloseBillEvent(this.bill));
 		this.clock.advanceTime(100, TimeUnit.MILLISECONDS);
 		this.kieSession.insert(new CloseBillEvent(this.bill));

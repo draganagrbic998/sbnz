@@ -1,4 +1,4 @@
-package com.example.demo.renewal;
+package com.example.demo.renew;
 
 import static org.junit.Assert.*;
 
@@ -25,8 +25,8 @@ public class TestEKS {
 
 	private Account account;
 	private Bill bill;
-	private RenewalResponse response;
 	private int amount;
+	private RenewalResponse response;
 		
 	@Before
 	public void before() {

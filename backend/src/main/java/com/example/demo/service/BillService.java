@@ -24,9 +24,9 @@ import com.example.demo.repository.BillRepository;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class BillService {
 		
 	private final BillRepository billRepository;
@@ -38,6 +38,14 @@ public class BillService {
 	private final EventService eventService;
 	private final ExchangeRateService exchangeRateService;
 		
+	public Page<Bill> findAll(boolean rsd, Pageable pageable, String search) {
+		return this.billRepository.findAll(this.userService.currentUser().getId(), rsd, pageable, search);
+	}
+
+	public BillResponse terms(BillRequest request) {
+		return this.resonerService.createBill(this.userService.currentUser().getAccount(), request);
+	}
+
 	@Transactional(readOnly = false)
 	public BillResponse create(BillRequest request) {
 		BillResponse response = this.terms(request);
@@ -114,15 +122,7 @@ public class BillService {
 		return response;
 	}
 
-	public Page<Bill> findAll(boolean rsd, Pageable pageable, String search) {
-		return this.billRepository.findAll(this.userService.currentUser().getId(), rsd, pageable, search);
-	}
-
-	public BillResponse terms(BillRequest request) {
-		return this.resonerService.createBill(this.userService.currentUser().getAccount(), request);
-	}
-
-	public ReportResponse baseReport() {
+	public ReportResponse report() {
 		return this.resonerService.baseReport(this.billRepository.findAll());
 	}
 

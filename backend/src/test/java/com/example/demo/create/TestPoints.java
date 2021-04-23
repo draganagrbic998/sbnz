@@ -76,7 +76,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule1pt1() {
+	public void testRule1() {
 		this.account.setDate(LocalDate.now().plusYears(5).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 200001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now()),
@@ -89,7 +89,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule1pt2() {
+	public void testRule2() {
 		this.account.setDate(LocalDate.now().plusYears(5).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 2001, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2)),
@@ -100,7 +100,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule1pt3() {
+	public void testRule3() {
 		this.account.setDate(LocalDate.now().plusYears(5).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 100001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))
@@ -109,7 +109,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule1pt4() {
+	public void testRule4() {
 		this.account.setDate(LocalDate.now().plusYears(5).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 1001, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2))
@@ -118,7 +118,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule2pt1() {
+	public void testRule5() {
 		this.account.setDate(LocalDate.now().plusYears(4).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().plusMonths(3).plusDays(2)),
@@ -128,7 +128,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule2pt2() {
+	public void testRule6() {
 		this.account.setDate(LocalDate.now().plusYears(4).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().plusDays(2)),
@@ -138,7 +138,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule2pt3() {
+	public void testRule7() {
 		this.account.setDate(LocalDate.now().plusYears(4).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 300001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2))
@@ -147,7 +147,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule2pt4() {
+	public void testRule8() {
 		this.account.setDate(LocalDate.now().plusYears(4).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 1501, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2)),
@@ -157,7 +157,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule3pt1() {
+	public void testRule9() {
 		this.account.setDate(LocalDate.now().plusYears(3).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 100100, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(10001), ObjectFactory.getTransaction(10001), ObjectFactory.getTransaction(10001))),
@@ -167,7 +167,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule3pt2() {
+	public void testRule10() {
 		this.account.setDate(LocalDate.now().plusYears(3).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 1100, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2), Set.of(ObjectFactory.getTransaction(101), ObjectFactory.getTransaction(101)))
@@ -176,7 +176,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule3pt3() {
+	public void testRule11() {
 		this.account.setDate(LocalDate.now().plusYears(3).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 100, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(0.3 * 100 + 1))),
@@ -186,7 +186,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule3pt4() {
+	public void testRule12() {
 		this.account.setDate(LocalDate.now().plusYears(3).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 100, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2), Set.of(ObjectFactory.getTransaction(0.3 * 100 + 1)))
@@ -195,7 +195,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule4pt1() {
+	public void testRule13() {
 		this.account.setDate(LocalDate.now().plusYears(2).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 50001, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(10001))),
@@ -205,7 +205,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule4pt2() {
+	public void testRule14() {
 		this.account.setDate(LocalDate.now().plusYears(2).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 501, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2), Set.of(ObjectFactory.getTransaction(101)))
@@ -214,7 +214,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule4pt3() {
+	public void testRule15() {
 		this.account.setDate(LocalDate.now().plusYears(2).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(50001), ObjectFactory.getTransaction(50001))),
@@ -224,7 +224,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule4pt4() {
+	public void testRule16() {
 		this.account.setDate(LocalDate.now().plusYears(2).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 0, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2), Set.of(ObjectFactory.getTransaction(501))),
@@ -235,7 +235,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule5pt1() {
+	public void testRule17() {
 		this.account.setDate(LocalDate.now().plusYears(1).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(3).plusDays(2), Set.of(ObjectFactory.getTransaction(10001))),
@@ -245,7 +245,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule5pt2() {
+	public void testRule18() {
 		this.account.setDate(LocalDate.now().plusYears(1).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(6).plusDays(2), Set.of(ObjectFactory.getTransaction(101))),
@@ -255,7 +255,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule5pt3() {
+	public void testRule19() {
 		this.account.setDate(LocalDate.now().plusYears(1).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.RSD, 0, LocalDate.now().minusMonths(9).plusDays(1), LocalDate.now().minusMonths(9).plusDays(2), Set.of(ObjectFactory.getTransaction(40001), ObjectFactory.getTransaction(40001))),
@@ -265,7 +265,7 @@ public class TestPoints {
 	}
 
 	@Test
-	public void testRule5pt4() {
+	public void testRule20() {
 		this.account.setDate(LocalDate.now().plusYears(1).plusDays(1));
 		this.account.setBills(Set.of(
 			ObjectFactory.getBill(BillType.EUR, 0, LocalDate.now().minusMonths(12).plusDays(1), LocalDate.now().minusMonths(12).plusDays(2), Set.of(ObjectFactory.getTransaction(401))),
@@ -276,7 +276,7 @@ public class TestPoints {
 	}
 	
 	@Test
-	public void testRule6() {
+	public void testRule21() {
 		this.account.setDate(LocalDate.now().plusYears(5).plusDays(1));
 		this.runAndAssert(0);
 	}

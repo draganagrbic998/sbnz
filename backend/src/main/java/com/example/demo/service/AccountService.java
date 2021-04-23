@@ -13,9 +13,9 @@ import com.example.demo.repository.AccountRepository;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class AccountService {
 
 	private final AccountRepository accountRepository;
@@ -46,7 +46,7 @@ public class AccountService {
 		this.accountRepository.deleteById(id);
 	}
 	
-	public List<Account> advancedReport(int index){
+	public List<Account> report(int index){
 		return this.resonserService.advancedReport(this.accountRepository.findAll(), index);
 	}
 

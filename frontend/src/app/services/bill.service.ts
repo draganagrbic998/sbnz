@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { EMPTY_PAGE, PAGE_SIZE } from 'src/app/utils/constants';
-import { BaseReport } from 'src/app/models/base-report';
+import { Report } from 'src/app/models/report';
 import { Bill } from 'src/app/models/bill';
 import { BillRequest } from 'src/app/models/bill-request';
 import { BillResponse } from 'src/app/models/bill-response';
@@ -65,8 +65,8 @@ export class BillService {
     );
   }
 
-  getReport(): Observable<BaseReport>{
-    return this.http.get<BaseReport>(`${this.API_PATH}/base-report`).pipe(
+  getReport(): Observable<Report>{
+    return this.http.get<Report>(`${this.API_PATH}/report`).pipe(
       catchError(() => of(null))
     );
   }

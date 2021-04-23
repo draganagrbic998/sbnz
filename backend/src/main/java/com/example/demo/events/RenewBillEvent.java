@@ -9,11 +9,13 @@ import com.example.demo.model.Account;
 import com.example.demo.model.Renewal;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @SuppressWarnings("serial")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Role(Role.Type.EVENT)

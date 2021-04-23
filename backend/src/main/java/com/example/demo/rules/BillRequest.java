@@ -4,10 +4,12 @@ import javax.validation.constraints.NotNull;
 
 import com.example.demo.model.BillType;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class BillRequest {
 	

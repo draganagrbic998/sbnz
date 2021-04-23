@@ -16,7 +16,8 @@ export class AccountDetailsComponent implements OnInit {
   pending = true;
   account: Account;
 
-  ngOnInit(): void {
+  private getAccount(): void{
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.accountService.findOne().subscribe(
       (account: Account) => {
@@ -24,6 +25,12 @@ export class AccountDetailsComponent implements OnInit {
         this.account = account;
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.getAccount();
+    // tslint:disable-next-line: deprecation
+    this.accountService.refreshData$.subscribe(() => this.getAccount());
   }
 
 }

@@ -8,9 +8,9 @@ import com.example.demo.repository.TransactionRepository;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = false)
+@AllArgsConstructor
 public class TransactionService {
 
 	private final TransactionRepository transactionRepository;

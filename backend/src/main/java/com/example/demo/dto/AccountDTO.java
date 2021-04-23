@@ -23,12 +23,12 @@ public class AccountDTO {
 	private double balance;
 	private int billsCount;
 
-	@NotNull(message = "Birth date cannot be null")
-	private LocalDate birthDate;
-
 	@NotBlank(message = "JMBG cannot be blank")
 	@Pattern(regexp = "[0-9]{13}", message = "JMBG must have 13 digits")
 	private String jmbg;
+
+	@NotNull(message = "Birth date cannot be null")
+	private LocalDate birthDate;
 
 	@Email(message = "Email must be valid")
 	@NotBlank(message = "Email cannot be blank")
@@ -55,8 +55,8 @@ public class AccountDTO {
 		this.date = account.getDate();
 		this.balance = account.getBalance();
 		this.billsCount = account.getBills().size();
-		this.birthDate = account.getBirthDate();
 		this.jmbg = account.getJmbg();
+		this.birthDate = account.getBirthDate();
 		this.email = account.getUser().getEmail();
 		this.firstName = account.getUser().getFirstName();
 		this.lastName = account.getUser().getLastName();

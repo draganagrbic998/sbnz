@@ -1,4 +1,4 @@
-package com.example.demo.renewal;
+package com.example.demo.renew;
 
 import static org.junit.Assert.*;
 
@@ -25,8 +25,8 @@ public class TestValidation {
 
 	private Account account;
 	private Bill bill;
-	private RenewalResponse response;
 	private int amount;
+	private RenewalResponse response;
 	
 	@Before
 	public void before() {
@@ -63,6 +63,7 @@ public class TestValidation {
 	
 	@Test
 	public void testRule1() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now());
 		this.amount = 2;
@@ -71,6 +72,7 @@ public class TestValidation {
 
 	@Test
 	public void testRule2() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now());
 		this.amount = 25;

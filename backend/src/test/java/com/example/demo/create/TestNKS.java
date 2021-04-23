@@ -45,6 +45,7 @@ public class TestNKS {
 		this.account = new Account();
 		this.request = new BillRequest();
 		this.response = new BillResponse();
+		
 		this.account.setBirthDate(LocalDate.now().plusYears(18).plusDays(1));
 	}
 

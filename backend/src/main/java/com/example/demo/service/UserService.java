@@ -21,9 +21,9 @@ import com.example.demo.security.TokenUtils;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
@@ -39,6 +39,21 @@ public class UserService implements UserDetailsService {
 
 	public Page<User> findAll(Pageable pageable, String search) {
 		return this.userRepository.findAll(pageable, search);
+	}
+
+	@Transactional(readOnly = false)
+	public User save(User user) {
+		if (user.getId() == null) {
+			this.emailService.sendEmail(
+				user.getEmail(),
+				EmailService.ACTIVATION_TITLE,
+				String.format(EmailService.ACTIVATION_TEXT, 
+						user.getFirstName(), user.getLastName(), 
+						user.getActivationLink(), user.getPassword())
+			);		
+			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		}
+		return this.userRepository.save(user);
 	}
 
 	@Transactional(readOnly = false)
@@ -67,21 +82,6 @@ public class UserService implements UserDetailsService {
 		this.save(user);
 	}
 	
-	@Transactional(readOnly = false)
-	public User save(User user) {
-		if (user.getId() == null) {
-			this.emailService.sendEmail(
-				user.getEmail(),
-				EmailService.ACTIVATION_TITLE,
-				String.format(EmailService.ACTIVATION_TEXT, 
-						user.getFirstName(), user.getLastName(), 
-						user.getActivationLink(), user.getPassword())
-			);		
-			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-		}
-		return this.userRepository.save(user);
-	}
-
 	public User currentUser() {
 		try {
 			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

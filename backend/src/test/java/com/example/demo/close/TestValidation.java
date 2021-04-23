@@ -39,7 +39,7 @@ public class TestValidation {
 		this.account = new Account();
 		this.bill = new Bill();
 		this.response = new CloseResponse();
-		
+
 		this.account.setBills(Set.of(this.bill));
 		this.bill.setAccount(this.account);
 	}
@@ -60,14 +60,15 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule2() {
+	public void testRule1() {
+		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now());
 		this.runAndAssert(false, "You can't close bill with passed time more than 80%.");
 	}
 	
 	@Test
-	public void testRule3() {
+	public void testRule2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -76,7 +77,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule4() {
+	public void testRule3() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -85,7 +86,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule5() {
+	public void testRule4() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -100,7 +101,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule6() {
+	public void testRule5() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -109,7 +110,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule7() {
+	public void testRule6() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -118,7 +119,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule8() {
+	public void testRule7() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -132,7 +133,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule9pt1() {
+	public void testRule8pt1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -144,7 +145,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule9pt2() {
+	public void testRule8pt2() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));

@@ -7,7 +7,6 @@ import com.example.demo.rules.RenewalResponse
 
 rule "Amount less than 3 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
 		Integer(this < 3)
@@ -19,7 +18,6 @@ end
 
 rule "Amount more than 24 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
 		Integer(this > 24)
@@ -31,7 +29,6 @@ end
 
 rule "RSD bill - duration of 4 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
         Bill(type == BillType.RSD, months() <= 4)
@@ -43,7 +40,6 @@ end
 
 rule "RSD bill - duration of at least 42 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
         Bill(type == BillType.RSD, months() >= 42)
@@ -55,7 +51,6 @@ end
 
 rule "RSD bill - base less than 75.000 RSD"
 	agenda-group "renew-rules"
-	salience 5
 
 	when
         Bill(type == BillType.RSD, base < 75000)
@@ -67,7 +62,6 @@ end
 
 rule "Foreign bill - duration of 2 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
         Bill(type != BillType.RSD, months() <= 2)
@@ -79,7 +73,6 @@ end
 
 rule "Foreign bill - duration of at least 36 months"
 	agenda-group "renew-rules"
-	salience 5
 
     when
         Bill(type != BillType.RSD, months() >= 36)
@@ -89,9 +82,8 @@ rule "Foreign bill - duration of at least 36 months"
 
 end
 
-rule "Foreign bill - base less than 750 currency units"
+rule "Foreign bill - base less than 750 units"
 	agenda-group "renew-rules"
-	salience 5
 
 	when
         Bill(type != BillType.RSD, base < 750)
@@ -103,14 +95,13 @@ end
 
 rule "Maximum renewal amount is 18 months pt1"
 	agenda-group "renew-rules"
-	salience 4
 
 	when
+        Integer(this > 18)
         Bill(
         	type == BillType.RSD && base < 250000 ||
         	type != BillType.RSD && base < 2500
         )
-        Integer(this > 18)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 18 months.");}
@@ -119,16 +110,15 @@ end
 
 rule "Maximum renewal amount is 18 months pt2"
 	agenda-group "renew-rules"
-	salience 4
 
 	when
-		Bill($renewals: renewals)
         Integer(this > 18)
-		$response: RenewalResponse(!valid, message == null)
+		Bill($renewals: renewals)
         Number(intValue >= 1) from accumulate(
         	Renewal($r: this) from $renewals,
         	count($r)
         )
+		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 18 months.");}
 
@@ -136,14 +126,13 @@ end
 
 rule "Maximum renewal amount is 12 months pt1"
 	agenda-group "renew-rules"
-	salience 3
 
 	when
+        Integer(this > 12)
         Bill(
         	type == BillType.RSD && base < 200000 ||
         	type != BillType.RSD && base < 2000
         )
-        Integer(this > 12)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 12 months.");}
@@ -152,16 +141,15 @@ end
 
 rule "Maximum renewal amount is 12 months pt2"
 	agenda-group "renew-rules"
-	salience 3
 
 	when
-		Bill($renewals: renewals)
         Integer(this > 12)
-		$response: RenewalResponse(!valid, message == null)
+		Bill($renewals: renewals)
         Number(intValue >= 2) from accumulate(
         	Renewal($r: this) from $renewals,
         	count($r)
         )
+		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 12 months.");}
 
@@ -169,14 +157,13 @@ end
 
 rule "Maximum renewal amount is 9 months pt1"
 	agenda-group "renew-rules"
-	salience 2
 
 	when
+        Integer(this > 9)
         Bill(
         	type == BillType.RSD && base < 150000 ||
         	type != BillType.RSD && base < 1500
         )
-        Integer(this > 9)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 9 months.");}
@@ -185,16 +172,15 @@ end
 
 rule "Maximum renewal amount is 9 months pt2"
 	agenda-group "renew-rules"
-	salience 2
 
 	when
-		Bill($renewals: renewals)
         Integer(this > 9)
-		$response: RenewalResponse(!valid, message == null)
+		Bill($renewals: renewals)
         Number(intValue >= 3) from accumulate(
         	Renewal($r: this) from $renewals,
         	count($r)
         )
+		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 9 months.");}
 
@@ -202,14 +188,13 @@ end
 
 rule "Maximum renewal amount is 6 months pt1"
 	agenda-group "renew-rules"
-	salience 1
 
 	when
+        Integer(this > 6)
         Bill(
         	type == BillType.RSD && base < 100000 ||
         	type != BillType.RSD && base < 1000
         )
-        Integer(this > 6)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 6 months.");}
@@ -218,16 +203,15 @@ end
 
 rule "Maximum renewal amount is 6 months pt2"
 	agenda-group "renew-rules"
-	salience 1
 
 	when
-		Bill($renewals: renewals)
         Integer(this > 6)
-		$response: RenewalResponse(!valid, message == null)
+		Bill($renewals: renewals)
         Number(intValue >= 4) from accumulate(
         	Renewal($r: this) from $renewals,
         	count($r)
         )
+		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 6 months.");}
 
@@ -235,7 +219,6 @@ end
 
 rule "Valid params"
 	agenda-group "renew-rules"
-	salience 0
 
     when
 		$response: RenewalResponse(!valid, message == null)

@@ -7,7 +7,6 @@ import com.example.demo.rules.IncreaseResponse
 
 rule "90% increase pt1"
 	agenda-group "increase-rules"
-	salience 4
 
     when
         $amount: Double()
@@ -24,16 +23,15 @@ end
 
 rule "90% increase pt2"
 	agenda-group "increase-rules"
-	salience 4
 
     when
-        Bill($base: base, $transactions: transactions)
         $amount: Double()
-        $response: IncreaseResponse(valid, baseUpdate == null)
+        Bill($base: base, $transactions: transactions)
         Number(doubleValue > 0.5 * $base) from accumulate(
         	Transaction($temp: amount, passedMonths() <= 5) from $transactions,
         	sum($temp)
         )
+        $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.9 * $amount);}
 
@@ -41,7 +39,6 @@ end
 
 rule "80% increase pt1"
 	agenda-group "increase-rules"
-	salience 3
 
     when
         $amount: Double()
@@ -58,16 +55,15 @@ end
 
 rule "80% increase pt2"
 	agenda-group "increase-rules"
-	salience 3
 
     when
-        Bill($base: base, $transactions: transactions)
         $amount: Double()
-        $response: IncreaseResponse(valid, baseUpdate == null)
+        Bill($base: base, $transactions: transactions)
         Number(doubleValue > 0.45 * $base) from accumulate(
         	Transaction($temp: amount, passedMonths() <= 6) from $transactions,
         	sum($temp)
         )
+        $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.8 * $amount);}
 
@@ -75,7 +71,6 @@ end
 
 rule "70% increase pt1"
 	agenda-group "increase-rules"
-	salience 2
 
     when
         $amount: Double()
@@ -92,16 +87,15 @@ end
 
 rule "70% increase pt2"
 	agenda-group "increase-rules"
-	salience 2
 
     when
-        Bill($base: base, $transactions: transactions)
         $amount: Double()
-        $response: IncreaseResponse(valid, baseUpdate == null)
+        Bill($base: base, $transactions: transactions)
         Number(doubleValue > 0.4 * $base) from accumulate(
         	Transaction($temp: amount, passedMonths() <= 7) from $transactions,
         	sum($temp)
         )
+        $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.7 * $amount);}
 
@@ -109,7 +103,6 @@ end
 
 rule "60% increase pt1"
 	agenda-group "increase-rules"
-	salience 1
 
     when
         $amount: Double()
@@ -126,16 +119,15 @@ end
 
 rule "60% increase pt2"
 	agenda-group "increase-rules"
-	salience 1
 
     when
-        Bill($base: base, $transactions: transactions)
         $amount: Double()
-        $response: IncreaseResponse(valid, baseUpdate == null)
+        Bill($base: base, $transactions: transactions)
         Number(doubleValue > 0.35 * $base) from accumulate(
         	Transaction($temp: amount, passedMonths() <= 8) from $transactions,
         	sum($temp)
         )
+        $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.6 * $amount);}
 
@@ -143,7 +135,6 @@ end
 
 rule "50% increase"
 	agenda-group "increase-rules"
-	salience 0
 
     when
         $amount: Double()

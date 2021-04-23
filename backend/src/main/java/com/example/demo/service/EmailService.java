@@ -9,8 +9,8 @@ import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class EmailService {
 
 	public static final String ACTIVATION_TITLE = "Bank account activation";

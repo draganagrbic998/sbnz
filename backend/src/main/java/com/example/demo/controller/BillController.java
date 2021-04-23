@@ -66,10 +66,10 @@ public class BillController {
 		return ResponseEntity.ok(this.billService.renew(id, amount));
 	}
 
-	@GetMapping(value = "/base-report")
+	@GetMapping(value = "/report")
 	@PreAuthorize("hasAuthority('SLUZBENIK')")	
-	public ResponseEntity<ReportResponse> baseReport(){
-		return ResponseEntity.ok(this.billService.baseReport());
+	public ResponseEntity<ReportResponse> report(){
+		return ResponseEntity.ok(this.billService.report());
 	}
 
 }

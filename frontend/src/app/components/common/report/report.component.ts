@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseReport } from 'src/app/models/base-report';
+import { Report } from 'src/app/models/report';
 import { BillService } from 'src/app/services/bill.service';
 
 @Component({
@@ -14,12 +14,12 @@ export class ReportComponent implements OnInit {
   ) { }
 
   pending = true;
-  report: BaseReport;
+  report: Report;
 
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
     this.billService.getReport().subscribe(
-      (report: BaseReport) => {
+      (report: Report) => {
         this.pending = false;
         this.report = report;
       }

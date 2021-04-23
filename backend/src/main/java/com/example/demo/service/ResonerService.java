@@ -18,8 +18,8 @@ import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class ResonerService {
 	
 	private final KieContainer kieContainer;

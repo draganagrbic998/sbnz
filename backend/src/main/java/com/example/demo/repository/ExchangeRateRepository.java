@@ -10,10 +10,10 @@ import com.example.demo.model.ExchangeRate;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
 
-	@Query("select coalesce(ex.rate * :value, :value) from ExchangeRate ex where ex.type = :type")
+	@Query("select ex.rate * :value from ExchangeRate ex where ex.type = :type")
 	public double convertToRSD(BillType type, double value);
 	
-	@Query("select coalesce(1 / ex.rate * :value, :value) from ExchangeRate ex where ex.type = :type")
+	@Query("select (1 / ex.rate) * :rsdValue from ExchangeRate ex where ex.type = :type")
 	public double convertToCurrency(BillType type, double rsdValue);
 
 }

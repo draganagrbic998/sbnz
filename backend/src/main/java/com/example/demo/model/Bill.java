@@ -78,15 +78,15 @@ public class Bill {
 		this.interest = response.getEks() * response.getNks() / 100.0;
 		this.balance = request.getBase() + reward;	
 	}
-	
-	public boolean sameType(BillType type) {
-		return this.type.ordinal() > 0 == type.ordinal() > 0;
-	}
-	
+		
 	public double close() {
 		this.status = BillStatus.ABORTED;
 		this.endDate = LocalDate.now();
 		return this.base;
+	}
+
+	public boolean sameType(BillType type) {
+		return this.type.ordinal() > 0 == type.ordinal() > 0;
 	}
 
 	public long months() {

@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,12 +34,13 @@ public class Account {
 	@NotNull
 	private LocalDate date;
 
-	@NotNull
-	private LocalDate birthDate;
-
 	@NotBlank
+	@Pattern(regexp = "[0-9]{13}")
 	@Column(unique = true)
 	private String jmbg;
+
+	@NotNull
+	private LocalDate birthDate;
 
 	@NotBlank
 	private String address;

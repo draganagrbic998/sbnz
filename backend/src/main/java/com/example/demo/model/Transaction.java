@@ -22,9 +22,6 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotNull
-	private TransactionType type;
 	
 	@NotNull
 	private LocalDate date;
@@ -40,7 +37,6 @@ public class Transaction {
 	public Transaction() {
 		super();
 		this.date = LocalDate.now();
-		this.type = TransactionType.INCREASE;
 	}
 
 	public Transaction(Bill bill, double amount) {

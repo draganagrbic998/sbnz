@@ -1,3 +1,11 @@
+export interface Report{
+    rsd: ReportUnit;
+    eur: ReportUnit;
+    usd: ReportUnit;
+    chf: ReportUnit;
+    gbp: ReportUnit;
+}
+
 interface ReportUnit{
     activeCnt: number;
     closedCnt: number;
@@ -8,10 +16,3 @@ interface ReportUnit{
     renewAvg: number;
 }
 
-export interface BaseReport{
-    rsd: ReportUnit;
-    eur: ReportUnit;
-    usd: ReportUnit;
-    chf: ReportUnit;
-    gbp: ReportUnit;
-}

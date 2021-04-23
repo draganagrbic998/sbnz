@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
@@ -35,9 +33,9 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-    @Email
+
 	@NotBlank
+    @Email
 	@Column(unique = true)
 	private String email;
 	
@@ -72,7 +70,7 @@ public class User implements UserDetails {
 	}
 	
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Set<Authority> getAuthorities() {
 		return this.authorities;
 	}
 

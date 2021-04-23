@@ -63,17 +63,17 @@ public class AccountController {
 	
 	@GetMapping(value = "/report-1")
 	public ResponseEntity<List<AccountDTO>> firstReport(){
-		return ResponseEntity.ok(this.accountMapper.map(this.accountService.advancedReport(1)));
+		return ResponseEntity.ok(this.accountMapper.map(this.accountService.report(1)));
 	}
 		
 	@GetMapping(value = "/report-2")
 	public ResponseEntity<List<AccountDTO>> secondReport(){
-		return ResponseEntity.ok(this.accountMapper.map(this.accountService.advancedReport(2)));
+		return ResponseEntity.ok(this.accountMapper.map(this.accountService.report(2)));
 	}
 
 	@GetMapping(value = "/report-3")
 	public ResponseEntity<List<AccountDTO>> thirdReport(){
-		return ResponseEntity.ok(this.accountMapper.map(this.accountService.advancedReport(3)));
+		return ResponseEntity.ok(this.accountMapper.map(this.accountService.report(3)));
 	}
 
 }

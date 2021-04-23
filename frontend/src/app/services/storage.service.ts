@@ -8,28 +8,16 @@ export class StorageService {
 
   private readonly USER_KEY = 'user';
 
+  getUser(): User{
+    return JSON.parse(localStorage.getItem(this.USER_KEY));
+  }
+
   setUser(user: User): void{
-    this.set(this.USER_KEY, user);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 
   removeUser(): void{
-    this.remove(this.USER_KEY);
-  }
-
-  getUser(): User{
-    return this.get(this.USER_KEY) as User;
-  }
-
-  private set(key: string, value: object): void{
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-
-  private remove(key: string): void{
-    localStorage.removeItem(key);
-  }
-
-  private get(key: string): object{
-    return JSON.parse(localStorage.getItem(key));
+    localStorage.removeItem(this.USER_KEY);
   }
 
 }

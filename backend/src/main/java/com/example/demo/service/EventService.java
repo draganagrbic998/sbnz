@@ -5,23 +5,21 @@ import java.util.Map;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.events.Event;
 import com.example.demo.model.Account;
 import com.example.demo.utils.Constants;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class EventService {
 
-	@Autowired
-	private NotificationService notificationService;
-	
-	@Autowired
-	private KieContainer kieContainer;
-	
-	private Map<Long, KieSession> kieSessions = new HashMap<>();
+	private final NotificationService notificationService;
+	private final KieContainer kieContainer;
+	private final Map<Long, KieSession> kieSessions = new HashMap<>();
 	
 	public void addEvent(Event event) {
 		long key = event.getAccount().getId();

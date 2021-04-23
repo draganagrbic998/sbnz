@@ -32,6 +32,7 @@ public class TestAdvancedReports {
 	private ExchangeRateService rateService;
 
 	private KieSession kieSession;
+	
 	private List<Account> accounts;
 		
 	@Before

@@ -25,6 +25,7 @@ import com.example.demo.utils.Constants;
 public class TestBaseReport {
 
 	private KieSession kieSession;
+	
 	private List<Bill> bills;
 	private ReportResponse response;
 		

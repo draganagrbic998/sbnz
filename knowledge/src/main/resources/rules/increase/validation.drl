@@ -8,7 +8,6 @@ import com.example.demo.rules.IncreaseResponse
 
 rule "Passed time more than 95%"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
 		Bill(passedTime() > 0.95)
@@ -18,9 +17,8 @@ rule "Passed time more than 95%"
 
 end
 
-rule "Amount less than 10% of bill balance"
+rule "Amount less than 10% of balance"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill($balance: balance)
@@ -31,9 +29,8 @@ rule "Amount less than 10% of bill balance"
 
 end
 
-rule "Amount more than 50% of bill balance"
+rule "Amount more than 50% of balance"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill($balance: balance)
@@ -46,7 +43,6 @@ end
 
 rule "RSD bill - duration less than 6 months"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type == BillType.RSD, months() < 6)
@@ -58,7 +54,6 @@ end
 
 rule "RSD bill - base less than 75.000 RSD"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type == BillType.RSD, base < 75000)
@@ -70,15 +65,14 @@ end
 
 rule "RSD bill - 5 more increases"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type == BillType.RSD, $transactions: transactions)
-		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 5) from accumulate(
         	Transaction($t: this) from $transactions,
         	count($t)
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase RSD bill that has already been increased at least 5 times.");}
 
@@ -86,7 +80,6 @@ end
 
 rule "Foreign bill - duration less than 4 months"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type != BillType.RSD, months() < 4)
@@ -98,7 +91,6 @@ end
 
 rule "Foreign bill - base less than 750 currency units"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type != BillType.RSD, base < 750)
@@ -110,15 +102,14 @@ end
 
 rule "Foreign bill - 3 more increases"
 	agenda-group "increase-rules"
-	salience 4
 
 	when
         Bill(type != BillType.RSD, $transactions: transactions)
-		$response: IncreaseResponse(!valid, message == null)
         Number(intValue >= 3) from accumulate(
         	Transaction($t: this) from $transactions,
         	count($t)
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase foreign bill that has already been increased at least 3 times.");}
 
@@ -126,7 +117,6 @@ end
 
 rule "Maximum increase amount is 40% of balance pt1"
 	agenda-group "increase-rules"
-	salience 3
 
 	when
         Bill(
@@ -143,12 +133,10 @@ end
 
 rule "Maximum increase amount is 40% of balance pt2"
 	agenda-group "increase-rules"
-	salience 3
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.4 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
         	$cnt: count($b)
@@ -157,6 +145,7 @@ rule "Maximum increase amount is 40% of balance pt2"
         	$type == BillType.RSD && $cnt > 3 || 
         	$type != BillType.RSD && $cnt > 2
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 40% of balance.");}
 
@@ -164,12 +153,10 @@ end
 
 rule "Maximum increase amount is 40% of balance pt3"
 	agenda-group "increase-rules"
-	salience 3
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.4 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
 			$sum: sum($amount)
@@ -178,6 +165,7 @@ rule "Maximum increase amount is 40% of balance pt3"
         	$type == BillType.RSD && $sum > 0.5 * $base || 
         	$type != BillType.RSD && $sum > 0.3 * $base
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 40% of balance.");}
 
@@ -185,7 +173,6 @@ end
 
 rule "Maximum increase amount is 35% of balance pt1"
 	agenda-group "increase-rules"
-	salience 2
 
 	when
         Bill(
@@ -202,12 +189,10 @@ end
 
 rule "Maximum increase amount is 35% of balance pt2"
 	agenda-group "increase-rules"
-	salience 2
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.35 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
         	$cnt: count($b)
@@ -216,6 +201,7 @@ rule "Maximum increase amount is 35% of balance pt2"
         	$type == BillType.RSD && $cnt > 4 || 
         	$type != BillType.RSD && $cnt > 3
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 35% of balance.");}
 
@@ -223,12 +209,10 @@ end
 
 rule "Maximum increase amount is 35% of balance pt3"
 	agenda-group "increase-rules"
-	salience 2
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.35 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
 			$sum: sum($amount)
@@ -237,6 +221,7 @@ rule "Maximum increase amount is 35% of balance pt3"
         	$type == BillType.RSD && $sum > 0.6 * $base || 
         	$type != BillType.RSD && $sum > 0.4 * $base
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 35% of balance.");}
 
@@ -244,7 +229,6 @@ end
 
 rule "Maximum increase amount is 30% of balance pt1"
 	agenda-group "increase-rules"
-	salience 1
 
 	when
         Bill(
@@ -261,12 +245,10 @@ end
 
 rule "Maximum increase amount is 30% of balance pt2"
 	agenda-group "increase-rules"
-	salience 1
 
 	when
         Bill($type: type, $balance: balance, $bills: account.bills)
 		Double(this > 0.3 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
         	Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
         	$cnt: count($b)
@@ -275,6 +257,7 @@ rule "Maximum increase amount is 30% of balance pt2"
         	$type == BillType.RSD && $cnt > 5 || 
         	$type != BillType.RSD && $cnt > 4
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 30% of balance.");}
 
@@ -282,12 +265,10 @@ end
 
 rule "Maximum increase amount is 30% of balance pt3"
 	agenda-group "increase-rules"
-	salience 1
 
 	when
         Bill($type: type, $base: base, $balance: balance, $transactions: transactions)
 		Double(this > 0.3 * $balance)
-		$response: IncreaseResponse(!valid, message == null)
         accumulate(
 			Transaction($amount: amount) from $transactions,
 			$sum: sum($amount)
@@ -296,6 +277,7 @@ rule "Maximum increase amount is 30% of balance pt3"
         	$type == BillType.RSD && $sum > 0.7 * $base ||
         	$type != BillType.RSD && $sum > 0.5 * $base
         )
+		$response: IncreaseResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't increase by more than 30% of balance.");}
 
@@ -303,7 +285,6 @@ end
 
 rule "Valid params"
 	agenda-group "increase-rules"
-	salience 0
 
     when
 		$response: IncreaseResponse(!valid, message == null)

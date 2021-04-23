@@ -1,4 +1,5 @@
 ------------------------------EXCHANGE RATES------------------------------
+insert into exchange_rate (type, rate) values ('RSD', 1);
 insert into exchange_rate (type, rate) values ('EUR', 117.48);
 insert into exchange_rate (type, rate) values ('USD', 98.77);
 insert into exchange_rate (type, rate) values ('CHF', 106.14);

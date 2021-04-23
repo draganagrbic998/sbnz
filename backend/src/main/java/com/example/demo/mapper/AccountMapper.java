@@ -59,8 +59,8 @@ public class AccountMapper {
 		user.setEmail(accountDTO.getEmail());
 		user.setFirstName(accountDTO.getFirstName());
 		user.setLastName(accountDTO.getLastName());
-		account.setBirthDate(accountDTO.getBirthDate());
 		account.setJmbg(accountDTO.getJmbg());
+		account.setBirthDate(accountDTO.getBirthDate());
 		account.setAddress(accountDTO.getAddress());
 		account.setCity(accountDTO.getCity());
 		account.setZipCode(accountDTO.getZipCode());

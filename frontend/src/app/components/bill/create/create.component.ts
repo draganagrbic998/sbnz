@@ -5,6 +5,7 @@ import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCES
 import { BillResponse } from 'src/app/models/bill-response';
 import { BillService } from 'src/app/services/bill.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-create',
@@ -14,6 +15,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class CreateComponent {
 
   constructor(
+    private accountService: AccountService,
     private billService: BillService,
     private dialogRef: MatDialogRef<CreateComponent>,
     private snackBar: MatSnackBar,
@@ -55,6 +57,7 @@ export class CreateComponent {
       (response: BillResponse) => {
         this.pending = false;
         if (response){
+          this.accountService.announceRefreshData();
           this.billService.announceRefreshData();
           this.snackBar.open('Bill saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();

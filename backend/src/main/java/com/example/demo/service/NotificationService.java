@@ -12,9 +12,9 @@ import com.example.demo.repository.NotificationRepository;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class NotificationService {
 
 	private final NotificationRepository notificationRepository;

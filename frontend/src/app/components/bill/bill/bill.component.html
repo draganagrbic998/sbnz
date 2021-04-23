@@ -11,17 +11,17 @@
                     <app-bold>Interest: </app-bold>{{(bill.interest * 100) | number: ".2"}}%<br>
                     <app-bold>Current balance: </app-bold>{{bill.balance | number: ".2"}} {{bill.type}}<br>    
                 </div>
-                <app-spacer *ngIf="bill.status === 'ACTIVE'">
+                <app-spacer>
                     <span>
-                        <button 
+                        <button *ngIf="bill.status === 'ACTIVE'"
                         (click)="transction()" mat-icon-button matTooltip="Transaction" color="primary">
                             <mat-icon>attach_money</mat-icon>
                         </button>
-                        <button 
+                        <button *ngIf="bill.status === 'ACTIVE'"
                         (click)="renewal()" mat-icon-button matTooltip="Renewal" color="accent">
                             <mat-icon>autorenew</mat-icon>
                         </button>
-                        <button 
+                        <button *ngIf="bill.status === 'ACTIVE'"
                         (click)="close()" mat-icon-button matTooltip="Close" color="warn">
                             <mat-icon>close</mat-icon>
                         </button>

@@ -25,8 +25,8 @@ public class TestBase {
 
 	private Account account;
 	private Bill bill;
-	private IncreaseResponse response;
 	private double amount;
+	private IncreaseResponse response;
 		
 	@Before
 	public void before() {

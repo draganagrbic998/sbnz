@@ -8,9 +8,9 @@ import com.example.demo.repository.RenewalRepository;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Service
 @Transactional(readOnly = false)
+@AllArgsConstructor
 public class RenewalService {
 
 	private final RenewalRepository renewalRepository;

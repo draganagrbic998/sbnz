@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@PropertyReactive
 @Getter
 @Setter
 @NoArgsConstructor
+@PropertyReactive
 public class BillResponse {
 
 	private boolean valid;

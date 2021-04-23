@@ -21,9 +21,9 @@ public class UserDTO {
 
 	@NotNull(message = "Role cannot be null")
 	private Role role;
-	
-	@Email(message = "Email must be valid")
+
 	@NotBlank(message = "Email cannot be blank")
+	@Email(message = "Email must be valid")
 	private String email;
 	
 	@NotBlank(message = "First name cannot be blank")
