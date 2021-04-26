@@ -20,7 +20,7 @@ rule "3% decrease pt2"
 	agenda-group "increase-rules"
 
     when
-        Bill(type == BillType.RSD && balance > 330000, $interest: interest)
+        Bill(type == BillType.RSD, balance > 330000, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.03 * $interest);}
@@ -30,7 +30,7 @@ rule "3% decrease pt3"
 	agenda-group "increase-rules"
 
     when
-        Bill(type != BillType.RSD && balance > 3300, $interest: interest)
+        Bill(type != BillType.RSD, balance > 3300, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.03 * $interest);}
@@ -87,7 +87,7 @@ rule "2.5% decrease pt2"
 	agenda-group "increase-rules"
 
     when
-        Bill(type == BillType.RSD && balance > 270000, $interest: interest)
+        Bill(type == BillType.RSD, balance > 270000, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.025 * $interest);}
@@ -97,7 +97,7 @@ rule "2.5% decrease pt3"
 	agenda-group "increase-rules"
 
     when
-        Bill(type != BillType.RSD && balance > 2700, $interest: interest)
+        Bill(type != BillType.RSD, balance > 2700, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.025 * $interest);}
@@ -154,7 +154,7 @@ rule "2% decrease pt2"
 	agenda-group "increase-rules"
 
     when
-        Bill(type == BillType.RSD && balance > 220000, $interest: interest)
+        Bill(type == BillType.RSD, balance > 220000, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.02 * $interest);}
@@ -164,7 +164,7 @@ rule "2% decrease pt3"
 	agenda-group "increase-rules"
 
     when
-        Bill(type != BillType.RSD && balance > 2200, $interest: interest)
+        Bill(type != BillType.RSD, balance > 2200, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.02 * $interest);}
@@ -221,7 +221,7 @@ rule "1.5% decrease pt2"
 	agenda-group "increase-rules"
 
     when
-        Bill(type == BillType.RSD && balance > 180000, $interest: interest)
+        Bill(type == BillType.RSD, balance > 180000, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.015 * $interest);}
@@ -231,7 +231,7 @@ rule "1.5% decrease pt3"
 	agenda-group "increase-rules"
 
     when
-        Bill(type != BillType.RSD && balance > 1800, $interest: interest)
+        Bill(type != BillType.RSD, balance > 1800, $interest: interest)
         $response: IncreaseResponse(baseUpdate != null, interestUpdate == null)
     then
         modify($response){setInterestUpdate(0.015 * $interest);}

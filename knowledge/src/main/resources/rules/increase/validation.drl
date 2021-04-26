@@ -119,7 +119,7 @@ rule "Maximum increase amount is 40% of balance pt1"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type == BillType.RSD && base > 200000, $balance: balance)
+        Bill(type == BillType.RSD, base > 200000, $balance: balance)
 		Double(this > 0.4 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then
@@ -131,7 +131,7 @@ rule "Maximum increase amount is 40% of balance pt2"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type != BillType.RSD && base > 2000, $balance: balance)
+        Bill(type != BillType.RSD, base > 2000, $balance: balance)
 		Double(this > 0.4 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then
@@ -207,7 +207,7 @@ rule "Maximum increase amount is 35% of balance pt1"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type == BillType.RSD && base > 150000, $balance: balance)        
+        Bill(type == BillType.RSD, base > 150000, $balance: balance)        
 		Double(this > 0.35 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then
@@ -219,7 +219,7 @@ rule "Maximum increase amount is 35% of balance pt2"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type != BillType.RSD && base > 1500, $balance: balance)        
+        Bill(type != BillType.RSD, base > 1500, $balance: balance)        
 		Double(this > 0.35 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then
@@ -295,7 +295,7 @@ rule "Maximum increase amount is 30% of balance pt1"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type == BillType.RSD && base > 100000, $balance: balance)
+        Bill(type == BillType.RSD, base > 100000, $balance: balance)
 		Double(this > 0.3 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then
@@ -307,7 +307,7 @@ rule "Maximum increase amount is 30% of balance pt2"
 	agenda-group "increase-rules"
 
 	when
-        Bill(type != BillType.RSD && base > 1000, $balance: balance)
+        Bill(type != BillType.RSD, base > 1000, $balance: balance)
 		Double(this > 0.3 * $balance)
 		$response: IncreaseResponse(!valid, message == null)
 	then

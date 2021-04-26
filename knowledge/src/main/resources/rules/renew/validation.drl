@@ -98,7 +98,7 @@ rule "Maximum renewal amount is 18 months pt1"
 
 	when
         Integer(this > 18)
-        Bill(type == BillType.RSD && base < 250000)
+        Bill(type == BillType.RSD, base < 250000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 18 months.");}
@@ -110,7 +110,7 @@ rule "Maximum renewal amount is 18 months pt2"
 
 	when
         Integer(this > 18)
-        Bill(type != BillType.RSD && base < 2500)
+        Bill(type != BillType.RSD, base < 2500)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 18 months.");}
@@ -138,7 +138,7 @@ rule "Maximum renewal amount is 12 months pt1"
 
 	when
         Integer(this > 12)
-        Bill(type == BillType.RSD && base < 200000)
+        Bill(type == BillType.RSD, base < 200000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 12 months.");}
@@ -150,7 +150,7 @@ rule "Maximum renewal amount is 12 months pt2"
 
 	when
         Integer(this > 12)
-        Bill(type != BillType.RSD && base < 2000)
+        Bill(type != BillType.RSD, base < 2000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 12 months.");}
@@ -178,7 +178,7 @@ rule "Maximum renewal amount is 9 months pt1"
 
 	when
         Integer(this > 9)
-        Bill(type == BillType.RSD && base < 150000)
+        Bill(type == BillType.RSD, base < 150000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 9 months.");}
@@ -190,7 +190,7 @@ rule "Maximum renewal amount is 9 months pt2"
 
 	when
         Integer(this > 9)
-        Bill(type != BillType.RSD && base < 1500)
+        Bill(type != BillType.RSD, base < 1500)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 9 months.");}
@@ -218,7 +218,7 @@ rule "Maximum renewal amount is 6 months pt1"
 
 	when
         Integer(this > 6)
-        Bill(type == BillType.RSD && base < 100000)
+        Bill(type == BillType.RSD, base < 100000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 6 months.");}
@@ -230,7 +230,7 @@ rule "Maximum renewal amount is 6 months pt2"
 
 	when
         Integer(this > 6)
-        Bill(type != BillType.RSD && base < 1000)
+        Bill(type != BillType.RSD, base < 1000)
 		$response: RenewalResponse(!valid, message == null)
 	then
 		modify($response){setMessage("You can't renew bill for more than 6 months.");}

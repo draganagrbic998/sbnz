@@ -22,7 +22,7 @@ rule "90% increase pt2"
 
     when
     	$amount: Double()
-        Bill(type == BillType.RSD && balance > 300000)
+        Bill(type == BillType.RSD, balance > 300000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.9 * $amount);}
@@ -34,7 +34,7 @@ rule "90% increase pt3"
 
     when
     	$amount: Double()
-        Bill(type != BillType.RSD && balance > 3000)
+        Bill(type != BillType.RSD, balance > 3000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.9 * $amount);}
@@ -74,7 +74,7 @@ rule "80% increase pt2"
 
     when
     	$amount: Double()
-        Bill(type == BillType.RSD && balance > 250000)
+        Bill(type == BillType.RSD, balance > 250000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.8 * $amount);}
@@ -86,7 +86,7 @@ rule "80% increase pt3"
 
     when
     	$amount: Double()
-        Bill(type != BillType.RSD && balance > 2500)
+        Bill(type != BillType.RSD, balance > 2500)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.8 * $amount);}
@@ -126,7 +126,7 @@ rule "70% increase pt2"
 
     when
     	$amount: Double()
-        Bill(type == BillType.RSD && balance > 200000)
+        Bill(type == BillType.RSD, balance > 200000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.7 * $amount);}
@@ -138,7 +138,7 @@ rule "70% increase pt3"
 
     when
     	$amount: Double()
-        Bill(type != BillType.RSD && balance > 2000)
+        Bill(type != BillType.RSD, balance > 2000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.7 * $amount);}
@@ -178,7 +178,7 @@ rule "60% increase pt2"
 
     when
     	$amount: Double()
-        Bill(type == BillType.RSD && balance > 150000)
+        Bill(type == BillType.RSD, balance > 150000)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.6 * $amount);}
@@ -190,7 +190,7 @@ rule "60% increase pt3"
 
     when
     	$amount: Double()
-        Bill(type != BillType.RSD && balance > 1500)
+        Bill(type != BillType.RSD, balance > 1500)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.6 * $amount);}
