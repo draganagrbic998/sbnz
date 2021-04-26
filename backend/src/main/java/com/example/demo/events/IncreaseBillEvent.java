@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Role(Role.Type.EVENT)
-@Expires("24h")
+@Expires("36h")
 public class IncreaseBillEvent implements Serializable, Event {
 
 	private Transaction transaction;

@@ -7,7 +7,7 @@ import org.kie.api.definition.type.Role;
 
 @SuppressWarnings("serial")
 @Role(Role.Type.EVENT)
-@Expires("72h")
+@Expires("84h")
 public class SuspiciousClientEvent implements Serializable {
 	
 }

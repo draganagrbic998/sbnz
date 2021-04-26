@@ -18,7 +18,7 @@ rule "Create and close bill within 24h"
 	
     when
         CreateBillEvent($id: bill.id)
-        CloseBillEvent(bill.id == $id)
+        CloseBillEvent(bill.id == $id) over window:time(24h)
     then
 		notificationService.save(new Notification(account, 
 		"You opened saving bill #" + $id + " and closed it within 24h. Was this you?"));
@@ -31,7 +31,7 @@ rule "Increase and close bill within 24h"
 	
     when
         IncreaseBillEvent($id: transaction.bill.id)
-        CloseBillEvent(bill.id == $id)
+        CloseBillEvent(bill.id == $id) over window:time(24h)
     then
 		notificationService.save(new Notification(account, 
 		"You increased saving bill #" + $id + " and closed it within 24h. Was this you?"));
@@ -44,7 +44,7 @@ rule "Renew and close bill within 24h"
 	
     when
         RenewBillEvent($id: renewal.bill.id)
-        CloseBillEvent(bill.id == $id)
+        CloseBillEvent(bill.id == $id) over window:time(24h)
     then
 		notificationService.save(new Notification(account, 
 		"You renewed saving bill #" + $id + " and closed it within 24h. Was this you?"));
@@ -57,7 +57,7 @@ rule "Closing more than 3 RSD bills within 24h"
 	
     when
     	accumulate(
-    		CloseBillEvent($e: this, bill.type == BillType.RSD, bill.base > 25000),
+    		CloseBillEvent($e: this, bill.type == BillType.RSD, bill.base > 25000) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 3
     	)
@@ -73,7 +73,7 @@ rule "Closing more than 2 foreign bills within 24h"
 	
     when
     	accumulate(
-    		CloseBillEvent($e: this, bill.type != BillType.RSD, bill.base > 250),
+    		CloseBillEvent($e: this, bill.type != BillType.RSD, bill.base > 250) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 2
     	)
@@ -89,7 +89,7 @@ rule "More than 3 large RSD increases within 24h"
 	
     when
     	accumulate(
-    		IncreaseBillEvent($e: this, transaction.bill.type == BillType.RSD, transaction.amount > 30000),
+    		IncreaseBillEvent($e: this, transaction.bill.type == BillType.RSD, transaction.amount > 30000) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 3
     	)
@@ -105,7 +105,7 @@ rule "More than 2 large foreign increases within 24h"
 	
     when
     	accumulate(
-    		IncreaseBillEvent($e: this, transaction.bill.type != BillType.RSD, transaction.amount > 300),
+    		IncreaseBillEvent($e: this, transaction.bill.type != BillType.RSD, transaction.amount > 300) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 2
     	)
@@ -121,7 +121,7 @@ rule "More than 3 large RSD renewals within 24h"
 	
     when
     	accumulate(
-    		RenewBillEvent($e: this, renewal.bill.type == BillType.RSD, renewal.amount > 9),
+    		RenewBillEvent($e: this, renewal.bill.type == BillType.RSD, renewal.amount > 9) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 3
     	)
@@ -137,7 +137,7 @@ rule "More than 2 large foreign renewals within 24h"
 	
     when
     	accumulate(
-    		RenewBillEvent($e: this, renewal.bill.type != BillType.RSD, renewal.amount > 6),
+    		RenewBillEvent($e: this, renewal.bill.type != BillType.RSD, renewal.amount > 6) over window:time(24h),
     		$cnt: count($e);
     		$cnt > 2
     	)
@@ -153,7 +153,7 @@ rule "Suspicious client"
 	
     when
     	accumulate(
-    		SuspiciousClientEvent($e: this),
+    		SuspiciousClientEvent($e: this) over window:time(72h),
     		$cnt: count($e);
     		$cnt >= 3
     	)

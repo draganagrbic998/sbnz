@@ -76,13 +76,13 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CreateBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CreateBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
@@ -102,13 +102,13 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
@@ -128,13 +128,13 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 1);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
@@ -159,12 +159,12 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 4);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
@@ -186,12 +186,12 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 3);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(CloseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
@@ -214,12 +214,12 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 4);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
@@ -240,12 +240,12 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 3);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(IncreaseBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
@@ -268,12 +268,12 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 4);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
@@ -294,17 +294,17 @@ public class TestEvents {
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 3);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
         
-		this.clock.advanceTime(23, TimeUnit.HOURS);
+		this.clock.advanceTime(35, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 3);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 		
-		this.clock.advanceTime(24, TimeUnit.HOURS);
+		this.clock.advanceTime(36, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 1);
 
-		this.clock.advanceTime(72, TimeUnit.HOURS);
+		this.clock.advanceTime(84, TimeUnit.HOURS);
 		this.kieSession.fireAllRules();
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(RenewBillEvent.class)).size(), 0);
 		assertEquals(this.kieSession.getObjects(new ClassObjectFilter(SuspiciousClientEvent.class)).size(), 0);
