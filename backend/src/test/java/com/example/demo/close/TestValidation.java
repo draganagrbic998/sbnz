@@ -133,7 +133,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule8pt1() {
+	public void testRule8() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));
@@ -145,7 +145,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule8pt2() {
+	public void testRule9() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(1));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1));

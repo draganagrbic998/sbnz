@@ -10,7 +10,7 @@ import com.example.demo.service.ExchangeRateService
 global ExchangeRateService rateService
 
 
-rule "RSD bill - base less than 10.000 RSD"
+rule "RSD - base less than 10.000 RSD"
 	agenda-group "create-rules"
 
     when
@@ -21,7 +21,7 @@ rule "RSD bill - base less than 10.000 RSD"
 
 end
 
-rule "RSD bill - base more than 10.000.000 RSD"
+rule "RSD - base more than 10.000.000 RSD"
 	agenda-group "create-rules"
 
     when
@@ -32,7 +32,7 @@ rule "RSD bill - base more than 10.000.000 RSD"
 
 end
 
-rule "RSD bill - duration less than 4 months"
+rule "RSD - duration less than 4 months"
 	agenda-group "create-rules"
 
     when    
@@ -43,7 +43,7 @@ rule "RSD bill - duration less than 4 months"
 
 end
 
-rule "RSD bill - duration more than 42 months"
+rule "RSD - duration more than 42 months"
 	agenda-group "create-rules"
 
     when    
@@ -54,7 +54,7 @@ rule "RSD bill - duration more than 42 months"
 
 end
 
-rule "RSD bill - main balance isn't at least 200 RSD more than base"
+rule "RSD - main balance isn't at least 200 RSD more than base"
 	agenda-group "create-rules"
 
     when
@@ -66,7 +66,7 @@ rule "RSD bill - main balance isn't at least 200 RSD more than base"
 
 end
 
-rule "RSD bill - underage client and base more than 100.000 RSD"
+rule "RSD - underage client and base more than 100.000 RSD"
 	agenda-group "create-rules"
 
     when
@@ -78,7 +78,7 @@ rule "RSD bill - underage client and base more than 100.000 RSD"
 
 end
 
-rule "RSD bill - underage client and 2 more active bills"
+rule "RSD - underage client and 2 more active bills"
 	agenda-group "create-rules"
 
     when
@@ -94,7 +94,7 @@ rule "RSD bill - underage client and 2 more active bills"
 
 end
 
-rule "Foreign bill - base less than 100 units"
+rule "Foreign - base less than 100 units"
 	agenda-group "create-rules"
 
     when
@@ -105,7 +105,7 @@ rule "Foreign bill - base less than 100 units"
 
 end
 
-rule "Foreign bill - base more than 100.000 units"
+rule "Foreign - base more than 100.000 units"
 	agenda-group "create-rules"
 
     when
@@ -116,7 +116,7 @@ rule "Foreign bill - base more than 100.000 units"
 
 end
 
-rule "Foreign bill - duration less than 2 months"
+rule "Foreign - duration less than 2 months"
 	agenda-group "create-rules"
 
     when    
@@ -127,7 +127,7 @@ rule "Foreign bill - duration less than 2 months"
 
 end
 
-rule "Foreign bill - duration more than 36 months"
+rule "Foreign - duration more than 36 months"
 	agenda-group "create-rules"
 
     when    
@@ -138,7 +138,7 @@ rule "Foreign bill - duration more than 36 months"
 
 end
 
-rule "Foreign bill - main balance isn't at least 1000 RSD more than base"
+rule "Foreign - main balance isn't at least 1000 RSD more than base"
 	agenda-group "create-rules"
 
     when
@@ -150,7 +150,7 @@ rule "Foreign bill - main balance isn't at least 1000 RSD more than base"
 
 end
 
-rule "Foreign bill - underage client and base more than 1000 units"
+rule "Foreign - underage client and base more than 1000 units"
 	agenda-group "create-rules"
 
     when
@@ -162,7 +162,7 @@ rule "Foreign bill - underage client and base more than 1000 units"
 
 end
 
-rule "Foreign bill - underage client and 1 more active bill"
+rule "Foreign - underage client and 1 more active bill"
 	agenda-group "create-rules"
 
     when

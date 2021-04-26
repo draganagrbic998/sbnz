@@ -77,7 +77,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule1RSDpt1() {
+	public void testRule1() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(22);
@@ -86,7 +86,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule1RSDpt2() {
+	public void testRule2() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(2100001);
 		this.request.setMonths(21);
@@ -95,7 +95,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule1EURpt1() {
+	public void testRule3() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(101);
 		this.request.setMonths(31);
@@ -104,7 +104,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule1EURpt2() {
+	public void testRule4() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(90001);
 		this.request.setMonths(30);
@@ -113,7 +113,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule1USDpt1() {
+	public void testRule5() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(101);
 		this.request.setMonths(28);
@@ -122,7 +122,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule1USDpt2() {
+	public void testRule6() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(78301);
 		this.request.setMonths(27);
@@ -131,7 +131,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule1CHFpt1() {
+	public void testRule7() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(101);
 		this.request.setMonths(25);
@@ -140,7 +140,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule1CHFpt2() {
+	public void testRule8() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(67201);
 		this.request.setMonths(24);
@@ -149,7 +149,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule1GBPpt1() {
+	public void testRule9() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(101);
 		this.request.setMonths(34);
@@ -158,7 +158,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule1GBPpt2() {
+	public void testRule10() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(99331);
 		this.request.setMonths(33);
@@ -167,7 +167,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule2RSDpt1() {
+	public void testRule11() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(16);
@@ -176,7 +176,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2RSDpt2() {
+	public void testRule12() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(750001);
 		this.request.setMonths(15);
@@ -185,7 +185,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2EURpt1() {
+	public void testRule13() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(101);
 		this.request.setMonths(25);
@@ -194,7 +194,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2EURpt2() {
+	public void testRule14() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(48001);
 		this.request.setMonths(24);
@@ -203,7 +203,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule2USDpt1() {
+	public void testRule15() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(101);
 		this.request.setMonths(22);
@@ -212,7 +212,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2USDpt2() {
+	public void testRule16() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(39901);
 		this.request.setMonths(21);
@@ -221,7 +221,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule2CHFpt1() {
+	public void testRule17() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(101);
 		this.request.setMonths(19);
@@ -230,7 +230,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2CHFpt2() {
+	public void testRule18() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(32401);
 		this.request.setMonths(18);
@@ -239,7 +239,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule2GBPpt1() {
+	public void testRule19() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(101);
 		this.request.setMonths(28);
@@ -248,7 +248,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule2GBPpt2() {
+	public void testRule20() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(56701);
 		this.request.setMonths(27);
@@ -257,7 +257,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3RSDpt1() {
+	public void testRule21() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(10);
@@ -266,7 +266,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3RSDpt2() {
+	public void testRule22() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(270001);
 		this.request.setMonths(9);
@@ -275,7 +275,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule3EURpt1() {
+	public void testRule23() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(101);
 		this.request.setMonths(19);
@@ -284,7 +284,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3EURpt2() {
+	public void testRule24() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(18001);
 		this.request.setMonths(18);
@@ -293,7 +293,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule3USDpt1() {
+	public void testRule25() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(101);
 		this.request.setMonths(16);
@@ -302,7 +302,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3USDpt2() {
+	public void testRule26() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(13501);
 		this.request.setMonths(15);
@@ -311,7 +311,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3CHFpt1() {
+	public void testRule27() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(101);
 		this.request.setMonths(13);
@@ -320,7 +320,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3CHFpt2() {
+	public void testRule28() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(9601);
 		this.request.setMonths(12);
@@ -329,7 +329,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule3GBPpt1() {
+	public void testRule29() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(101);
 		this.request.setMonths(22);
@@ -338,7 +338,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule3GBPpt2() {
+	public void testRule30() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(23101);
 		this.request.setMonths(21);
@@ -347,7 +347,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule4RSDpt1() {
+	public void testRule31() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(7);
@@ -356,7 +356,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4RSDpt2() {
+	public void testRule32() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(60001);
 		this.request.setMonths(6);
@@ -365,7 +365,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule4EURpt1() {
+	public void testRule33() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(101);
 		this.request.setMonths(13);
@@ -374,7 +374,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4EURpt2() {
+	public void testRule34() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(6001);
 		this.request.setMonths(12);
@@ -383,7 +383,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4USDpt1() {
+	public void testRule35() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(101);
 		this.request.setMonths(10);
@@ -392,7 +392,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4USDpt2() {
+	public void testRule36() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(4321);
 		this.request.setMonths(9);
@@ -401,7 +401,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule4CHFpt1() {
+	public void testRule37() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(101);
 		this.request.setMonths(7);
@@ -410,7 +410,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4CHFpt2() {
+	public void testRule38() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(2821);
 		this.request.setMonths(6);
@@ -419,7 +419,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule4GBPpt1() {
+	public void testRule39() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(101);
 		this.request.setMonths(16);
@@ -428,7 +428,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule4GBPpt2() {
+	public void testRule40() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(7801);
 		this.request.setMonths(15);
@@ -437,7 +437,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule5RSDpt1() {
+	public void testRule41() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(10001);
 		this.request.setMonths(6);
@@ -446,7 +446,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5RSDpt2() {
+	public void testRule42() {
 		this.request.setType(BillType.RSD);
 		this.request.setBase(60000);
 		this.request.setMonths(6);
@@ -455,7 +455,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule5EURpt1() {
+	public void testRule43() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(101);
 		this.request.setMonths(12);
@@ -464,7 +464,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5EURpt2() {
+	public void testRule44() {
 		this.request.setType(BillType.EUR);
 		this.request.setBase(6000);
 		this.request.setMonths(12);
@@ -473,7 +473,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule5USDpt1() {
+	public void testRule45() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(101);
 		this.request.setMonths(9);
@@ -482,7 +482,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5USDpt2() {
+	public void testRule46() {
 		this.request.setType(BillType.USD);
 		this.request.setBase(4320);
 		this.request.setMonths(9);
@@ -491,7 +491,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5CHFpt1() {
+	public void testRule47() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(101);
 		this.request.setMonths(6);
@@ -500,7 +500,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5CHFpt2() {
+	public void testRule48() {
 		this.request.setType(BillType.CHF);
 		this.request.setBase(2820);
 		this.request.setMonths(6);
@@ -509,7 +509,7 @@ public class TestNKS {
 	}
 
 	@Test
-	public void testRule5GBPpt1() {
+	public void testRule49() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(101);
 		this.request.setMonths(15);
@@ -518,7 +518,7 @@ public class TestNKS {
 	}
 	
 	@Test
-	public void testRule5GBPpt2() {
+	public void testRule50() {
 		this.request.setType(BillType.GBP);
 		this.request.setBase(7800);
 		this.request.setMonths(15);

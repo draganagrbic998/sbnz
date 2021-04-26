@@ -16,7 +16,7 @@ rule "Passed time more than 80%"
 
 end
 
-rule "RSD bill - base less than 20.000 RSD"
+rule "RSD - base less than 20.000 RSD"
 	agenda-group "close-rules"
 
     when
@@ -27,7 +27,7 @@ rule "RSD bill - base less than 20.000 RSD"
 
 end
 
-rule "The only active RSD bill"
+rule "RSD - the only active bill"
 	agenda-group "close-rules"
 
     when
@@ -42,7 +42,7 @@ rule "The only active RSD bill"
 
 end
 
-rule "6 more closed RSD bills"
+rule "RSD - 6 more closed bills"
 	agenda-group "close-rules"
 
     when
@@ -57,7 +57,7 @@ rule "6 more closed RSD bills"
 
 end
 
-rule "Foreign bill - base less than 200 units"
+rule "Foreign - base less than 200 units"
 	agenda-group "close-rules"
 
     when
@@ -68,7 +68,7 @@ rule "Foreign bill - base less than 200 units"
 
 end
 
-rule "The only active foreign bill"
+rule "Foreign - the only active bill"
 	agenda-group "close-rules"
 
     when
@@ -83,7 +83,7 @@ rule "The only active foreign bill"
 
 end
 
-rule "4 more closed foreign bills"
+rule "Foreign - 4 more closed bills"
 	agenda-group "close-rules"
 
     when

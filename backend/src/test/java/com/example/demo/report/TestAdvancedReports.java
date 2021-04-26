@@ -53,7 +53,7 @@ public class TestAdvancedReports {
 	}
 
 	@Test
-	public void testReport1() {
+	public void testRule1() {
 		this.kieSession.getAgenda().getAgendaGroup(Constants.FIRST_REPORT).setFocus();
 
 		Account account = new Account();
@@ -75,7 +75,7 @@ public class TestAdvancedReports {
 	}
 
 	@Test
-	public void testReport2() {
+	public void testRule2() {
 		this.kieSession.getAgenda().getAgendaGroup(Constants.SECOND_REPORT).setFocus();
 		Mockito.when(this.rateService.convertToRSD(BillType.EUR, 9100))
 		.thenReturn(117.48 * 9100);
@@ -98,7 +98,7 @@ public class TestAdvancedReports {
 	}
 	
 	@Test
-	public void testReport3() {
+	public void testRule3() {
 		this.kieSession.getAgenda().getAgendaGroup(Constants.THIRD_REPORT).setFocus();
 		Mockito.when(this.rateService.convertToRSD(BillType.RSD, 500000))
 		.thenReturn(500000.0);

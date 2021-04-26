@@ -27,7 +27,7 @@ rule "Amount more than 24 months"
 
 end
 
-rule "RSD bill - duration of 4 months"
+rule "RSD - duration of 4 months"
 	agenda-group "renew-rules"
 
     when
@@ -38,7 +38,7 @@ rule "RSD bill - duration of 4 months"
 
 end
 
-rule "RSD bill - duration of at least 42 months"
+rule "RSD - duration of at least 42 months"
 	agenda-group "renew-rules"
 
     when
@@ -49,7 +49,7 @@ rule "RSD bill - duration of at least 42 months"
 
 end
 
-rule "RSD bill - base less than 75.000 RSD"
+rule "RSD - base less than 75.000 RSD"
 	agenda-group "renew-rules"
 
 	when
@@ -60,7 +60,7 @@ rule "RSD bill - base less than 75.000 RSD"
 
 end
 
-rule "Foreign bill - duration of 2 months"
+rule "Foreign - duration of 2 months"
 	agenda-group "renew-rules"
 
     when
@@ -71,7 +71,7 @@ rule "Foreign bill - duration of 2 months"
 
 end
 
-rule "Foreign bill - duration of at least 36 months"
+rule "Foreign - duration of at least 36 months"
 	agenda-group "renew-rules"
 
     when
@@ -82,7 +82,7 @@ rule "Foreign bill - duration of at least 36 months"
 
 end
 
-rule "Foreign bill - base less than 750 units"
+rule "Foreign - base less than 750 units"
 	agenda-group "renew-rules"
 
 	when

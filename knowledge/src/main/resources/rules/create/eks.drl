@@ -22,9 +22,25 @@ rule "EKS of 100% pt2"
 
     when
     	Account($bills: bills)
-    	BillRequest($type: type)
+    	BillRequest(type == BillType.RSD)
 		Number(intValue == 0) from accumulate(
-			Bill($b: this, sameType($type)) from $bills,
+			Bill($b: this, type == BillType.RSD) from $bills,
+			count($b) 
+		)
+		$response: BillResponse(points != null, eks == null)
+    then
+    	modify($response){setEks(1.0), setReward(5000);}
+
+end
+
+rule "EKS of 100% pt3"
+	agenda-group "create-rules"
+
+    when
+    	Account($bills: bills)
+    	BillRequest(type != BillType.RSD)
+		Number(intValue == 0) from accumulate(
+			Bill($b: this, type != BillType.RSD) from $bills,
 			count($b) 
 		)
 		$response: BillResponse(points != null, eks == null)
@@ -48,7 +64,23 @@ rule "EKS of 98% pt2"
 
     when
     	Account($bills: bills)
-    	BillRequest(type == BillType.EUR || type == BillType.USD, $type: type)
+    	BillRequest(type == BillType.EUR, $type: type)
+		Number(intValue == 0) from accumulate(
+			Bill($b: this, type == $type) from $bills,
+			count($b) 
+		)
+		$response: BillResponse(points != null, eks == null)
+    then
+    	modify($response){setEks(0.98), setReward(2000);}
+
+end
+
+rule "EKS of 98% pt3"
+	agenda-group "create-rules"
+
+    when
+    	Account($bills: bills)
+    	BillRequest(type == BillType.USD, $type: type)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, type == $type) from $bills,
 			count($b) 
@@ -74,7 +106,23 @@ rule "EKS of 95% pt2"
 
     when
     	Account($bills: bills)
-    	BillRequest(type == BillType.CHF || type == BillType.GBP, $type: type)
+    	BillRequest(type == BillType.CHF, $type: type)
+		Number(intValue == 0) from accumulate(
+			Bill($b: this, type == $type) from $bills,
+			count($b) 
+		)
+		$response: BillResponse(points != null, eks == null)
+    then
+    	modify($response){setEks(0.95), setReward(1000);}
+
+end
+
+rule "EKS of 95% pt3"
+	agenda-group "create-rules"
+
+    when
+    	Account($bills: bills)
+    	BillRequest(type == BillType.GBP, $type: type)
 		Number(intValue == 0) from accumulate(
 			Bill($b: this, type == $type) from $bills,
 			count($b) 
@@ -102,7 +150,7 @@ rule "EKS of 90% pt2"
     	Account($bills: bills)
     	BillRequest(type == BillType.RSD, $type: type)
 		Number(intValue == 0) from accumulate(
-			Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
+			Bill($b: this, status == BillStatus.ACTIVE, type == BillType.RSD) from $bills,
 			count($b) 
 		)
 		$response: BillResponse(points != null, eks == null)
@@ -128,7 +176,7 @@ rule "EKS of 87% pt2"
     	Account($bills: bills)
     	BillRequest(type != BillType.RSD, $type: type)
 		Number(intValue == 0) from accumulate(
-			Bill($b: this, status == BillStatus.ACTIVE, sameType($type)) from $bills,
+			Bill($b: this, status == BillStatus.ACTIVE, type != BillType.RSD) from $bills,
 			count($b) 
 		)
 		$response: BillResponse(points != null, eks == null)

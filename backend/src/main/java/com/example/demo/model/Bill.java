@@ -85,10 +85,6 @@ public class Bill {
 		return this.base;
 	}
 
-	public boolean sameType(BillType type) {
-		return this.type.ordinal() > 0 == type.ordinal() > 0;
-	}
-
 	public long months() {
 		return Math.abs(ChronoUnit.MONTHS.between(this.startDate, this.endDate));
 	}

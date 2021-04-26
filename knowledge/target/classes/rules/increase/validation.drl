@@ -41,7 +41,7 @@ rule "Amount more than 50% of balance"
 
 end
 
-rule "RSD bill - duration less than 6 months"
+rule "RSD - duration less than 6 months"
 	agenda-group "increase-rules"
 
 	when
@@ -52,7 +52,7 @@ rule "RSD bill - duration less than 6 months"
 
 end
 
-rule "RSD bill - base less than 75.000 RSD"
+rule "RSD - base less than 75.000 RSD"
 	agenda-group "increase-rules"
 
 	when
@@ -63,7 +63,7 @@ rule "RSD bill - base less than 75.000 RSD"
 
 end
 
-rule "RSD bill - 5 more increases"
+rule "RSD - 5 more increases"
 	agenda-group "increase-rules"
 
 	when
@@ -78,7 +78,7 @@ rule "RSD bill - 5 more increases"
 
 end
 
-rule "Foreign bill - duration less than 4 months"
+rule "Foreign - duration less than 4 months"
 	agenda-group "increase-rules"
 
 	when
@@ -89,7 +89,7 @@ rule "Foreign bill - duration less than 4 months"
 
 end
 
-rule "Foreign bill - base less than 750 currency units"
+rule "Foreign - base less than 750 units"
 	agenda-group "increase-rules"
 
 	when
@@ -100,7 +100,7 @@ rule "Foreign bill - base less than 750 currency units"
 
 end
 
-rule "Foreign bill - 3 more increases"
+rule "Foreign - 3 more increases"
 	agenda-group "increase-rules"
 
 	when

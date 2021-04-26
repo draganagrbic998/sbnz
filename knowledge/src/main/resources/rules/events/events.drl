@@ -52,7 +52,7 @@ rule "Renew and close bill within 24h"
 
 end
 
-rule "Closing more than 3 RSD bills"
+rule "Closing more than 3 RSD bills within 24h"
 	no-loop
 	
     when
@@ -68,7 +68,7 @@ rule "Closing more than 3 RSD bills"
 
 end
 
-rule "Closing more than 2 foreign bills"
+rule "Closing more than 2 foreign bills within 24h"
 	no-loop
 	
     when
@@ -84,7 +84,7 @@ rule "Closing more than 2 foreign bills"
 
 end
 
-rule "More than 3 large RSD increases"
+rule "More than 3 large RSD increases within 24h"
 	no-loop
 	
     when
@@ -100,7 +100,7 @@ rule "More than 3 large RSD increases"
 
 end
 
-rule "More than 2 large foreign increases"
+rule "More than 2 large foreign increases within 24h"
 	no-loop
 	
     when
@@ -116,7 +116,7 @@ rule "More than 2 large foreign increases"
 
 end
 
-rule "More than 3 large RSD renewals"
+rule "More than 3 large RSD renewals within 24h"
 	no-loop
 	
     when
@@ -132,7 +132,7 @@ rule "More than 3 large RSD renewals"
 
 end
 
-rule "More than 2 large foreign renewals"
+rule "More than 2 large foreign renewals within 24h"
 	no-loop
 	
     when
