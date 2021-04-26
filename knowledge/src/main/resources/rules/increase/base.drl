@@ -9,12 +9,8 @@ rule "90% increase pt1"
 	agenda-group "increase-rules"
 
     when
-        $amount: Double()
-        Bill(
-        	$amount > 0.4 * base ||
-        	type == BillType.RSD && balance > 300000 ||
-        	type != BillType.RSD && balance > 3000
-        )
+        Bill($base: base)
+        $amount: Double(this > 0.4 * $base)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.9 * $amount);}
@@ -22,6 +18,30 @@ rule "90% increase pt1"
 end
 
 rule "90% increase pt2"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type == BillType.RSD && balance > 300000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.9 * $amount);}
+
+end
+
+rule "90% increase pt3"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type != BillType.RSD && balance > 3000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.9 * $amount);}
+
+end
+
+rule "90% increase pt4"
 	agenda-group "increase-rules"
 
     when
@@ -41,12 +61,8 @@ rule "80% increase pt1"
 	agenda-group "increase-rules"
 
     when
-        $amount: Double()
-        Bill(
-        	$amount > 0.35 * base ||
-        	type == BillType.RSD && balance > 250000 ||
-        	type != BillType.RSD && balance > 2500
-        )
+		Bill($base: base)
+        $amount: Double(this > 0.35 * $base)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.8 * $amount);}
@@ -54,6 +70,30 @@ rule "80% increase pt1"
 end
 
 rule "80% increase pt2"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type == BillType.RSD && balance > 250000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.8 * $amount);}
+
+end
+
+rule "80% increase pt3"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type != BillType.RSD && balance > 2500)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.8 * $amount);}
+
+end
+
+rule "80% increase pt4"
 	agenda-group "increase-rules"
 
     when
@@ -73,12 +113,8 @@ rule "70% increase pt1"
 	agenda-group "increase-rules"
 
     when
-        $amount: Double()
-        Bill(
-        	$amount > 0.3 * base ||
-        	type == BillType.RSD && balance > 200000 ||
-        	type != BillType.RSD && balance > 2000
-        )
+		Bill($base: base)
+        $amount: Double(this > 0.3 * $base)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.7 * $amount);}
@@ -86,6 +122,30 @@ rule "70% increase pt1"
 end
 
 rule "70% increase pt2"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type == BillType.RSD && balance > 200000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.7 * $amount);}
+
+end
+
+rule "70% increase pt3"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type != BillType.RSD && balance > 2000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.7 * $amount);}
+
+end
+
+rule "70% increase pt4"
 	agenda-group "increase-rules"
 
     when
@@ -105,12 +165,8 @@ rule "60% increase pt1"
 	agenda-group "increase-rules"
 
     when
-        $amount: Double()
-        Bill(
-        	$amount > 0.25 * base ||
-        	type == BillType.RSD && balance > 150000 ||
-        	type != BillType.RSD && balance > 1500
-        )
+    	Bill($base: base)
+        $amount: Double(this > 0.25 * $base)
         $response: IncreaseResponse(valid, baseUpdate == null)
     then
 		modify($response){setBaseUpdate(0.6 * $amount);}
@@ -118,6 +174,30 @@ rule "60% increase pt1"
 end
 
 rule "60% increase pt2"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type == BillType.RSD && balance > 150000)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.6 * $amount);}
+
+end
+
+rule "60% increase pt3"
+	agenda-group "increase-rules"
+
+    when
+    	$amount: Double()
+        Bill(type != BillType.RSD && balance > 1500)
+        $response: IncreaseResponse(valid, baseUpdate == null)
+    then
+		modify($response){setBaseUpdate(0.6 * $amount);}
+
+end
+
+rule "60% increase pt4"
 	agenda-group "increase-rules"
 
     when

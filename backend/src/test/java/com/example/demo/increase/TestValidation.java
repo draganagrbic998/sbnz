@@ -150,7 +150,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule10pt1() {
+	public void testRule10() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -161,7 +161,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule10pt2() {
+	public void testRule11() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -172,7 +172,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule11pt1() {
+	public void testRule12() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -187,7 +187,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule11pt2() {
+	public void testRule13() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -202,7 +202,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule12pt1() {
+	public void testRule14() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -214,7 +214,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule12pt2() {
+	public void testRule15() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -226,7 +226,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule13pt1() {
+	public void testRule16() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -237,7 +237,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule13pt2() {
+	public void testRule17() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -248,7 +248,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule14pt1() {
+	public void testRule18() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -263,7 +263,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule14pt2() {
+	public void testRule19() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -278,7 +278,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule15pt1() {
+	public void testRule20() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -290,7 +290,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule15pt2() {
+	public void testRule21() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -302,7 +302,7 @@ public class TestValidation {
 	}
 
 	@Test
-	public void testRule16pt1() {
+	public void testRule22() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -313,7 +313,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule16pt2() {
+	public void testRule23() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -324,7 +324,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule17pt1() {
+	public void testRule24() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -339,7 +339,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule17pt2() {
+	public void testRule25() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));
@@ -354,7 +354,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule18pt1() {
+	public void testRule26() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(3).plusDays(1));
@@ -366,7 +366,7 @@ public class TestValidation {
 	}
 	
 	@Test
-	public void testRule18pt2() {
+	public void testRule27() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now().minusMonths(3));
 		this.bill.setEndDate(LocalDate.now().plusMonths(1).plusDays(1));

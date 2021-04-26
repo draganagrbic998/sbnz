@@ -65,7 +65,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule1pt1() {
+	public void testRule1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -74,7 +74,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule1pt2() {
+	public void testRule2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(300001);
 		this.bill.setBalance(300001);
@@ -83,7 +83,7 @@ public class TestBase {
 	}
 
 	@Test
-	public void testRule1pt3() {
+	public void testRule3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setBase(3001);
 		this.bill.setBalance(3001);
@@ -92,7 +92,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule2() {
+	public void testRule4() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -102,7 +102,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule3pt1() {
+	public void testRule5() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -111,7 +111,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule3pt2() {
+	public void testRule6() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(250000);
 		this.bill.setBalance(250001);
@@ -120,7 +120,7 @@ public class TestBase {
 	}
 
 	@Test
-	public void testRule3pt3() {
+	public void testRule7() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setBase(2501);
 		this.bill.setBalance(2501);
@@ -129,7 +129,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule4() {
+	public void testRule8() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -139,7 +139,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule5pt1() {
+	public void testRule9() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -148,7 +148,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule5pt2() {
+	public void testRule10() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(200001);
 		this.bill.setBalance(200001);
@@ -157,7 +157,7 @@ public class TestBase {
 	}
 
 	@Test
-	public void testRule5pt3() {
+	public void testRule11() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setBase(2001);
 		this.bill.setBalance(2001);
@@ -166,7 +166,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule6() {
+	public void testRule12() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -176,7 +176,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule7pt1() {
+	public void testRule13() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -185,7 +185,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule7pt2() {
+	public void testRule14() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(150001);
 		this.bill.setBalance(150001);
@@ -194,7 +194,7 @@ public class TestBase {
 	}
 
 	@Test
-	public void testRule7pt3() {
+	public void testRule15() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setBase(1501);
 		this.bill.setBalance(1501);
@@ -203,7 +203,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule8() {
+	public void testRule16() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(75001);
@@ -213,7 +213,7 @@ public class TestBase {
 	}
 	
 	@Test
-	public void testRule9() {
+	public void testRule17() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setBase(75001);
 		this.bill.setBalance(100);
