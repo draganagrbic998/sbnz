@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +26,6 @@ public class NksValues {
 	private long level;
 
 	@NotNull
-	@Column(unique = true)
 	@Enumerated(EnumType.STRING)
 	private BillType type;
 
