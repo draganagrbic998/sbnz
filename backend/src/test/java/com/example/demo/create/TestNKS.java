@@ -11,12 +11,14 @@ import org.junit.runner.RunWith;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.rules.BillRequest;
 import com.example.demo.rules.BillResponse;
 import com.example.demo.service.ExchangeRateService;
+import com.example.demo.service.NksValuesService;
 import com.example.demo.model.Account;
 import com.example.demo.model.BillType;
 import com.example.demo.utils.Constants;
@@ -26,6 +28,9 @@ public class TestNKS {
 
 	@MockBean
 	private ExchangeRateService rateService;
+	
+	@MockBean
+	private NksValuesService nksValuesService;
 
 	private KieSession kieSession;
 
@@ -41,12 +46,14 @@ public class TestNKS {
 		this.kieSession = kieContainer.newKieSession(Constants.CREATE_RULES);
 		this.kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
         this.kieSession.setGlobal("rateService", this.rateService);
+        this.kieSession.setGlobal("nksValuesService", this.nksValuesService);        
 
 		this.account = new Account();
 		this.request = new BillRequest();
 		this.response = new BillResponse();
 		
 		this.account.setBirthDate(LocalDate.now().plusYears(18).plusDays(1));
+		this.setNksValues();
 	}
 
 	@After
@@ -517,6 +524,52 @@ public class TestNKS {
 		this.request.setMonths(15);
 		this.account.setBalance(7800 * 140 + 1001);
 		this.runAndAssert(0.5);
+	}
+	
+	private void setNksValues() {
+        Mockito.when(this.nksValuesService.monthsRate(1, BillType.RSD)).thenReturn(21.0);
+        Mockito.when(this.nksValuesService.baseRate(1, BillType.RSD)).thenReturn(100000.0);
+        Mockito.when(this.nksValuesService.monthsRate(1, BillType.EUR)).thenReturn(30.0);
+        Mockito.when(this.nksValuesService.baseRate(1, BillType.EUR)).thenReturn(3000.0);
+        Mockito.when(this.nksValuesService.monthsRate(1, BillType.USD)).thenReturn(27.0);
+        Mockito.when(this.nksValuesService.baseRate(1, BillType.USD)).thenReturn(2900.0);
+        Mockito.when(this.nksValuesService.monthsRate(1, BillType.CHF)).thenReturn(24.0);
+        Mockito.when(this.nksValuesService.baseRate(1, BillType.CHF)).thenReturn(2800.0);
+        Mockito.when(this.nksValuesService.monthsRate(1, BillType.GBP)).thenReturn(33.0);
+        Mockito.when(this.nksValuesService.baseRate(1, BillType.GBP)).thenReturn(3010.0);
+
+        Mockito.when(this.nksValuesService.monthsRate(2, BillType.RSD)).thenReturn(15.0);
+        Mockito.when(this.nksValuesService.baseRate(2, BillType.RSD)).thenReturn(50000.0);
+        Mockito.when(this.nksValuesService.monthsRate(2, BillType.EUR)).thenReturn(24.0);
+        Mockito.when(this.nksValuesService.baseRate(2, BillType.EUR)).thenReturn(2000.0);
+        Mockito.when(this.nksValuesService.monthsRate(2, BillType.USD)).thenReturn(21.0);
+        Mockito.when(this.nksValuesService.baseRate(2, BillType.USD)).thenReturn(1900.0);
+        Mockito.when(this.nksValuesService.monthsRate(2, BillType.CHF)).thenReturn(18.0);
+        Mockito.when(this.nksValuesService.baseRate(2, BillType.CHF)).thenReturn(1800.0);
+        Mockito.when(this.nksValuesService.monthsRate(2, BillType.GBP)).thenReturn(27.0);
+        Mockito.when(this.nksValuesService.baseRate(2, BillType.GBP)).thenReturn(2100.0);
+
+        Mockito.when(this.nksValuesService.monthsRate(3, BillType.RSD)).thenReturn(9.0);
+        Mockito.when(this.nksValuesService.baseRate(3, BillType.RSD)).thenReturn(30000.0);
+        Mockito.when(this.nksValuesService.monthsRate(3, BillType.EUR)).thenReturn(18.0);
+        Mockito.when(this.nksValuesService.baseRate(3, BillType.EUR)).thenReturn(1000.0);
+        Mockito.when(this.nksValuesService.monthsRate(3, BillType.USD)).thenReturn(15.0);
+        Mockito.when(this.nksValuesService.baseRate(3, BillType.USD)).thenReturn(900.0);
+        Mockito.when(this.nksValuesService.monthsRate(3, BillType.CHF)).thenReturn(12.0);
+        Mockito.when(this.nksValuesService.baseRate(3, BillType.CHF)).thenReturn(800.0);
+        Mockito.when(this.nksValuesService.monthsRate(3, BillType.GBP)).thenReturn(21.0);
+        Mockito.when(this.nksValuesService.baseRate(3, BillType.GBP)).thenReturn(1100.0);
+
+        Mockito.when(this.nksValuesService.monthsRate(4, BillType.RSD)).thenReturn(6.0);
+        Mockito.when(this.nksValuesService.baseRate(4, BillType.RSD)).thenReturn(10000.0);
+        Mockito.when(this.nksValuesService.monthsRate(4, BillType.EUR)).thenReturn(12.0);
+        Mockito.when(this.nksValuesService.baseRate(4, BillType.EUR)).thenReturn(500.0);
+        Mockito.when(this.nksValuesService.monthsRate(4, BillType.USD)).thenReturn(9.0);
+        Mockito.when(this.nksValuesService.baseRate(4, BillType.USD)).thenReturn(480.0);
+        Mockito.when(this.nksValuesService.monthsRate(4, BillType.CHF)).thenReturn(6.0);
+        Mockito.when(this.nksValuesService.baseRate(4, BillType.CHF)).thenReturn(470.0);
+        Mockito.when(this.nksValuesService.monthsRate(4, BillType.GBP)).thenReturn(15.0);
+        Mockito.when(this.nksValuesService.baseRate(4, BillType.GBP)).thenReturn(520.0);
 	}
 
 }

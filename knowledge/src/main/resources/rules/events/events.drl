@@ -9,8 +9,8 @@ import com.example.demo.events.CloseBillEvent
 import com.example.demo.events.SuspiciousClientEvent
 import com.example.demo.service.NotificationService
 
-global NotificationService notificationService;
-global Account account;
+global NotificationService notificationService
+global Account account
 
 
 rule "Create and close bill within 24h"

@@ -19,6 +19,7 @@ import com.example.demo.ObjectFactory;
 import com.example.demo.rules.BillRequest;
 import com.example.demo.rules.BillResponse;
 import com.example.demo.service.ExchangeRateService;
+import com.example.demo.service.NksValuesService;
 import com.example.demo.model.Account;
 import com.example.demo.model.BillType;
 import com.example.demo.utils.Constants;
@@ -28,6 +29,9 @@ public class TestPoints {
 	
 	@MockBean
 	private ExchangeRateService rateService;
+
+	@MockBean
+	private NksValuesService nksValuesService;
 
 	private KieSession kieSession;
 
@@ -43,6 +47,7 @@ public class TestPoints {
 		this.kieSession = kieContainer.newKieSession(Constants.CREATE_RULES);
 		this.kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
         this.kieSession.setGlobal("rateService", this.rateService);
+        this.kieSession.setGlobal("nksValuesService", this.nksValuesService);        
 
 		this.account = new Account();
 		this.request = new BillRequest();

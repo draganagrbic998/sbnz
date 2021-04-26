@@ -24,11 +24,13 @@ public class ResonerService {
 	
 	private final KieContainer kieContainer;
 	private final ExchangeRateService rateService;
+	private final NksValuesService nksValuesService;
 	
 	public BillResponse createBill(Account account, BillRequest request) {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.CREATE_RULES);
 		kieSession.getAgenda().getAgendaGroup(Constants.CREATE_RULES).setFocus();
 		kieSession.setGlobal("rateService", this.rateService);
+		kieSession.setGlobal("nksValuesService", this.nksValuesService);
 		BillResponse response = new BillResponse();
 		kieSession.insert(account);
 		kieSession.insert(request);
