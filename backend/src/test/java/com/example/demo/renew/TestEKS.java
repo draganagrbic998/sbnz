@@ -62,7 +62,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule1pt1() {
+	public void testRule1() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -73,7 +73,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule1pt2() {
+	public void testRule2() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -84,7 +84,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule1pt3() {
+	public void testRule3() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -95,7 +95,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule2() {
+	public void testRule4() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -107,7 +107,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule3() {
+	public void testRule5() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -119,7 +119,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule4pt1() {
+	public void testRule6() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -130,7 +130,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule4pt2() {
+	public void testRule7() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -141,7 +141,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule4pt3() {
+	public void testRule8() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -152,7 +152,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule5() {
+	public void testRule9() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -164,7 +164,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule6() {
+	public void testRule10() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -176,7 +176,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule7pt1() {
+	public void testRule11() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -187,7 +187,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule7pt2() {
+	public void testRule12() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -198,7 +198,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule7pt3() {
+	public void testRule13() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -209,7 +209,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule8() {
+	public void testRule14() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -221,7 +221,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule9() {
+	public void testRule15() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -233,7 +233,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule10pt1() {
+	public void testRule16() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -244,7 +244,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule10pt2() {
+	public void testRule17() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -255,7 +255,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule10pt3() {
+	public void testRule18() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -266,7 +266,7 @@ public class TestEKS {
 	}
 
 	@Test
-	public void testRule11() {
+	public void testRule19() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
@@ -278,7 +278,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule12() {
+	public void testRule20() {
 		this.bill.setType(BillType.EUR);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(19));
@@ -290,7 +290,7 @@ public class TestEKS {
 	}
 	
 	@Test
-	public void testRule13() {
+	public void testRule21() {
 		this.bill.setType(BillType.RSD);
 		this.bill.setStartDate(LocalDate.now());
 		this.bill.setEndDate(LocalDate.now().plusMonths(23));
