@@ -103,7 +103,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.5 * 100 + 1)));
 		this.amount = 0.2 * 75001;
-		this.runAndAssert(0.03 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.45 * 100 + 1)));
 		this.amount = 0.2 * 751;
-		this.runAndAssert(0.03 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.45 * 100 + 1)));
 		this.amount = 0.2 * 75001;
-		this.runAndAssert(0.025 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.4 * 100 + 1)));
 		this.amount = 0.2 * 751;
-		this.runAndAssert(0.025 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.4 * 100 + 1)));
 		this.amount = 0.2 * 75001;
-		this.runAndAssert(0.02 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class TestEKS {
 		this.bill.setInterest(1);
 		this.bill.setTransactions(Set.of(ObjectFactory.getTransaction(0.35 * 100 + 1)));
 		this.amount = 0.2 * 751;
-		this.runAndAssert(0.02 * 1);
+		this.runAndAssert(0.015 * 1);
 	}
 	
 	@Test
