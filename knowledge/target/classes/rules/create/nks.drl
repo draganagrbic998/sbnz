@@ -7,440 +7,56 @@ import com.example.demo.service.NksValuesService
 global NksValuesService nksValuesService
 
 
-rule "NKS of 1.5% - RSD pt1"
+rule "NKS of 1.5%"
 	agenda-group "create-rules"
 
     when
-    	BillRequest(type == BillType.RSD, months > nksValuesService.monthsRate(1, BillType.RSD))
+    	BillRequest(
+    		months > nksValuesService.monthsRate(1, type) ||
+    		base / months > nksValuesService.baseRate(1, type)
+    	)
 		$response: BillResponse(valid, nks == null)
     then
     	modify($response){setNks(1.5)}
         
 end
 
-rule "NKS of 1.5% - RSD pt2"
+rule "NKS of 1.2%"
 	agenda-group "create-rules"
 
     when
-    	BillRequest(type == BillType.RSD, base / months > nksValuesService.baseRate(1, BillType.RSD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - EUR pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, months > nksValuesService.monthsRate(1, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - EUR pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, base / months > nksValuesService.baseRate(1, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - USD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, months > nksValuesService.monthsRate(1, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - USD pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, base / months > nksValuesService.baseRate(1, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - CHF pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, months > nksValuesService.monthsRate(1, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - CHF pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, base / months > nksValuesService.baseRate(1, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - GBP pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, months > nksValuesService.monthsRate(1, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.5% - GBP pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, base / months > nksValuesService.baseRate(1, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.5)}
-        
-end
-
-rule "NKS of 1.2% - RSD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.RSD, months > nksValuesService.monthsRate(2, BillType.RSD))
+    	BillRequest(
+    		months > nksValuesService.monthsRate(2, type) || 
+			base / months > nksValuesService.baseRate(2, type)
+    	)
 		$response: BillResponse(valid, nks == null)
     then
     	modify($response){setNks(1.2)}
         
 end
 
-rule "NKS of 1.2% - RSD pt2"
+rule "NKS of 1.0%"
 	agenda-group "create-rules"
 
     when
-    	BillRequest(type == BillType.RSD, base / months > nksValuesService.baseRate(2, BillType.RSD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - EUR pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, months > nksValuesService.monthsRate(2, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - EUR pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, base / months > nksValuesService.baseRate(2, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - USD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, months > nksValuesService.monthsRate(2, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - USD pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, base / months > nksValuesService.baseRate(2, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - CHF pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, months > nksValuesService.monthsRate(2, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - CHF pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest( type == BillType.CHF, base / months > nksValuesService.baseRate(2, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - GBP pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, months > nksValuesService.monthsRate(2, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.2% - GBP pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, base / months > nksValuesService.baseRate(2, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.2)}
-        
-end
-
-rule "NKS of 1.0% - RSD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.RSD, months > nksValuesService.monthsRate(3, BillType.RSD))
+    	BillRequest(
+    		months > nksValuesService.monthsRate(3, type) ||
+			base / months > nksValuesService.baseRate(3, type)
+    	)
 		$response: BillResponse(valid, nks == null)
     then
     	modify($response){setNks(1.0)}
         
 end
 
-rule "NKS of 1.0% - RSD pt2"
+rule "NKS of 0.8%"
 	agenda-group "create-rules"
 
     when
-    	BillRequest(type == BillType.RSD, base / months > nksValuesService.baseRate(3, BillType.RSD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - EUR pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, months > nksValuesService.monthsRate(3, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - EUR pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, base / months > nksValuesService.baseRate(3, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - USD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, months > nksValuesService.monthsRate(3, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - USD pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, base / months > nksValuesService.baseRate(3, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - CHF pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, months > nksValuesService.monthsRate(3, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - CHF pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, base / months > nksValuesService.baseRate(3, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - GBP pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, months > nksValuesService.monthsRate(3, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 1.0% - GBP pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, base / months > nksValuesService.baseRate(3, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(1.0)}
-        
-end
-
-rule "NKS of 0.8% - RSD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.RSD, months > nksValuesService.monthsRate(4, BillType.RSD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - RSD pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.RSD, base / months > nksValuesService.baseRate(4, BillType.RSD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - EUR pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, months > nksValuesService.monthsRate(4, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - EUR pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.EUR, base / months > nksValuesService.baseRate(4, BillType.EUR))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - USD pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, months > nksValuesService.monthsRate(4, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - USD pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.USD, base / months > nksValuesService.baseRate(4, BillType.USD))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - CHF pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, months > nksValuesService.monthsRate(4, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - CHF pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.CHF, base / months > nksValuesService.baseRate(4, BillType.CHF))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - GBP pt1"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, months > nksValuesService.monthsRate(4, BillType.GBP))
-		$response: BillResponse(valid, nks == null)
-    then
-    	modify($response){setNks(0.8)}
-        
-end
-
-rule "NKS of 0.8% - GBP pt2"
-	agenda-group "create-rules"
-
-    when
-    	BillRequest(type == BillType.GBP, base / months > nksValuesService.baseRate(4, BillType.GBP))
+    	BillRequest(
+    		months > nksValuesService.monthsRate(4, type) ||
+    		base / months > nksValuesService.baseRate(4, type)
+    	)
 		$response: BillResponse(valid, nks == null)
     then
     	modify($response){setNks(0.8)}
